@@ -23,7 +23,7 @@ Il Million Matic Page rappresenta un'opportunità di investimento unica per colo
 
 ### Tecnologie Utilizzate
 
-Il progetto utilizzerà le seguenti tecnologie: React, Typescript, Wagmi, Solidity, Hardhat e contratti base di OpenZeppelin (ERC 721, ERC721URIStorage, ecc.)
+Il progetto utilizzerà le seguenti tecnologie: React, Typescript, Wagmi, Solidity, Hardhat, Alchemy e contratti base di OpenZeppelin (ERC 721, ERC721URIStorage, ecc.)
 
 
 ## English 
@@ -46,5 +46,5 @@ The Million Matic Page represents a unique investment opportunity for those who 
 
 ### Technologies Used
 
-The project will use the following technologies: React, Typescript, Wagmi, Solidity, Hardhat, and OpenZeppelin base contracts (ERC 721, ERC721URIStorage, etc.).
+The project will use the following technologies: React, Typescript, Wagmi, Solidity, Hardhat, Alchemy, and OpenZeppelin base contracts (ERC 721, ERC721URIStorage, etc.).
 
