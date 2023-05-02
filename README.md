@@ -1,13 +1,15 @@
 # Million Matic Page
 
-Italiano
+## Italiano
 
-Introduzione
-Il Million Matic Page è un progetto blockchain che si ispira al sito web http://www.milliondollarhomepage.com/. Lo scopo del progetto è la vendita di spazi pubblicitari nella home page del sito, sotto forma di NFT (ERC 721).
+### Introduzione
 
-Descrizione del Progetto
+Il Million Matic Page è un progetto blockchain che si ispira al sito web [The Million Dollar Page] (http://www.milliondollarhomepage.com/). Lo scopo del progetto è la vendita di spazi pubblicitari nella home page del sito, sotto forma di NFT (ERC 721).
+
+### Descrizione del Progetto
+
 Il Million Matic Page è un progetto blockchain.
-Il progetto si ispira al sito web http://www.milliondollarhomepage.com/, creandone una versione web3 decentralizzata. 
+Il progetto si ispira al sito web [The Million Dollar Page] (http://www.milliondollarhomepage.com/), creandone una versione web3 decentralizzata. 
 Rappresenta uno dei primi esempi di successo dell'utilizzo degli NFT nella pubblicità online. Il progetto si propone di offrire uno spazio pubblicitario di alto valore sulla sua homepage attraverso la vendita di NFT, garantendo la massima visibilità a coloro che investono in questo innovativo sistema di pubblicità.
 
 L'obiettivo principale del Million Matic Page è di fornire uno spazio pubblicitario di alta qualità e valore per gli investitori, consentendo loro di sfruttare l'ultima tecnologia blockchain e NFT per raggiungere un pubblico di massa in tutto il mondo. Gli NFT rappresentano l'opzione ideale per la creazione di uno spazio pubblicitario online esclusivo, non solo per il loro valore intrinseco come attività digitali, ma anche per la loro immutabilità e la loro caratteristica di essere interamente tracciabili.
@@ -19,17 +21,20 @@ Per la realizzazione del progetto verranno utilizzate diverse tecnologie blockch
 
 Il Million Matic Page rappresenta un'opportunità di investimento unica per coloro che desiderano sfruttare le tecnologie blockchain e gli NFT per la pubblicità online. Grazie alla natura decentralizzata del progetto, gli investitori saranno in grado di beneficiare di uno spazio pubblicitario online di alta qualità, con la sicurezza di una maggiore protezione dei loro diritti di proprietà.
 
-Tecnologie Utilizzate
+### Tecnologie Utilizzate
+
 Il progetto utilizzerà le seguenti tecnologie: React, Typescript, Wagmi, Solidity, Hardhat e contratti base di OpenZeppelin (ERC 721, ERC721URIStorage, ecc.)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-English 
+## English 
 
-Introduction
-The Million Matic Page is a blockchain project inspired by the website http://www.milliondollarhomepage.com/. The project's aim is to sell advertising spaces on the homepage of the site in the form of NFTs (ERC 721).
+### Introduction
 
-Project Description
-The Million Matic Page is a blockchain project that creates a decentralized web3 version of the website http://www.milliondollarhomepage.com/. It represents one of the first successful examples of using NFTs in online advertising. The project aims to offer high-value advertising space on its homepage through the sale of NFTs, providing maximum visibility to those who invest in this innovative advertising system.
+The Million Matic Page is a blockchain project inspired by the website [The Million Dollar Page] (http://www.milliondollarhomepage.com/). The project's aim is to sell advertising spaces on the homepage of the site in the form of NFTs (ERC 721).
+
+### Project Description
+
+The Million Matic Page is a blockchain project that creates a decentralized web3 version of the website [The Million Dollar Page] (http://www.milliondollarhomepage.com/). It represents one of the first successful examples of using NFTs in online advertising. The project aims to offer high-value advertising space on its homepage through the sale of NFTs, providing maximum visibility to those who invest in this innovative advertising system.
 
 The main goal of the Million Matic Page is to provide high-quality and high-value advertising space for investors, allowing them to leverage the latest blockchain and NFT technology to reach a mass audience worldwide. NFTs represent the ideal option for creating an exclusive online advertising space, not only for their intrinsic value as digital assets but also for their immutability and fully traceable nature.
 
@@ -39,6 +44,7 @@ The project will use various blockchain technologies such as Polygon and softwar
 
 The Million Matic Page represents a unique investment opportunity for those who want to leverage blockchain technology and NFTs for online advertising. Thanks to the decentralized nature of the project, investors will be able to benefit from high-quality online advertising space, with the security of greater protection of their ownership rights.
 
-Technologies Used
+### Technologies Used
+
 The project will use the following technologies: React, Typescript, Wagmi, Solidity, Hardhat, and OpenZeppelin base contracts (ERC 721, ERC721URIStorage, etc.).
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
