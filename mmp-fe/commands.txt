@@ -1,0 +1,3 @@
+npx create-react-app mmp-fe --template typescript
+cd mmp-fe
+npm start
