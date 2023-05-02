@@ -1,0 +1,7 @@
+npx create-react-app MMP-FE --template typescript
+cd MMP-FE
+npm install
+cd ..
+cd MMP-SM
+npm install --save-dev hardhat
+npx hardhat (typescript project, root, y, y)
