@@ -12,7 +12,10 @@ function App() {
     address: contractAddress,
     abi: contractAbi,
     functionName: "ourMint",
-    args: [1, 1]
+    args: [1, 2],
+    overrides: {
+      value: 1,
+    }
   });
   const { data, write } = useContractWrite(config);
 
