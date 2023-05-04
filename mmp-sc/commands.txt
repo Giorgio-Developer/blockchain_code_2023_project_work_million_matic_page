@@ -2,3 +2,9 @@ cd mmp-sm
 npm install --save-dev hardhat
 npx hardhat (typescript project, root, y, y)
 npm install @openzeppelin/contracts
+
+-------------------------------------------------
+
+npx hardhat compile
+npx hardhat node
+npx hardhat run ./scripts/millionMaticPage_deploy.ts --network mumbai

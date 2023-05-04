@@ -1,24 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useAccount, useConnect, useBalance, usePrepareContractWrite, useContractWrite } from "wagmi";
+import { contractAbi } from "./constant/contract-abi";
+
+const contractAddress = "0xD4Be9810D708d7a12b209F0c41dB51b303622aEa";
 
 function App() {
+  const { address } = useAccount();
+  const { data: balance } = useBalance({ address });
+  const { connect, connectors } = useConnect();
+
+  const { config } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: "ourMint",
+    args: [1, 1]
+  });
+  const { data, write } = useContractWrite(config);
+
+  const handleMint = async () => {
+    if (!write) return;
+    write();
+  };
+
+  console.log(data, 1);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {connectors.map((connector) => (
+        <button key={connector.id} onClick={() => connect({ connector })}>
+          {connector.name}
+        </button>
+      ))}
+
+      <div>
+        {address && <div>Address: {address}</div>}
+        {balance && <div>Balance: {balance.formatted}</div>}
+      </div>
+
+      <div>
+        Contract Address: {contractAddress}
+        <button onClick={handleMint}>Mint</button>
+      </div>
     </div>
   );
 }
