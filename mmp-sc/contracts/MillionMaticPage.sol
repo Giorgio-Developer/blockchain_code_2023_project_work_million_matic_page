@@ -48,6 +48,9 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
     // STATE VARs
     Counters.Counter private _tokenIdCounter;
 
+    // 1 * decimals()
+    uint256 constant price = 1;
+
     // Optional mapping for tokenId AlText
     mapping(uint256 => string) private _altTexts;
     // Optional mapping for tokenId WebURL
@@ -78,22 +81,11 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
         return "";
     }
 
-    function safeMint(address to, string memory uri) public onlyOwner {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
-    }
-
     function ourMint(uint256 row, uint256 col) public payable {
-
-        if(msg.value < 1)
-            revert("Sei un minnico");
+        require(msg.value > 0, "The price is too low");
+        require(NFT_x_y[row][col] == 0, "NFT already minted");
        
         uint256 tokenId = _tokenIdCounter.current();
-
-        if(NFT_x_y[row][col] != 0)
-            revert("NFT already minted");
 
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
@@ -101,7 +93,6 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
         NFT_x_y[row][col] = tokenId;
 
     }
-
 
     // The following functions are overrides required by Solidity.
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
@@ -124,16 +115,16 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
         return  _webURLs[tokenId];
     }
 
-    function setTokenURI(uint256 tokenId,  string memory tokenURI) public onlyNftOwner(tokenId) existsNFT(tokenId) {
-        _setTokenURI(tokenId, tokenURI);
+    function setTokenURI(uint256 tokenId,  string memory imageUrl) public onlyNftOwner(tokenId) existsNFT(tokenId) {
+        _setTokenURI(tokenId, imageUrl);
     }
 
     function setAltText(uint256 tokenId, string memory altText) public onlyNftOwner(tokenId) existsNFT(tokenId) {
         _altTexts[tokenId] = altText;
     }
 
-    function setWebURL(uint256 tokenId, string memory webURL) public onlyNftOwner(tokenId) existsNFT(tokenId) {
-       _webURLs[tokenId] = webURL;
+    function setWebURL(uint256 tokenId, string memory webUrl) public onlyNftOwner(tokenId) existsNFT(tokenId) {
+       _webURLs[tokenId] = webUrl;
     }
 
     /*
