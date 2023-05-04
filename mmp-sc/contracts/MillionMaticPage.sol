@@ -1,9 +1,34 @@
 // SPDX-License-Identifier: GPL 3
-  /**
-   * @title MillionMaticPage
-   * @dev ContractDescription
-   * @custom:dev-run-script file_path
-   */
+/**
+* @title MillionMaticPage
+* @author Giorgio Sanfilippo, Riccardo , Davide Mele, Maurizio Custodi
+* @notice 
+* @dev ContractDescription
+* @custom:dev-run-script file_path
+*/
+
+/** TODO LIST
+ * - const price = 1 * decimals(18)										// 1 MATIC - Per debug lasciara a 1 wei
+ * - getNFTByRowCol(row, col) -> tokenId
+ * - getNFTByOwner(owner) -> array of tokenId
+ * - checkOwnerOfNFT(tokenId) -> bool 									// Verifica che il msg.sender sia il proprietario del NFT (utile per il modal)
+ * BULK getters
+ * - getMintedNFTs() -> array of tokenId
+ * - getTokenURIsOfMintedNFTs() -> array of tokenURI
+ * - getAltTextsOfMintedNFTs() -> array of tokenURI
+ * - getWebURLssOfMintedNFTs() -> array of tokenURI
+ * BULK setter
+ * - setNFTMetadata(tokenId, tokenURI, altText, webURL) -> bool
+ * 
+ * VALUTARE SE POSSONO ESSERE UTILI
+ * - getMintedNFTsByOwner(owner) -> array of tokenId 					// Per ora non serve
+ * - getLocationByTokenId(tokenId) -> row, col
+ * - getOwnerByTokenId(tokenId) -> owner
+ * - getOwnerByRowCol(row, col) -> owner
+ * 
+ * TESTs
+ * - Verificare cosa accade con le varie transfer (safeTransferFrom, transferFrom, etc)
+ */
 
 pragma solidity ^0.8.9;
 
@@ -27,13 +52,8 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
     mapping(uint256 => string) private _altTexts;
     // Optional mapping for tokenId WebURL
     mapping(uint256 => string) private _webURLs;
-
-    mapping(uint256 => mapping(uint256 => uint256)) private NFT_x_y;
-
     // Mapping Row, Col con tokenID
-    //uint256[][] public NFT_x_y;
-
-
+    mapping(uint256 => mapping(uint256 => uint256)) private NFT_x_y;
 
 
     // EVENTS
