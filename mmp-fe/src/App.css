@@ -1,9 +1,12 @@
 table {
-  justify-content: center;
   border: 2px solid;
 }
 
+td {
+  border: 2px solid;
+  padding: 50px;
+}
+
 #table-container {
-  margin-left: 50%;
-  justify-content: center;
+  padding-left: 27%;
 }

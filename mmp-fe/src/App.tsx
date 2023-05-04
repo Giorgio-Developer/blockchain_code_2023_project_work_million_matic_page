@@ -25,28 +25,26 @@ function App() {
     write();
   };
 
-  console.log(data, 1);
-
-  const ncol = 4;
-  const nrig = 4;
-
-  let tabella = ""
-  for(let i = 1; i < ncol; i++) {
-    tabella = tabella + "<tr>"
-    for(let y = 1; y < nrig; y++){
-      tabella = tabella + "<td>" + i + " " + y + "</td>";
-    }
-    tabella = tabella + "</tr>"
-  }
+  const line0 = ["0, 0", "0, 1", "0, 2", "0, 3"];
+  const line1 = ["1, 0", "1, 1", "1, 2", "1, 3"];
+  const line2 = ["2, 0", "2, 1", "2, 2", "2, 3"];
+  const line3 = ["3, 0", "3, 1", "3, 2", "3, 3"];
 
   return (
     <div className="App">
       <div id="table-container">
-        <table>
-          <tr>
-            {tabella}
+      <table>
+        {[line0, line1, line2, line3].map((line, index) => (
+          <tr key={index}>
+          {line.map((cell, cellIndex) => (
+            <td key={cellIndex}>
+              <button>{cell}</button>
+            </td>
+          ))}
           </tr>
-        </table>
+        ))}
+    </table>
+
       </div>
       {connectors.map((connector) => (
         <button key={connector.id} onClick={() => connect({ connector })}>
