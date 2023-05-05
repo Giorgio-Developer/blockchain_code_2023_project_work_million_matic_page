@@ -1,12 +1,13 @@
-import { useAccount, useConnect, useBalance, usePrepareContractWrite, useContractWrite } from "wagmi";
+import { useAccount, usePrepareContractWrite, useContractWrite } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
+import { useState } from "react";
 
 const contractAddress = "0xD4Be9810D708d7a12b209F0c41dB51b303622aEa";
 
 export function MintButton(props: any) {
-    const { address } = useAccount();
-  const { data: balance } = useBalance({ address });
-  const { connect, connectors } = useConnect();
+  const { address } = useAccount();
+
+  const [count, setCount] = useState(0);
 
   const { config } = usePrepareContractWrite({
     address: contractAddress,
@@ -33,7 +34,10 @@ export function MintButton(props: any) {
 
   return (
     <div>
-        <button onClick={handleMint}>
+        <button data-tokenId={() => {
+            setCount(count + 1);
+            return count;
+        }} onClick={handleMint}>
           <img style={imageSize} src="https://static.vecteezy.com/ti/vettori-gratis/p3/7978653-coca-cola-popular-drink-brand-logo-vinnytsia-ucraina-16-maggio-202-gratuito-vettoriale.jpg" alt="buttonpng" />
         </button>
     </div>
