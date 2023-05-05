@@ -27,8 +27,8 @@ export function MintButton(props: any) {
   };
 
   const imageSize = {
-    width: "100px",
-    heigth: "100px"
+    width: "200px",
+    heigth: "200px"
   }
 
   return (

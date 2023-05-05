@@ -17,26 +17,37 @@ function App() {
 
   return (
     <div className="App">
-      <div id="table-container">
-      <table>
-        {[line0, line1, line2, line3].map((line, index) => (
-          <tr key={index}>
-          {line.map((cell, cellIndex) => (
-            <td key={cellIndex}>
-              <MintButton row={index} col={cellIndex} />
-            </td>
-          ))}
-          </tr>
-        ))}
-    </table>
-
+      <div id="title">
+        <h1>Million Matic Page</h1>
       </div>
+      <div id="container-master">
+        <div id="project-info-container">
+          Project Info
+        </div>
+        <div id="table-container">
+          <table>
+            {[line0, line1, line2, line3].map((line, index) => (
+              <tr key={index}>
+              {line.map((cell, cellIndex) => (
+                <td key={cellIndex}>
+                  <MintButton row={index} col={cellIndex} />
+                </td>
+              ))}
+              </tr>
+            ))}
+          </table>
+        </div>
+        <div id="modal-container">
+          Modal
+        </div>
+      </div>
+      
       {connectors.map((connector) => (
-        <button key={connector.id} onClick={() => connect({ connector })}>
-          {connector.name}
-        </button>
-      ))}
-
+          <button key={connector.id} onClick={() => connect({ connector })}>
+            {connector.name}
+          </button>
+        ))}
+        
       <div>
         {address && <div>Address: {address}</div>}
         {balance && <div>Balance: {balance.formatted}</div>}
