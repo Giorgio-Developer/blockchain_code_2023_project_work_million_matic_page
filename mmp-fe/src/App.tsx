@@ -13,7 +13,7 @@ function App() {
     address: contractAddress,
     abi: contractAbi,
     functionName: "ourMint",
-    args: [1, 2],
+    args: [3, 3],
     overrides: {
       value: 1,
     }
@@ -23,6 +23,13 @@ function App() {
   const handleMint = async () => {
     if (!write) return;
     write();
+  };
+
+  const openModal = async (row:number,col:number) => {
+    console.log(row,col);
+    console.log(config);
+    console.log(data);
+    //console.log('write);
   };
 
   const line0 = ["0, 0", "0, 1", "0, 2", "0, 3"];
@@ -60,9 +67,13 @@ function App() {
       <div>
         Contract Address: {contractAddress}
         <button onClick={handleMint}>Mint</button>
+        <button onClick={() => openModal(1,1)} >
+          <img src="https://i.ibb.co/CW5Wvry/buttonpng.png" alt="buttonpng" />
+        </button>
       </div>
     </div>
   );
 }
+
 
 export default App;
