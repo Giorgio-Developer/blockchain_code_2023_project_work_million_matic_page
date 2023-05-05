@@ -2,6 +2,7 @@ cd mmp-sm
 npm install --save-dev hardhat
 npx hardhat (typescript project, root, y, y)
 npm install @openzeppelin/contracts
+npm install dotenv
 
 -------------------------------------------------
 
