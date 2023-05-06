@@ -9,6 +9,7 @@ function App() {
   const { address } = useAccount();
   const { data: balance } = useBalance({ address });
   const { connect, connectors } = useConnect();
+  let counter = 0;
 
   const line0 = ["0, 0", "0, 1", "0, 2", "0, 3"];
   const line1 = ["1, 0", "1, 1", "1, 2", "1, 3"];
@@ -30,7 +31,7 @@ function App() {
               <tr key={index}>
               {line.map((cell, cellIndex) => (
                 <td key={cellIndex}>
-                  <MintButton row={index} col={cellIndex} />
+                  <MintButton tokenId={counter++}row={index} col={cellIndex} />
                 </td>
               ))}
               </tr>
