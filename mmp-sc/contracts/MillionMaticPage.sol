@@ -8,7 +8,11 @@
 */
 
 /** TODO LIST
+ * VARs & CONSTANTs
  * - const price = 1 * decimals(18)										// 1 MATIC - Per debug lasciara a 1 wei
+ * - 
+ * FUNCTIONS
+ * - withdrawBalance() onlyOwner -> bool								// Preleviamo i fondi dal contratto
  * - getNFTByRowCol(row, col) -> tokenId
  * - getNFTByOwner(owner) -> array of tokenId
  * - checkOwnerOfNFT(tokenId) -> bool 									// Verifica che il msg.sender sia il proprietario del NFT (utile per il modal)
