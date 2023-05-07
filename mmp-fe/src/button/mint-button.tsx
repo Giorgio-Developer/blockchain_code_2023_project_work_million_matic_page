@@ -33,7 +33,7 @@ export function MintButton(props: any) {
 
   return (
     <div>
-        <button data-tokenId={props.tokenId} onClick={handleMint}>
+        <button data-row={props.row} data-col={props.col} onClick={handleMint} >
           <img style={imageSize} src="https://static.vecteezy.com/ti/vettori-gratis/p3/7978653-coca-cola-popular-drink-brand-logo-vinnytsia-ucraina-16-maggio-202-gratuito-vettoriale.jpg" alt="buttonpng" />
         </button>
     </div>
