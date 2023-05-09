@@ -1,7 +1,7 @@
 import { useAccount, usePrepareContractWrite, useContractWrite } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 
-const contractAddress = "0xD4Be9810D708d7a12b209F0c41dB51b303622aEa";
+const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
 
 export function MintButton(props: any) {
   const { address } = useAccount();

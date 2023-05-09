@@ -1,4 +1,4 @@
-import { useAccount, useConnect, useBalance, usePrepareContractWrite, useContractWrite } from "wagmi";
+import { useAccount, useConnect, useBalance, usePrepareContractWrite, useContractWrite, useContractRead } from "wagmi";
 import { contractAbi } from "./constant/contract-abi";
 import './App.css';
 
@@ -8,12 +8,13 @@ const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
 
 function App() {
 
+    
     const { address } = useAccount();
     const { data: balance } = useBalance({ address });
-    const { connect, connectors } = useConnect();
+    const { connect, connectors } = useConnect();  
 
     const ROWS = 4;
-    const COLUMNS = 4;
+    const COLUMNS = 4;   
 
     return (
         <div className="App">
