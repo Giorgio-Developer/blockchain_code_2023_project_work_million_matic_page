@@ -662,10 +662,6 @@ export function HomeTable(props: TableProps) {
 
   console.log(metadataArray);
 
-  // function calculateTokenId(row:number, column:number){
-  //   return (row * 31) + (column * 17);
-  // } 
- 
 
   function calculateTokenId(rows:number, columns:number){
     return (rows * ROWS ) + columns;
@@ -685,8 +681,6 @@ export function HomeTable(props: TableProps) {
   } 
 
 
-
-
   const renderTable = () => {
     const tableRows = [];
     for (let i = 0; i < rows; i++) {
@@ -694,7 +688,7 @@ export function HomeTable(props: TableProps) {
       for (let j = 0; j < columns; j++) {
         tableCells.push(
           <td key={`${i}-${j}`}>
-            {/* <MintButton row={i} col={j} /> */}
+            <MintButton row={i} col={j} />
           </td>
         );
       }
