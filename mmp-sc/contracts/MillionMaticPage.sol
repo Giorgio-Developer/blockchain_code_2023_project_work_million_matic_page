@@ -229,7 +229,7 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 
 	}
 
-	function getGroupMetadata(uint8 startRow, uint8 endRow, uint8 startCol, uint8 endCol ) public view returns (string[][] memory) {
+/* 	function getGroupMetadata(uint8 startRow, uint8 endRow, uint8 startCol, uint8 endCol ) public view returns (string[][] memory) {
 
 		require((startRow < endRow && startCol < endCol), "Invalid range");
 
@@ -253,6 +253,20 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 		}
 
 		return result;
+
+	} */
+
+		function getGroupMetadata(uint256[] calldata tokenIds) public view returns (string[] memory) {
+		
+		string[] memory data = new string[](tokenIds.length);
+
+		for(uint256 i=0; i < tokenIds.length; i++) {
+
+			data[i] = tokenURI(tokenIds[i]);
+	
+		}
+
+		return data;
 
 	}
 

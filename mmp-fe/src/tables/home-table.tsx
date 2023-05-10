@@ -1,10 +1,17 @@
 import { useContractRead } from "wagmi";
 import {MintButton} from "../button/mint-button";
+import { utils } from "ethers";
 
 interface TableProps {
   rows: number;
   columns: number;
 }
+
+interface Point {
+  row: number;
+  column: number;
+}
+
 
 
 export function HomeTable(props: TableProps) {
@@ -607,6 +614,9 @@ export function HomeTable(props: TableProps) {
     }
   ];
 
+  const ROWS = 256;
+  const COLUMNS = 256;  
+
   const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
 
   const { data, isError, isLoading } = useContractRead({
@@ -639,7 +649,9 @@ export function HomeTable(props: TableProps) {
     metadata.tokenURI = splitted[3].split(": ")[1];
     metadata.altText = splitted[4].split(": ")[1];
     metadata.webURL = splitted[5].split(": ")[1];
-    console.log(Number(metadata.row));
+    decodeURIComponent(metadata.row);
+    //console.log(utils.);
+    //console.log(utils.parseUnits(metadata.row), 18);
 
 
     return metadata;   
@@ -649,6 +661,29 @@ export function HomeTable(props: TableProps) {
   cleanData(data);
 
   console.log(metadataArray);
+
+  // function calculateTokenId(row:number, column:number){
+  //   return (row * 31) + (column * 17);
+  // } 
+ 
+
+  function calculateTokenId(rows:number, columns:number){
+    return (rows * ROWS ) + columns;
+  } 
+
+  function calculateRowCol(tokenId:number){
+
+    let rows = Math.floor(tokenId / ROWS);
+    let cols = tokenId % ROWS;
+
+    let point:Point = {
+      row: rows,
+      column:cols
+    };
+    
+    return point;
+  } 
+
 
 
 
