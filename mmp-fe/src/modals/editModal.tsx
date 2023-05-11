@@ -7,7 +7,6 @@ import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 
 var axios = require('axios');
 
-
 const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
 const PINATA_APIKEY="027104963f9bcfa01a66";
 const PINATA_SECRET="3a9e6115be91898f15e89d8fd1ef8c43051077e2c3eebb455b43cedc8e2b8b9b";
@@ -611,7 +610,6 @@ const abi = [
 
 export function EditModal(props: any) {
 
-
   interface TypeDataToSend {
     imgURL: string;
     altText: string;
@@ -624,16 +622,19 @@ export function EditModal(props: any) {
   const [webURL, setWebURL] = useState('');
   const [contentIdentificator, setContentIdentificator] = useState('');
 
+  let ipfsHash:string;
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { config } = usePrepareContractWrite({
+   const { config } = usePrepareContractWrite({
     address: contractAddress,
     abi: abi,
     functionName: "setTokenURI",
     args: [5,contentIdentificator]
-  });
+  }); 
   
+
   const { data, write } = useContractWrite(config);
   
     const sendDataToIPFS = async () => {
@@ -644,7 +645,7 @@ export function EditModal(props: any) {
         webURL: webURL
       }
 
-      console.log("I dati inviati ad IPFS sono " + dataToSend);
+      console.log("I dati inviati ad IPFS sono " + JSON.stringify({dataToSend}));
 
       var dataIPFS = JSON.stringify({
         "pinataOptions": {
@@ -674,16 +675,22 @@ export function EditModal(props: any) {
       const res = await axios(configIPFS);
       console.log(res.data.IpfsHash); 
 
-      setContentIdentificator(res.data.IpfsHash);
+      ipfsHash = res.data.IpfsHash;
+
+      setContentIdentificator(ipfsHash);    
+
+    };
+
+    const writeToBlockchain = async () => {
 
       console.log(contentIdentificator);
 
-
-      /* if (!write) return;
+      if (!write) return;
       console.log(config)
-      write(); */
+      write(); 
 
     };
+
 
 
   function handleChange(event:any) {
@@ -743,6 +750,9 @@ export function EditModal(props: any) {
           </Button>
           <Button variant="primary" onClick={sendDataToIPFS}>
             Save Changes
+          </Button>
+          <Button variant="primary" onClick={writeToBlockchain}>
+            Send to Blockchain
           </Button>
         </Modal.Footer>
       </Modal>
