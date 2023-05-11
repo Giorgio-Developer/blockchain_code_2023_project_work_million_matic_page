@@ -1,23 +1,18 @@
-import { useContractRead } from "wagmi";
-import {MintButton} from "../button/mint-button";
-import { utils } from "ethers";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 
-interface TableProps {
-  rows: number;
-  columns: number;
-}
-
-interface Point {
-  row: number;
-  column: number;
-}
+var axios = require('axios');
 
 
-
-export function HomeTable(props: TableProps) {
-  const { rows, columns } = props;
-
-  const abi = [
+const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
+const PINATA_APIKEY="027104963f9bcfa01a66";
+const PINATA_SECRET="3a9e6115be91898f15e89d8fd1ef8c43051077e2c3eebb455b43cedc8e2b8b9b";
+const PINATA_JWT="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIwM2MyYjVkMC0xOWI0LTQ0OTgtYTJmZS02MDNlY2VlY2I2YjciLCJlbWFpbCI6InJpY2NhcmRvOTVtb2xpbmFyaUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicGluX3BvbGljeSI6eyJyZWdpb25zIjpbeyJpZCI6IkZSQTEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX0seyJpZCI6Ik5ZQzEiLCJkZXNpcmVkUmVwbGljYXRpb25Db3VudCI6MX1dLCJ2ZXJzaW9uIjoxfSwibWZhX2VuYWJsZWQiOmZhbHNlLCJzdGF0dXMiOiJBQ1RJVkUifSwiYXV0aGVudGljYXRpb25UeXBlIjoic2NvcGVkS2V5Iiwic2NvcGVkS2V5S2V5IjoiMDI3MTA0OTYzZjliY2ZhMDFhNjYiLCJzY29wZWRLZXlTZWNyZXQiOiIzYTllNjExNWJlOTE4OThmMTVlODlkOGZkMWVmOGM0MzA1MTA3N2UyYzNlZWJiNDU1YjQzY2VkYzhlMmI4YjliIiwiaWF0IjoxNjgzNzM3ODQ1fQ.C3G3EPsVimMHUxldjBcgsZMtG6iIdpbo8H-N4kDJgLI";
+const abi = [
     {
       "inputs": [],
       "stateMutability": "nonpayable",
@@ -614,88 +609,143 @@ export function HomeTable(props: TableProps) {
     }
   ];
 
-  const ROWS = 256;
-  const COLUMNS = 256;  
+export function EditModal(props: any) {
 
-  const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
 
-  const { data, isError, isLoading } = useContractRead({
+  interface TypeDataToSend {
+    imgURL: string;
+    altText: string;
+    webURL: string;
+  }
+
+  const [show, setShow] = useState(false);
+  const [imgURL, setImgURL] = useState('');
+  const [altText, setAltText] = useState('');
+  const [webURL, setWebURL] = useState('');
+  const [contentIdentificator, setContentIdentificator] = useState('');
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const { config } = usePrepareContractWrite({
     address: contractAddress,
     abi: abi,
-    functionName: 'getGroupMetadata',
-    args: [0,4,0,4]
+    functionName: "setTokenURI",
+    args: [5,contentIdentificator]
   });
+  
+  const { data, write } = useContractWrite(config);
+  
+    const sendDataToIPFS = async () => {
 
-  let metadataArray: any[][] = [];
-  let metadata: any = {};
+      const dataToSend:TypeDataToSend = {
+        imgURL: imgURL,
+        altText: altText,
+        webURL: webURL
+      }
 
-  const cleanData = (data:any) => {
+      console.log("I dati inviati ad IPFS sono " + dataToSend);
 
-    data.forEach((row: any[],rowCounter:number) => {
-      metadataArray[rowCounter] = [];
-      row.forEach((col: any,colCounter:number) => {
-       metadataArray[rowCounter][colCounter] = splitData(col);
-      })
-    });
+      var dataIPFS = JSON.stringify({
+        "pinataOptions": {
+      "cidVersion": 1
+      },
+        "pinataMetadata": {
+            "name": "NFTData",
+            "keyvalues": {
+            "customKey": "customValue",
+            "customKey2": "customValue2"
+            }
+        },
+      "pinataContent": dataToSend
+      });
 
-  };
+      var configIPFS = {
+        method: 'post',
+        url: 'https://api.pinata.cloud/pinning/pinJSONToIPFS',
+        headers: { 
+        'pinata_api_key': PINATA_APIKEY,
+        'pinata_secret_api_key': PINATA_SECRET,
+        'Content-Type': 'application/json', 
+        },
+        data : dataIPFS
+        };
 
-  function splitData(items:string){
-    let splitted:string[] = items.replace(";","").split(",");
+      const res = await axios(configIPFS);
+      console.log(res.data.IpfsHash); 
 
-    metadata.row = splitted[0].split(": ")[1];
-    metadata.col = splitted[1].split(": ")[1];
-    metadata.tokenID = splitted[2].split(": ")[1];
-    metadata.tokenURI = splitted[3].split(": ")[1];
-    metadata.altText = splitted[4].split(": ")[1];
-    metadata.webURL = splitted[5].split(": ")[1];
+      setContentIdentificator(res.data.IpfsHash);
 
-    return metadata;   
+      console.log(contentIdentificator);
+
+
+      /* if (!write) return;
+      console.log(config)
+      write(); */
+
+    };
+
+
+  function handleChange(event:any) {
+    let targetId = event.currentTarget.id;
+    
+    switch(targetId) {
+      case 'imageUrlForm':
+        setImgURL(event.target.value);
+      break;
+      case 'altTextForm':
+        setAltText(event.target.value);
+      break;
+      case 'webURLForm':
+        setWebURL(event.target.value);
+      break;
+    }
 
   }
 
-  cleanData(data);
-
-  console.log(metadataArray);
-
-
-  function calculateTokenId(rows:number, columns:number){
-    return (rows * ROWS ) + columns;
-  } 
-
-  function calculateRowCol(tokenId:number){
-
-    let rows = Math.floor(tokenId / ROWS);
-    let cols = tokenId % ROWS;
-
-    let point:Point = {
-      row: rows,
-      column:cols
-    };
-    
-    return point;
-  } 
-
-
-  const renderTable = () => {
-    const tableRows = [];
-    for (let i = 0; i < rows; i++) {
-      const tableCells = [];
-      for (let j = 0; j < columns; j++) {
-        tableCells.push(
-          <td key={`${i}-${j}`}>
-            <MintButton row={i} col={j} />
-          </td>
-        );
-      }
-      tableRows.push(<tr key={i}>{tableCells}</tr>);
-    }
     return (
-      <table>
-        <tbody>{tableRows}</tbody>
-      </table>
-    );
-  };
+      
+      <div
+      className="modal show"
+      style={{ display: 'block', position: 'initial' }}
+    >
+      <Button variant="primary" onClick={handleShow}>
+        Launch demo modal
+      </Button>
 
-  return <div>{renderTable()}</div>;
-}
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3" controlId="imageUrlForm">
+              <Form.Label>Image Url</Form.Label> 
+              <Form.Control type="text" placeholder="image.png" name='imageUrlControl' onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="altTextForm">
+              <Form.Label>Alt Text</Form.Label>
+              <Form.Control type="text" placeholder="....."  name='altTextControl' onChange={handleChange}/>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="webURLForm">
+              <Form.Label>Web Url</Form.Label>
+              <Form.Control type="text" placeholder="www.google.com" name='webURLControl' onChange={handleChange}/>
+            </Form.Group>
+          </Form>
+
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={sendDataToIPFS}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+    );
+  }
