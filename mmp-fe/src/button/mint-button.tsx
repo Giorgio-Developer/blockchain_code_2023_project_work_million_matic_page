@@ -1,7 +1,7 @@
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 
-const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
+const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
 
 export function MintButton(props: any) {
 
@@ -36,7 +36,7 @@ export function MintButton(props: any) {
 
   return (
     <div>
-      <button data-row={props.row} data-col={props.col} onClick={handleMint}>
+      <button data-row={props.row} data-col={props.col} id={props.tokenId} onClick={handleMint}>
         <img
           style={imageSize}
           src="https://static.vecteezy.com/ti/vettori-gratis/p3/7978653-coca-cola-popular-drink-brand-logo-vinnytsia-ucraina-16-maggio-202-gratuito-vettoriale.jpg"

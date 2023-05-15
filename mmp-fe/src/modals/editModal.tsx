@@ -8,7 +8,10 @@ import { contractAbi } from "../constant/contract-abi";
 
 var axios = require('axios');
 
-const contractAddress = "0x507e782bCcC5f0a2cc563E7b619092c14b72FA3B";
+const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
+//const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS ? process.env.REACT_APP_CONTRACT_ADDRESS: undefined;
+// const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+
 const PINATA_APIKEY = process.env.REACT_APP_PINATA_APIKEY;
 const PINATA_SECRET = process.env.REACT_APP_PINATA_SECRET;
 const abi = contractAbi;
