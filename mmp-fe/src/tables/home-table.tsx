@@ -3,6 +3,8 @@ import { MintButton } from "../button/mint-button";
 import { utils } from "ethers";
 import { contractAbi } from "../constant/contract-abi";
 import { useEffect, useState } from "react";
+import { Square } from "./square";
+import { EditModal } from "../modals/editModal";
 
 // TODO: Il tokenId e la i non corrispondono negli array imgSrcData, altTextData e webUrlData (vedi initButtons e renderTable)
 
@@ -43,6 +45,7 @@ export function HomeTable(props: TableProps) {
 	const [imgSrcData, setImgSrcData] = useState(initImgSrcData);
 	const [altTextData, setAltTextData] = useState(initAltTextData);
 	const [webUrlData, setWebUrlData] = useState(initWebUrlData);
+	const [show, setShow] = useState(false);
 
 	useEffect(() => {
 		if (data) {
@@ -102,13 +105,14 @@ export function HomeTable(props: TableProps) {
 				let currentTokenID = calculateTokenId(i, j);
 				tableCells.push(
 				<td key={`${i}-${j}`}>
-					<MintButton
-						row={i}
-						col={j}
-						tokenId={currentTokenID}
-						imgsrc={imgSrcData[currentTokenID]}
-						alttext={altTextData[currentTokenID]}
-						weburl={webUrlData[currentTokenID]}
+					<Square
+							row={i}
+							col={j}
+							tokenId={currentTokenID}
+							imgsrc={imgSrcData[currentTokenID]}
+							alttext={altTextData[currentTokenID]}
+							weburl={webUrlData[currentTokenID]}
+							onClick={setShow}
 					/>
 				</td>
 				);
@@ -120,9 +124,16 @@ export function HomeTable(props: TableProps) {
 		return (
 			<table>
 				<tbody>{tableRows}</tbody>
+			
 			</table>
+
 		);
   };
 
-  return <div>{renderTable()}</div>;
+	return <div>{
+		renderTable()
+	}
+		<EditModal
+			show={show} />
+	</div>;
 }

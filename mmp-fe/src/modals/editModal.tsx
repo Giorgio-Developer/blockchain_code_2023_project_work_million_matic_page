@@ -22,6 +22,7 @@ export function EditModal(props: any) {
     imgURL: string;
     altText: string;
     webURL: string;
+    tokenId: number;
   }
 
   const [show, setShow] = useState(false);
@@ -39,7 +40,7 @@ export function EditModal(props: any) {
     address: contractAddress,
     abi: abi,
     functionName: "setTokenURI",
-    args: [5,contentIdentificator]
+    args: [769,contentIdentificator]
   }); 
   
   const { data, write } = useContractWrite(config);
@@ -49,7 +50,8 @@ export function EditModal(props: any) {
       const dataToSend:TypeDataToSend = {
         imgURL: imgURL,
         altText: altText,
-        webURL: webURL
+        webURL: webURL,
+        tokenId: 756,
       }
 
       console.log("I dati inviati ad IPFS sono " + JSON.stringify({dataToSend}));
@@ -121,12 +123,12 @@ export function EditModal(props: any) {
       className="modal show"
       style={{ display: 'block', position: 'initial' }}
     >
-      <Button variant="primary" onClick={handleShow}>
+{/*       <Button variant="primary" onClick={handleShow}>
         Launch demo modal
-      </Button>
+      </Button> */}
 
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={props.show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
