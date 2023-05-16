@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { contractAbi } from "../constant/contract-abi";
@@ -29,6 +29,7 @@ export function EditModal(props: any) {
   const [imgURL, setImgURL] = useState('');
   const [altText, setAltText] = useState('');
   const [webURL, setWebURL] = useState('');
+  const [tokenId, setTokenId] = useState("");
   const [contentIdentificator, setContentIdentificator] = useState('');
 
   let ipfsHash:string;
@@ -41,7 +42,15 @@ export function EditModal(props: any) {
     abi: abi,
     functionName: "setTokenURI",
     args: [769,contentIdentificator]
-  }); 
+   }); 
+  
+  
+  	useEffect(() => {
+      if (props.show === true) {
+        setTokenId(props.tokenId);
+        console.log(props.tokenId);
+      } 
+    }, [props.show]);
   
   const { data, write } = useContractWrite(config);
   
@@ -51,7 +60,7 @@ export function EditModal(props: any) {
         imgURL: imgURL,
         altText: altText,
         webURL: webURL,
-        tokenId: 756,
+        tokenId: props.tokenId,
       }
 
       console.log("I dati inviati ad IPFS sono " + JSON.stringify({dataToSend}));
@@ -123,9 +132,6 @@ export function EditModal(props: any) {
       className="modal show"
       style={{ display: 'block', position: 'initial' }}
     >
-{/*       <Button variant="primary" onClick={handleShow}>
-        Launch demo modal
-      </Button> */}
 
 
       <Modal show={props.show} onHide={handleClose}>

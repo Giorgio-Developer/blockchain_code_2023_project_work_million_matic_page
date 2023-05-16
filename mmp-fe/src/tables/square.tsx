@@ -10,8 +10,11 @@ export function Square(props: any) {
     width: "200px",
     heigth: "200px",
   };
-    
 
+  const clickButton = async () => {
+    props.stateChanger(true);
+    props.tokenIdChanger(props.tokenId);
+  };
 
   return (
     <div>
@@ -19,7 +22,7 @@ export function Square(props: any) {
         data-row={props.row}
         data-col={props.col}
         id={props.tokenId}
-        onClick={() => props.stateChanger(true)}
+        onClick={clickButton}
       >
         <a href={props.weburl} target="_blank" rel="noreferrer">
           <img

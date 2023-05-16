@@ -49,6 +49,7 @@ export function HomeTable(props: TableProps) {
 	const [altTextData, setAltTextData] = useState(initAltTextData);
 	const [webUrlData, setWebUrlData] = useState(initWebUrlData);
 	const [show, setShow] = useState(false);
+	const [tokenId, setTokenId] = useState(0);
 
 	useEffect(() => {
 		if (data) {
@@ -70,13 +71,14 @@ export function HomeTable(props: TableProps) {
 				});
 
 				response[i].json().then((new_data) => {
-					imgsrc[i] = new_data.imgURL;
+					const id = new_data.tokenId;
+					imgsrc[id] = new_data.imgURL;
 					setImgSrcData([...imgsrc]);
 
-					alttext[i] = new_data.altText;
+					alttext[id] = new_data.altText;
 					setAltTextData([...alttext]);
 
-					weburl[i] = new_data.webURL;
+					weburl[id] = new_data.webURL;
 					setWebUrlData([...weburl]);
 				});
 			}
@@ -109,13 +111,15 @@ export function HomeTable(props: TableProps) {
 				tableCells.push(
           <td key={`${i}-${j}`}>
             <Square
-              row={i}
-              col={j}
-              tokenId={currentTokenID}
-              imgsrc={imgSrcData[currentTokenID]}
-              alttext={altTextData[currentTokenID]}
-              weburl={webUrlData[currentTokenID]}
-              stateChanger={setShow}
+							row={i}
+							col={j}
+							tokenId={currentTokenID}
+							imgsrc={imgSrcData[currentTokenID]}
+							alttext={altTextData[currentTokenID]}
+							weburl={webUrlData[currentTokenID]}
+							stateChanger={setShow}
+							tokenIdChanger={setTokenId}
+				
             />
           </td>
         );
@@ -136,7 +140,9 @@ export function HomeTable(props: TableProps) {
 	return (
     <div>
       {renderTable()}
-      <EditModal show={show}/>
+			<EditModal
+				tokenId={tokenId}
+				show={show} />
     </div>
   );
 }
