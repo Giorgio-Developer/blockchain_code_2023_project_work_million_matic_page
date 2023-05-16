@@ -2,9 +2,8 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { EditModal } from "../modals/editModal";
-import { render } from "@testing-library/react";
 
 export function Square(props: any) {
   const imageSize = {
@@ -12,13 +11,7 @@ export function Square(props: any) {
     heigth: "200px",
   };
     
-    const [show, setShow] = useState(false);
 
-    
-    const openModal = async () => {
-
-        return true;
-    };
 
   return (
     <div>
@@ -26,7 +19,7 @@ export function Square(props: any) {
         data-row={props.row}
         data-col={props.col}
         id={props.tokenId}
-        onClick={openModal}
+        onClick={() => props.stateChanger(true)}
       >
         <a href={props.weburl} target="_blank" rel="noreferrer">
           <img
@@ -41,7 +34,6 @@ export function Square(props: any) {
         </a>
       </button>
     </div>
-    
   );
 }
 

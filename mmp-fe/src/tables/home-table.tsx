@@ -5,6 +5,9 @@ import { contractAbi } from "../constant/contract-abi";
 import { useEffect, useState } from "react";
 import { Square } from "./square";
 import { EditModal } from "../modals/editModal";
+import { createContext } from "react";
+export const SigninContext = createContext({});
+
 
 // TODO: Il tokenId e la i non corrispondono negli array imgSrcData, altTextData e webUrlData (vedi initButtons e renderTable)
 
@@ -104,18 +107,18 @@ export function HomeTable(props: TableProps) {
 			for (let j = 0; j < columns; j++) {
 				let currentTokenID = calculateTokenId(i, j);
 				tableCells.push(
-				<td key={`${i}-${j}`}>
-					<Square
-							row={i}
-							col={j}
-							tokenId={currentTokenID}
-							imgsrc={imgSrcData[currentTokenID]}
-							alttext={altTextData[currentTokenID]}
-							weburl={webUrlData[currentTokenID]}
-							onClick={setShow}
-					/>
-				</td>
-				);
+          <td key={`${i}-${j}`}>
+            <Square
+              row={i}
+              col={j}
+              tokenId={currentTokenID}
+              imgsrc={imgSrcData[currentTokenID]}
+              alttext={altTextData[currentTokenID]}
+              weburl={webUrlData[currentTokenID]}
+              stateChanger={setShow}
+            />
+          </td>
+        );
 			}
 
 			tableRows.push(<tr key={i}>{tableCells}</tr>);
@@ -130,10 +133,10 @@ export function HomeTable(props: TableProps) {
 		);
   };
 
-	return <div>{
-		renderTable()
-	}
-		<EditModal
-			show={show} />
-	</div>;
+	return (
+    <div>
+      {renderTable()}
+      <EditModal show={show}/>
+    </div>
+  );
 }
