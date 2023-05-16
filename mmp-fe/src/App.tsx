@@ -25,8 +25,6 @@ function App() {
         <div id="container-master">
             <div id="project-info-container">Project Info</div>
             <div id="table-container"><HomeTable rows={ROWS} columns={COLUMNS} /></div>
-            <div id="modal-container">Modal</div>
-            <div id="modal-container"><EditModal/></div>
         </div>
         
         {connectors.map((connector) => (

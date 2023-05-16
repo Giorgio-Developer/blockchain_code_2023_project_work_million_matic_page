@@ -32,6 +32,7 @@ export function HomeTable(props: TableProps) {
 	const imgsrc: string[] = [];
 	const alttext: string[] = [];
 	const weburl: string[] = [];
+	const cid: string[] = [];
 
 	const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
 
@@ -45,11 +46,14 @@ export function HomeTable(props: TableProps) {
 	const initImgSrcData: string[] = [];
 	const initAltTextData: string[] = [];
 	const initWebUrlData: string[] = [];
+	const initCIDData: string[] = [];
 	const [imgSrcData, setImgSrcData] = useState(initImgSrcData);
 	const [altTextData, setAltTextData] = useState(initAltTextData);
 	const [webUrlData, setWebUrlData] = useState(initWebUrlData);
+	const [CIDData, setCIDData] = useState(initCIDData);
 	const [show, setShow] = useState(false);
 	const [tokenId, setTokenId] = useState(0);
+	
 
 	useEffect(() => {
 		if (data) {
@@ -80,6 +84,10 @@ export function HomeTable(props: TableProps) {
 
 					weburl[id] = new_data.webURL;
 					setWebUrlData([...weburl]);
+
+					cid[id] = data[i];
+					setCIDData([...cid]);
+					console.log(cid);
 				});
 			}
 		}
@@ -111,15 +119,15 @@ export function HomeTable(props: TableProps) {
 				tableCells.push(
           <td key={`${i}-${j}`}>
             <Square
-							row={i}
-							col={j}
-							tokenId={currentTokenID}
-							imgsrc={imgSrcData[currentTokenID]}
-							alttext={altTextData[currentTokenID]}
-							weburl={webUrlData[currentTokenID]}
-							stateChanger={setShow}
-							tokenIdChanger={setTokenId}
-				
+              row={i}
+              col={j}
+              tokenId={currentTokenID}
+              imgsrc={imgSrcData[currentTokenID]}
+              alttext={altTextData[currentTokenID]}
+              weburl={webUrlData[currentTokenID]}
+              stateChanger={setShow}
+              tokenIdChanger={setTokenId}
+              isMinted={CIDData[currentTokenID] !== undefined ? true : false}
             />
           </td>
         );
@@ -142,7 +150,8 @@ export function HomeTable(props: TableProps) {
       {renderTable()}
 			<EditModal
 				tokenId={tokenId}
-				show={show} />
+				show={show}
+			/>
     </div>
   );
 }

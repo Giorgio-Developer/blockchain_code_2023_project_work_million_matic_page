@@ -23,6 +23,7 @@ export function Square(props: any) {
         data-col={props.col}
         id={props.tokenId}
         onClick={clickButton}
+        data-minted={props.isMinted}
       >
         <a href={props.weburl} target="_blank" rel="noreferrer">
           <img
