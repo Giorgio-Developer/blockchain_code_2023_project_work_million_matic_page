@@ -1,154 +1,127 @@
 import { useContractRead } from "wagmi";
-import {MintButton} from "../button/mint-button";
+import { MintButton } from "../button/mint-button";
 import { utils } from "ethers";
 import { contractAbi } from "../constant/contract-abi";
+import { useEffect, useState } from "react";
+
+// TODO: Il tokenId e la i non corrispondono negli array imgSrcData, altTextData e webUrlData (vedi initButtons e renderTable)
 
 
 interface TableProps {
-  rows: number;
-  columns: number;
+	rows: number;
+	columns: number;
 }
 
 interface Point {
-  row: number;
-  column: number;
+	row: number;
+	column: number;
 }
 
-
-
 export function HomeTable(props: TableProps) {
-  const { rows, columns } = props;
 
+	const ROWS = 256;
+	const COLUMNS = 256;
+	const base_uri = "https://gateway.pinata.cloud/ipfs/";
 
+	const { rows, columns } = props;
+	const imgsrc: string[] = [];
+	const alttext: string[] = [];
+	const weburl: string[] = [];
 
-  const ROWS = 256;
-  const COLUMNS = 256;  
+	const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
 
-  const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
-/*
-  const { data, isError, isLoading } = useContractRead({
-    address: contractAddress,
-    abi: abi,
-    functionName: 'getGroupMetadata',
-    //args: [0,4,0,4]
-	args: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-  });
-  */
+	const { data, isError, isLoading } = useContractRead({
+		address: contractAddress,
+		abi: contractAbi,
+		functionName: "getAllMintedTokenURI",
+		args: [],
+	});
 
-  const { data, isError, isLoading } = useContractRead({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: 'getAllMintedTokenURI',
-    //args: [0,4,0,4]
-	args: []
-  });
+	const initImgSrcData: string[] = [];
+	const initAltTextData: string[] = [];
+	const initWebUrlData: string[] = [];
+	const [imgSrcData, setImgSrcData] = useState(initImgSrcData);
+	const [altTextData, setAltTextData] = useState(initAltTextData);
+	const [webUrlData, setWebUrlData] = useState(initWebUrlData);
 
+	useEffect(() => {
+		if (data) {
+			initButtons(data);
+		}
+	}, [data]);
 
-  console.log(data);
-
-
-
-
-  let metadataArray: any[][] = [];
-  let metadata: any = {};
-
-  const cleanData = (data:any) => {
-
-    data.forEach((row: any[],rowCounter:number) => {
-      metadataArray[rowCounter] = [];
-      row.forEach((col: any,colCounter:number) => {
-       metadataArray[rowCounter][colCounter] = splitData(col);
-      })
-    });
-
-  };
-
-  function splitData(items:string){
-    let splitted:string[] = items.replace(";","").split(",");
-
-    metadata.row = splitted[0].split(": ")[1];
-    metadata.col = splitted[1].split(": ")[1];
-    metadata.tokenID = splitted[2].split(": ")[1];
-    metadata.tokenURI = splitted[3].split(": ")[1];
-    metadata.altText = splitted[4].split(": ")[1];
-    metadata.webURL = splitted[5].split(": ")[1];
-
-    return metadata;   
-
-  }
-
-  console.log(data);
-
-
-  console.log(getAll(data));
-
-
-
-
-  //cleanData(data);
-  //console.log(metadataArray);
-	// https://gateway.pinata.cloud/ipfs/bafkreifg75xs4w3htd2ief3rr36r7qn52o6n4tz666ulshxjoem37qixfq
-
-  	async function getAll(data: any) {
+	async function initButtons(data: any) {
 
 		let response: Response[] = [];
 
-		const base_uri = "https://gateway.pinata.cloud/ipfs/";
-
 		for (let i = 0; i < data.length; i++) {
+			if (data[i] != null && data[i] !== "") {
+				response[i] = await fetch(base_uri + data[i], {
+					method: "GET",
+					headers: {
+						Accept: "application/json",
+					},
+				});
 
-			//const el = JSON.parse(data[i]);
-			response[i] = await fetch(base_uri + data[i], {
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-				},
-			});
+				response[i].json().then((new_data) => {
+					imgsrc[i] = new_data.imgURL;
+					setImgSrcData([...imgsrc]);
 
-			response[i].json().then((new_data) => {
-				console.log(new_data);
-			});
+					alttext[i] = new_data.altText;
+					setAltTextData([...alttext]);
+
+					weburl[i] = new_data.webURL;
+					setWebUrlData([...weburl]);
+				});
+			}
 		}
 	}
 
+	function calculateTokenId(rows: number, columns: number) {
+		return rows * ROWS + columns;
+	}
 
+	function calculateRowCol(tokenId: number) {
+		let rows = Math.floor(tokenId / ROWS);
+		let cols = tokenId % ROWS;
 
-  function calculateTokenId(rows:number, columns:number){
-    return (rows * ROWS ) + columns;
-  } 
+		let point: Point = {
+		row: rows,
+		column: cols,
+		};
 
-  function calculateRowCol(tokenId:number){
+		return point;
+	}
 
-    let rows = Math.floor(tokenId / ROWS);
-    let cols = tokenId % ROWS;
+	const renderTable = () => {
+		const tableRows = [];
 
-    let point:Point = {
-      row: rows,
-      column:cols
-    };
-    
-    return point;
-  } 
+		for (let i = 0; i < rows; i++) {
+			const tableCells = [];
+			for (let j = 0; j < columns; j++) {
+				let currentTokenID = calculateTokenId(i, j);
+				tableCells.push(
+				<td key={`${i}-${j}`}>
+					<MintButton
+						row={i}
+						col={j}
+						tokenId={currentTokenID}
+						imgsrc={imgSrcData[currentTokenID]}
+						alttext={altTextData[currentTokenID]}
+						weburl={webUrlData[currentTokenID]}
+					/>
+				</td>
+				);
+			}
 
+			tableRows.push(<tr key={i}>{tableCells}</tr>);
+		}
 
-  const renderTable = () => {
-    const tableRows = [];
-    for (let i = 0; i < rows; i++) {
-      const tableCells = [];
-      for (let j = 0; j < columns; j++) {
-        tableCells.push(
-          <td key={`${i}-${j}`}>
-            <MintButton row={i} col={j} tokenId={calculateTokenId(i,j)}/>
-          </td>
-        );
-      }
-      tableRows.push(<tr key={i}>{tableCells}</tr>);
-    }
-    return (
-      <table>
-        <tbody>{tableRows}</tbody>
-      </table>
-    );
+		return (
+			<table>
+				<tbody>{tableRows}</tbody>
+			</table>
+		);
   };
 
   return <div>{renderTable()}</div>;
