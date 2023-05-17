@@ -1,17 +1,10 @@
 import { useContractRead } from "wagmi";
-import { MintButton } from "../button/mint-button";
-import { utils } from "ethers";
 import { contractAbi } from "../constant/contract-abi";
 import { useEffect, useState } from "react";
 import { Square } from "./square";
 import { EditModal } from "../modals/editModal";
-import { createContext } from "react";
 import { InfoModal } from "../modals/infoModal";
 import { MintModal } from "../modals/mintModal";
-
-
-// TODO: Il tokenId e la i non corrispondono negli array imgSrcData, altTextData e webUrlData (vedi initButtons e renderTable)
-
 
 interface TableProps {
 	rows: number;
@@ -27,6 +20,7 @@ export function HomeTable(props: TableProps) {
 
 	const ROWS = 256;
 	const COLUMNS = 256;
+
 	const base_uri = "https://gateway.pinata.cloud/ipfs/";
 
 	const { rows, columns } = props;
@@ -56,7 +50,7 @@ export function HomeTable(props: TableProps) {
 	const [showInfoModal, setShowInfoModal] = useState(false);
 	const [showMintModal, setShowMintModal] = useState(false);
 	const [tokenId, setTokenId] = useState(0);
-	
+
 
 	useEffect(() => {
 		if (data) {
@@ -79,14 +73,17 @@ export function HomeTable(props: TableProps) {
 				});
 
 				response[i].json().then((new_data) => {
-					const id = new_data.tokenId;
-					imgsrc[id] = new_data.imgURL;
+
+					const dataFromIPFS = new_data;
+					const id = dataFromIPFS.tokenId;
+
+					imgsrc[id] = dataFromIPFS.imgURL;
 					setImgSrcData([...imgsrc]);
 
-					alttext[id] = new_data.altText;
+					alttext[id] = dataFromIPFS.altText;
 					setAltTextData([...alttext]);
 
-					weburl[id] = new_data.webURL;
+					weburl[id] = dataFromIPFS.webURL;
 					setWebUrlData([...weburl]);
 
 					cid[id] = data[i];
@@ -105,8 +102,8 @@ export function HomeTable(props: TableProps) {
 		let cols = tokenId % ROWS;
 
 		let point: Point = {
-		row: rows,
-		column: cols,
+			row: rows,
+			column: cols,
 		};
 
 		return point;
@@ -120,22 +117,22 @@ export function HomeTable(props: TableProps) {
 			for (let j = 0; j < columns; j++) {
 				let currentTokenID = calculateTokenId(i, j);
 				tableCells.push(
-          <td key={`${i}-${j}`}>
-            <Square
-              row={i}
-              col={j}
-              tokenId={currentTokenID}
-              imgsrc={imgSrcData[currentTokenID]}
-              alttext={altTextData[currentTokenID]}
-              weburl={webUrlData[currentTokenID]}
-              stateChanger={setShow}
-              tokenIdChanger={setTokenId}
-              isMinted={CIDData[currentTokenID] !== undefined ? true : false}
-              showInfoModalChanger={setShowInfoModal}
-              showMintModalChanger={setShowMintModal}
-            />
-          </td>
-        );
+					<td key={`${i}-${j}`}>
+						<Square
+							row={i}
+							col={j}
+							tokenId={currentTokenID}
+							imgsrc={imgSrcData[currentTokenID]}
+							alttext={altTextData[currentTokenID]}
+							weburl={webUrlData[currentTokenID]}
+							showEditModalChanger={setShow}
+							tokenIdChanger={setTokenId}
+							isMinted={CIDData[currentTokenID] !== undefined}
+							showInfoModalChanger={setShowInfoModal}
+							showMintModalChanger={setShowMintModal}
+						/>
+					</td>
+				);
 			}
 
 			tableRows.push(<tr key={i}>{tableCells}</tr>);

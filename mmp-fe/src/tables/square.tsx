@@ -1,8 +1,5 @@
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useContractRead } from "wagmi";
+import { useAccount, useContractRead } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 
 export function Square(props: any) {
@@ -10,6 +7,8 @@ export function Square(props: any) {
     width: "200px",
     heigth: "200px",
   };
+
+  const { address } = useAccount();
 
 	const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
 
@@ -22,17 +21,32 @@ export function Square(props: any) {
 
   const clickButton = async () => {
 
-    console.log("L'address dell'owner è " + data);
+    let userAddressInPage = address;
+
+    let NFTOwnerAddress = data;
+    const isMinted = props.isMinted;
+
+    console.log("L'address di chi è in pagina è" + userAddressInPage);
+
+    console.log("L'address dell'owner è " + NFTOwnerAddress);
 
     props.tokenIdChanger(props.tokenId);
-    if (props.isMinted) {
-      props.stateChanger(true);
-    } else {
+
+
+    if (!isMinted) {
+      console.log("Open mint modal");
       props.showMintModalChanger(true);
+    } else {
+      if (userAddressInPage === NFTOwnerAddress) {
+        console.log("Open edit modal");
+        props.showEditModalChanger(true);
+      } else {
+        console.log("Open info modal");
+        props.showInfoModalChanger(true);
+      }
     }
+
   };
-
-
 
   return (
     <div>

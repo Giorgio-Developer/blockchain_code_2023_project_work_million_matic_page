@@ -1,8 +1,6 @@
 import { MintButton } from "../button/mint-button";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export function MintModal(props: any) {
@@ -14,7 +12,7 @@ return (
     <div>
        <Modal show={props.show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Info Modal</Modal.Title>
+                <Modal.Title>Mint Modal</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>

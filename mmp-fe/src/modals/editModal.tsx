@@ -25,7 +25,6 @@ export function EditModal(props: any) {
     tokenId: number;
   }
 
-  const [show, setShow] = useState(false);
   const [imgURL, setImgURL] = useState('');
   const [altText, setAltText] = useState('');
   const [webURL, setWebURL] = useState('');
@@ -48,7 +47,7 @@ export function EditModal(props: any) {
       if (props.show === true) {
         setTokenId(props.tokenId);
         console.log(props.tokenId);
-      } 
+      }
     }, [props.show]);
   
   const { data, write } = useContractWrite(config);

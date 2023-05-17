@@ -4,8 +4,6 @@ import Form from "react-bootstrap/Form";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
-
 export function InfoModal(props: any) {
 
   const handleClose = () => {props.clickCloseButton()} ; 
