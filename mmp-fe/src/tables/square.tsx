@@ -2,6 +2,8 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useContractRead } from "wagmi";
+import { contractAbi } from "../constant/contract-abi";
 
 export function Square(props: any) {
   const imageSize = {
@@ -9,7 +11,19 @@ export function Square(props: any) {
     heigth: "200px",
   };
 
+	const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
+
+  	const { data, isError, isLoading } = useContractRead({
+      address: contractAddress,
+      abi: contractAbi,
+      functionName: "ownerOf",
+      args: [props.tokenId],
+    });
+
   const clickButton = async () => {
+
+    console.log("L'address dell'owner è " + data);
+
     props.tokenIdChanger(props.tokenId);
     if (props.isMinted) {
       props.stateChanger(true);
@@ -26,7 +40,6 @@ export function Square(props: any) {
         id={props.tokenId}
         onClick={clickButton}
         data-minted={props.isMinted}
-        data-modalToOpen={props.modalToOpen}
       >
         <a href={props.weburl} target="_blank" rel="noreferrer">
           <img
