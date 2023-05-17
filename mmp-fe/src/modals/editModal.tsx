@@ -34,7 +34,7 @@ export function EditModal(props: any) {
 
   let ipfsHash:string;
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {props.clickCloseButton()} ; // () => setShow(false);
 
    const { config } = usePrepareContractWrite({
     address: contractAddress,

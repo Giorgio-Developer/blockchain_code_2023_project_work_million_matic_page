@@ -150,10 +150,17 @@ export function HomeTable(props: TableProps) {
 		);
   };
 
+  const clickCloseButton = async () => {
+
+    console.log("Close");
+    setShow(false);
+    
+  };
+
 	return (
     <div>
       {renderTable()}
-      <EditModal tokenId={tokenId} show={show} />
+      <EditModal tokenId={tokenId} show={show} clickCloseButton={clickCloseButton}/>
       <InfoModal tokenId={tokenId} show={showInfoModal} />
       <MintModal tokenId={tokenId} show={showMintModal} />
     </div>
