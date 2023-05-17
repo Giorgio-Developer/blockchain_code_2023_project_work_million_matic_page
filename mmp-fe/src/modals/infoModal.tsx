@@ -4,7 +4,12 @@ import Form from "react-bootstrap/Form";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
+
 export function InfoModal(props: any) {
+
+  const handleClose = () => {props.clickCloseButton()} ; 
+
   return (
     <div>
       <div
@@ -13,7 +18,7 @@ export function InfoModal(props: any) {
       >
         <Modal show={props.show}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Info Modal</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
@@ -28,6 +33,12 @@ export function InfoModal(props: any) {
               </Form.Group>
             </Form>
           </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+
         </Modal>
       </div>
     </div>

@@ -154,6 +154,8 @@ export function HomeTable(props: TableProps) {
 
     console.log("Close");
     setShow(false);
+	setShowInfoModal(false);
+	setShowMintModal(false);
     
   };
 
@@ -161,8 +163,8 @@ export function HomeTable(props: TableProps) {
     <div>
       {renderTable()}
       <EditModal tokenId={tokenId} show={show} clickCloseButton={clickCloseButton}/>
-      <InfoModal tokenId={tokenId} show={showInfoModal} />
-      <MintModal tokenId={tokenId} show={showMintModal} />
+      <InfoModal tokenId={tokenId} show={showInfoModal} clickCloseButton={clickCloseButton} />
+      <MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} />
     </div>
   );
 }
