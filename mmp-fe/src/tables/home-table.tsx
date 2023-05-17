@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { Square } from "./square";
 import { EditModal } from "../modals/editModal";
 import { createContext } from "react";
-export const SigninContext = createContext({});
+import { InfoModal } from "../modals/infoModal";
+import { MintModal } from "../modals/mintModal";
 
 
 // TODO: Il tokenId e la i non corrispondono negli array imgSrcData, altTextData e webUrlData (vedi initButtons e renderTable)
@@ -52,6 +53,8 @@ export function HomeTable(props: TableProps) {
 	const [webUrlData, setWebUrlData] = useState(initWebUrlData);
 	const [CIDData, setCIDData] = useState(initCIDData);
 	const [show, setShow] = useState(false);
+	const [showInfoModal, setShowInfoModal] = useState(false);
+	const [showMintModal, setShowMintModal] = useState(false);
 	const [tokenId, setTokenId] = useState(0);
 	
 
@@ -67,6 +70,7 @@ export function HomeTable(props: TableProps) {
 
 		for (let i = 0; i < data.length; i++) {
 			if (data[i] != null && data[i] !== "") {
+				console.log(base_uri + data[i]);
 				response[i] = await fetch(base_uri + data[i], {
 					method: "GET",
 					headers: {
@@ -87,7 +91,6 @@ export function HomeTable(props: TableProps) {
 
 					cid[id] = data[i];
 					setCIDData([...cid]);
-					console.log(cid);
 				});
 			}
 		}
@@ -128,6 +131,8 @@ export function HomeTable(props: TableProps) {
               stateChanger={setShow}
               tokenIdChanger={setTokenId}
               isMinted={CIDData[currentTokenID] !== undefined ? true : false}
+              showInfoModalChanger={setShowInfoModal}
+              showMintModalChanger={setShowMintModal}
             />
           </td>
         );
@@ -148,10 +153,9 @@ export function HomeTable(props: TableProps) {
 	return (
     <div>
       {renderTable()}
-			<EditModal
-				tokenId={tokenId}
-				show={show}
-			/>
+      <EditModal tokenId={tokenId} show={show} />
+      <InfoModal tokenId={tokenId} show={showInfoModal} />
+      <MintModal tokenId={tokenId} show={showMintModal} />
     </div>
   );
 }

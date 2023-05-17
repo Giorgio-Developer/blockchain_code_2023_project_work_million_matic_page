@@ -35,13 +35,12 @@ export function EditModal(props: any) {
   let ipfsHash:string;
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
    const { config } = usePrepareContractWrite({
     address: contractAddress,
     abi: abi,
     functionName: "setTokenURI",
-    args: [769,contentIdentificator]
+    args: [tokenId,contentIdentificator]
    }); 
   
   

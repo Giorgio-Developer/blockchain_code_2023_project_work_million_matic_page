@@ -2,8 +2,6 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useContext, useState } from "react";
-import { EditModal } from "../modals/editModal";
 
 export function Square(props: any) {
   const imageSize = {
@@ -12,8 +10,12 @@ export function Square(props: any) {
   };
 
   const clickButton = async () => {
-    props.stateChanger(true);
     props.tokenIdChanger(props.tokenId);
+    if (props.isMinted) {
+      props.stateChanger(true);
+    } else {
+      props.showMintModalChanger(true);
+    }
   };
 
   return (
@@ -24,6 +26,7 @@ export function Square(props: any) {
         id={props.tokenId}
         onClick={clickButton}
         data-minted={props.isMinted}
+        data-modalToOpen={props.modalToOpen}
       >
         <a href={props.weburl} target="_blank" rel="noreferrer">
           <img
