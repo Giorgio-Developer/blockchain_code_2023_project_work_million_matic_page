@@ -14,7 +14,7 @@ export function InfoModal(props: any) {
         className="modal show"
         style={{ display: "block", position: "initial" }}
       >
-        <Modal show={props.show}>
+       <Modal show={props.show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Info Modal</Modal.Title>
           </Modal.Header>
