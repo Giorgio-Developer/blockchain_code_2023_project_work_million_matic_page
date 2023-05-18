@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useAccount, useContractRead } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
+import MillionMaticPageSymbolSold from "../images/MillionMaticPageSymbolSold.png";
 import { useEffect } from "react";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
@@ -44,7 +45,10 @@ export function Square(props: any) {
 			console.log("Open mint modal");
 			props.showMintModalChanger(true);
 		} else {
-			/*
+
+
+			props.showInfoModalChanger(true);
+/*
 			if (userAddressInPage === NFTOwnerAddress) {
 					console.log("Open edit modal");
 					props.showEditModalChanger(true);
@@ -52,9 +56,9 @@ export function Square(props: any) {
 					console.log("Open info modal");
 					props.showInfoModalChanger(true);
 			}
-			*/
+*/
 
-			
+
 		}
 
 	};
@@ -70,7 +74,7 @@ export function Square(props: any) {
 			>
 				<img
 					style={imageSize}
-					src={props.imgsrc ? props.imgsrc : MillionMaticPageSymbol}
+					src={props.imgsrc ? props.imgsrc : (props.isMinted ? MillionMaticPageSymbolSold : MillionMaticPageSymbol)}
 					alt={props.alttext ? props.alttext : "Million Matic Page"}
 				/>
 			</button>
