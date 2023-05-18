@@ -66,3 +66,8 @@ button {
   height: 100%;
   border: solid 3px #202020;
 }
+
+/* mint-button.tsx */
+.mint-button-container {
+  text-align: center;
+}

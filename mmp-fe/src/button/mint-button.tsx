@@ -1,5 +1,6 @@
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
+import { Button } from "react-bootstrap";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
@@ -28,8 +29,10 @@ export function MintButton(props: any) {
 	};
 
 	return (
-		<div>
-			<button onClick={handleMint}>Mint</button>
+		<div className="mint-button-container">
+			<Button variant="primary" onClick={handleMint}>
+				Buy
+			</Button>
 		</div>
 	);
 }

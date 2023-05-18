@@ -12,9 +12,7 @@ export function Square(props: any) {
 		heigth: "100%",
 	};
 
-
 	const { address } = useAccount();
-
 
 	const { data, isError, isLoading } = useContractRead({
 		address: contractAddress,
@@ -23,7 +21,7 @@ export function Square(props: any) {
 		args: [props.tokenId],
 	});
 
-  const clickButton = async () => {
+	const clickButton = async () => {
 
 		let userAddressInPage = address;
 
