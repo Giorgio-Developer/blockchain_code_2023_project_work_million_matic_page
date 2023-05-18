@@ -57,57 +57,38 @@ export function HomeTable(props: TableProps) {
 	const [showInfoModal, setShowInfoModal] = useState(false);
 	const [showMintModal, setShowMintModal] = useState(false);
 	const [tokenId, setTokenId] = useState(0);
+	const [tokenIdMintingStatus, setTokenIdMintingStatus] = useState({});
 
 	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
 	const allMintedNFTs: any = (data !== undefined) ? data[1] : [];
 
 	console.log("getAllMintedTokenURI: " + allMintedTokenURI);
 	console.log("getAllMintedNFTs: " + allMintedNFTs);
-/*
-	const mappedAllMintedNFTs = allMintedNFTs.map((tokenId: any) => {
-	});
-*/
 
+	// Funzione per aggiornare il valore di una chiave
+	const updateValue = (key: number, value: boolean) => {
+		setTokenIdMintingStatus(prevData => ({
+			...prevData,
+			[key]: value
+		}));
+	};
 
-	const mappedAllMintedNFTs: any[] = [];
+	const checkKeyExistence = (key:number) => {
+		return tokenIdMintingStatus.hasOwnProperty(key);
+	};
 
-	for (let index = 0; index < allMintedNFTs.length; index++) {
-		const element = allMintedNFTs[index];
-		mappedAllMintedNFTs[element] = true;
+	function setMintedPropertyForTokenId() {
+		for (let index = 0; index < allMintedNFTs.length; index++) {
+			updateValue(parseInt(allMintedNFTs[index]._hex), true);
+		}
 	}
-
-
-	console.log(mappedAllMintedNFTs);
-
-	
-
-/*
-interface typeMappedAllMintedNFTs {
-	[key: number]: boolean;
-}
-
-const mappedAllMintedNFTs = {};
-
-for (let index = 0; index < allMintedNFTs.length; index++) {
-	const element = allMintedNFTs[index];
-	//mappedAllMintedNFTs[element] = true;
-
-	const myObj = {
-			tokenId: element,
-			writing: true,
-			enjoyment: 10,
-			meta: {
-				minutesWriting: 20,
-				minutesProcrastinating: 0,
-			}
-		};
-}
-*/
 
 	useEffect(() => {
 		if (allMintedTokenURI) {
 			initButtons(allMintedTokenURI);
 		}
+		setMintedPropertyForTokenId();
+
 	}, [allMintedTokenURI]);
 
 	async function initButtons(allMintedTokenURI: any) {
@@ -168,7 +149,6 @@ for (let index = 0; index < allMintedNFTs.length; index++) {
 			const tableCells = [];
 			for (let j = 0; j < columns; j++) {
 				let currentTokenID = calculateTokenId(i, j);
-
 				tableCells.push(
 					<td key={`${i}-${j}`}>
 						<Square
@@ -180,8 +160,7 @@ for (let index = 0; index < allMintedNFTs.length; index++) {
 							weburl={webUrlData[currentTokenID]}
 							showEditModalChanger={setShow}
 							tokenIdChanger={setTokenId}
-							isMinted={(mappedAllMintedNFTs[currentTokenID] === true) ? true : false}
-							//isMinted={allMintedNFTs.includes(currentTokenID)}
+							isMinted={checkKeyExistence(currentTokenID)}
 							showInfoModalChanger={setShowInfoModal}
 							showMintModalChanger={setShowMintModal}
 						/>
