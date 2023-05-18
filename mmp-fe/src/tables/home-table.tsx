@@ -139,11 +139,13 @@ export function HomeTable(props: TableProps) {
 		}
 
 		return (
-			<table>
-				<tbody>{tableRows}</tbody>
-			
-			</table>
-
+			<div id="home-table-container">
+				<table id="home-table">
+					<tbody>
+						{tableRows}
+					</tbody>
+				</table>
+			</div>
 		);
   };
 

@@ -1,12 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useAccount, useContractRead } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
+import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
+
 
 export function Square(props: any) {
-  const imageSize = {
-    width: "200px",
-    heigth: "200px",
-  };
+
+	const imageSize = {
+		width: "100%",
+		heigth: "100%",
+	};
 
   const { address } = useAccount();
 
@@ -49,7 +52,7 @@ export function Square(props: any) {
   };
 
   return (
-    <div>
+    <div id="square">
       <button
         data-row={props.row}
         data-col={props.col}
@@ -57,17 +60,13 @@ export function Square(props: any) {
         onClick={clickButton}
         data-minted={props.isMinted}
       >
-        <a href={props.weburl} target="_blank" rel="noreferrer">
-          <img
-            style={imageSize}
-            src={
-              props.imgsrc
-                ? props.imgsrc
-                : "https://static.vecteezy.com/ti/vettori-gratis/p3/7978653-coca-cola-popular-drink-brand-logo-vinnytsia-ucraina-16-maggio-202-gratuito-vettoriale.jpg"
-            }
-            alt={props.alttext ? props.alttext : "Million Matic Page"}
-          />
-        </a>
+			{/* <a href={props.weburl} target="_blank" rel="noreferrer"> */}
+			<img
+				style={imageSize}
+				src={props.imgsrc ? props.imgsrc : MillionMaticPageSymbol}
+				alt={props.alttext ? props.alttext : "Million Matic Page"}
+			/>
+			{/* </a> */}
       </button>
     </div>
   );

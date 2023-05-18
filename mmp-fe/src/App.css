@@ -7,6 +7,11 @@ td {
   padding: 10px;
 }
 
+button {
+	background-color: transparent;
+    border: none;
+}
+
 #project-info-container {
   float: left;
 }
@@ -31,4 +36,33 @@ td {
 
 #container-master {
   display: flex;
+}
+
+.image-title-container{
+	text-align: center;
+
+}
+.image-title{
+	padding: 10px;
+	padding-top: 50px;
+	padding-bottom: 0px;
+	width: 70%;
+}
+
+
+/* home-table.tsx */
+#home-table-container {
+	text-align: center;
+	padding-left: 15%;
+	padding-right: 15%;
+}
+
+#home-table {
+	width: 100%;
+}
+
+.square_container {
+  background-color: #ffffff10;
+  height: 100%;
+  border: solid 3px #202020;
 }
