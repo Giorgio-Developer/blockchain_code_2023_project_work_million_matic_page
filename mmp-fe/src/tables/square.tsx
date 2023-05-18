@@ -16,14 +16,14 @@ export function Square(props: any) {
 	};
 
 	const { address } = useAccount();
-
+/*
 	const { data, isError, isLoading } = useContractRead({
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "ownerOf",
 		args: [props.tokenId],
 	});
-
+*/
 	// useEffect(() => {
 	// 	console.log("useContractRead", data); // Aggiungi questa linea per visualizzare il valore di config nel log ogni volta che cambia
 	//   }, [data]);
@@ -32,11 +32,11 @@ export function Square(props: any) {
 
 		let userAddressInPage = address;
 
-		let NFTOwnerAddress = data;
+		//let NFTOwnerAddress = data;
 		const isMinted = props.isMinted;
 
 		console.log("L'address di chi è in pagina è" + userAddressInPage);
-		console.log("L'address dell'owner è " + NFTOwnerAddress);
+		//console.log("L'address dell'owner è " + NFTOwnerAddress);
 
 		props.tokenIdChanger(props.tokenId);
 
@@ -44,6 +44,7 @@ export function Square(props: any) {
 			console.log("Open mint modal");
 			props.showMintModalChanger(true);
 		} else {
+			/*
 			if (userAddressInPage === NFTOwnerAddress) {
 					console.log("Open edit modal");
 					props.showEditModalChanger(true);
@@ -51,6 +52,9 @@ export function Square(props: any) {
 					console.log("Open info modal");
 					props.showInfoModalChanger(true);
 			}
+			*/
+
+			
 		}
 
 	};

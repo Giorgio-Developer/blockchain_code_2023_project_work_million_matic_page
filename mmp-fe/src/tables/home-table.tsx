@@ -1,4 +1,4 @@
-import { useContractRead } from "wagmi";
+import { useContractRead, useContractReads } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 import { useEffect, useState } from "react";
 import { Square } from "./square";
@@ -28,12 +28,21 @@ export function HomeTable(props: TableProps) {
 	const weburl: string[] = [];
 	const cid: string[] = [];
 
-
-	const { data, isError, isLoading } = useContractRead({
-		address: contractAddress,
-		abi: contractAbi,
-		functionName: "getAllMintedTokenURI",
-		args: [],
+	const { data, isError, isLoading } = useContractReads({
+		contracts: [
+			{
+				address: contractAddress,
+				abi: contractAbi,
+				functionName: "getAllMintedTokenURI",
+				args: [],
+			},
+			{
+				address: contractAddress,
+				abi: contractAbi,
+				functionName: "getAllMintedNFTs",
+				args: [],
+			},
+		],
 	});
 
 	const initImgSrcData: string[] = [];
@@ -49,21 +58,66 @@ export function HomeTable(props: TableProps) {
 	const [showMintModal, setShowMintModal] = useState(false);
 	const [tokenId, setTokenId] = useState(0);
 
+	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
+	const allMintedNFTs: any = (data !== undefined) ? data[1] : [];
+
+	console.log("getAllMintedTokenURI: " + allMintedTokenURI);
+	console.log("getAllMintedNFTs: " + allMintedNFTs);
+/*
+	const mappedAllMintedNFTs = allMintedNFTs.map((tokenId: any) => {
+	});
+*/
+
+
+	const mappedAllMintedNFTs: any[] = [];
+
+	for (let index = 0; index < allMintedNFTs.length; index++) {
+		const element = allMintedNFTs[index];
+		mappedAllMintedNFTs[element] = true;
+	}
+
+
+	console.log(mappedAllMintedNFTs);
+
+	
+
+/*
+interface typeMappedAllMintedNFTs {
+	[key: number]: boolean;
+}
+
+const mappedAllMintedNFTs = {};
+
+for (let index = 0; index < allMintedNFTs.length; index++) {
+	const element = allMintedNFTs[index];
+	//mappedAllMintedNFTs[element] = true;
+
+	const myObj = {
+			tokenId: element,
+			writing: true,
+			enjoyment: 10,
+			meta: {
+				minutesWriting: 20,
+				minutesProcrastinating: 0,
+			}
+		};
+}
+*/
 
 	useEffect(() => {
-		if (data) {
-			initButtons(data);
+		if (allMintedTokenURI) {
+			initButtons(allMintedTokenURI);
 		}
-	}, [data]);
+	}, [allMintedTokenURI]);
 
-	async function initButtons(data: any) {
+	async function initButtons(allMintedTokenURI: any) {
 
 		let response: Response[] = [];
 
-		for (let i = 0; i < data.length; i++) {
-			if (data[i] != null && data[i] !== "") {
-				console.log(base_uri + data[i]);
-				response[i] = await fetch(base_uri + data[i], {
+		for (let i = 0; i < allMintedTokenURI.length; i++) {
+			if (allMintedTokenURI[i] != null && allMintedTokenURI[i] !== "") {
+				//console.log(base_uri + allMintedTokenURI[i]);
+				response[i] = await fetch(base_uri + allMintedTokenURI[i], {
 					method: "GET",
 					headers: {
 						Accept: "application/json",
@@ -84,7 +138,7 @@ export function HomeTable(props: TableProps) {
 					weburl[id] = dataFromIPFS.webURL;
 					setWebUrlData([...weburl]);
 
-					cid[id] = data[i];
+					cid[id] = allMintedTokenURI[i];
 					setCIDData([...cid]);
 				});
 			}
@@ -114,6 +168,7 @@ export function HomeTable(props: TableProps) {
 			const tableCells = [];
 			for (let j = 0; j < columns; j++) {
 				let currentTokenID = calculateTokenId(i, j);
+
 				tableCells.push(
 					<td key={`${i}-${j}`}>
 						<Square
@@ -125,7 +180,8 @@ export function HomeTable(props: TableProps) {
 							weburl={webUrlData[currentTokenID]}
 							showEditModalChanger={setShow}
 							tokenIdChanger={setTokenId}
-							isMinted={CIDData[currentTokenID] !== undefined}
+							isMinted={(mappedAllMintedNFTs[currentTokenID] === true) ? true : false}
+							//isMinted={allMintedNFTs.includes(currentTokenID)}
 							showInfoModalChanger={setShowInfoModal}
 							showMintModalChanger={setShowMintModal}
 						/>
