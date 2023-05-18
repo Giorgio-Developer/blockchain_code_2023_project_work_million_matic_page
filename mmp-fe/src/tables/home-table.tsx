@@ -18,10 +18,9 @@ interface Point {
 
 export function HomeTable(props: TableProps) {
 
-	const ROWS = 256;
-	const COLUMNS = 256;
-
-	const base_uri = "https://gateway.pinata.cloud/ipfs/";
+	const ROWS = (process.env.REACT_APP_MAX_ROWS !== undefined) ? parseInt(process.env.REACT_APP_MAX_ROWS) : 256;
+	const base_uri = process.env.REACT_APP_IPFS_BASE_URI;
+	const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
 	const { rows, columns } = props;
 	const imgsrc: string[] = [];
@@ -29,7 +28,6 @@ export function HomeTable(props: TableProps) {
 	const weburl: string[] = [];
 	const cid: string[] = [];
 
-	const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
 
 	const { data, isError, isLoading } = useContractRead({
 		address: contractAddress,

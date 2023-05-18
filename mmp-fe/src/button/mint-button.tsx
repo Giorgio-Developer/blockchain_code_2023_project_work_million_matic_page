@@ -1,7 +1,7 @@
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 
-const contractAddress = "0x43E310D5A9604653361eB53085aa3dfF77b3dc3c";
+const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
 export function MintButton(props: any) {
 
