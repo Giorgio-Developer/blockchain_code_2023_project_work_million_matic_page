@@ -1,6 +1,7 @@
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 import { Button } from "react-bootstrap";
+import { useEffect } from "react";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
@@ -12,19 +13,20 @@ export function MintButton(props: any) {
 		address: contractAddress,
 		abi: abi,
 		functionName: "ourMint",
-		args: [props.row, props.col],
+		args: [props.tokenId],
 		overrides: {
-		value: 1,
+			value: 1,
 		},
 	});
-	
+
 	const { data, write } = useContractWrite(config);
 
 	const handleMint = async () => {
 
-		console.log(write);
+		console.log('handleMint');
+		//console.log(write);
 		if (!write) return;
-		console.log(config);
+		//console.log(config);
 		write();
 	};
 

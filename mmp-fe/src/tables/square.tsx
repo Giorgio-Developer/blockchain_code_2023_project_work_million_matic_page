@@ -2,14 +2,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useAccount, useContractRead } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
+import { useEffect } from "react";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
 export function Square(props: any) {
 
 	const imageSize = {
-		width: "40%",
+		width: "50%",
 		heigth: "100%",
+		//padding: "5px",
+		//border: "solid 1px dimgrey",
 	};
 
 	const { address } = useAccount();
@@ -20,6 +23,10 @@ export function Square(props: any) {
 		functionName: "ownerOf",
 		args: [props.tokenId],
 	});
+
+	// useEffect(() => {
+	// 	console.log("useContractRead", data); // Aggiungi questa linea per visualizzare il valore di config nel log ogni volta che cambia
+	//   }, [data]);
 
 	const clickButton = async () => {
 

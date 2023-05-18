@@ -1,13 +1,17 @@
 import { MintButton } from "../button/mint-button";
+import { ConnectWallet } from "../button/connect-wallet-button";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CSSProperties } from 'react';
 import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
+import { useAccount, useConnect } from "wagmi";
 
 
 export function MintModal(props: any) {
-    
+
+const { address } = useAccount();
+
 const handleClose = () => {props.clickCloseButton()} ; 
 
 const imageStyle = {
@@ -19,6 +23,7 @@ const imageStyle = {
 
   const descriptionStyle: CSSProperties = {
 	textAlign: 'right',
+	fontSize: '0.75em',
   };
 
 return (
@@ -26,14 +31,16 @@ return (
     <div>
        <Modal show={props.show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Mint Modal</Modal.Title>
+                <Modal.Title>NFT: #{props.tokenId}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
 				<img src={MillionMaticPageSymbol} alt="NFT #{props.tokenId}" width="100%" style={imageStyle} />
 				<div style={descriptionStyle}>
-					NFT: #{props.tokenId}
+					available for 1 MATIC
 				</div>
-                <MintButton />
+
+				{ (address !== undefined) ? <MintButton tokenId={props.tokenId} /> : <ConnectWallet /> }
+
             </Modal.Body>
 
             <Modal.Footer>
