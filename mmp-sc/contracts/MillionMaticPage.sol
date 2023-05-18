@@ -59,18 +59,19 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 	uint256[] public mintedNFTs;
 
 	// EVENTS
-	//event minted(address indexed _from, bytes32 indexed _id, uint _value);
+	event minted(address indexed _from, uint256 indexed _tokenId);
+	event tokenURISetted(address indexed _from, uint256 indexed _tokenId, string _tokenURI);
 
 	// MODIFIERS
 	modifier onlyNftOwner(uint256 tokenId) {
-	  require(msg.sender == ownerOf(tokenId));
-	  _;
-   }
+		require(msg.sender == ownerOf(tokenId));
+		_;
+	}
 
 	modifier existsNFT(uint256 tokenId) {
-	  require(_exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
-	  _;
-   }
+		require(_exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
+		_;
+	}
 
 	constructor() ERC721("MillionMaticPage", "MMP") {
 
@@ -80,48 +81,25 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 		return "";
 	}
 
-/*
-	function ourMint(uint8 row, uint8 col) public payable {
-		require(msg.value > 0, "The price is too low");
-		require(NFT_x_y[row][col] == 0, "NFT already minted");
-
-		uint256 tokenId = _tokenIdCounter.current();
-
-		_tokenIdCounter.increment();
-		_safeMint(msg.sender, tokenId);
-
-		NFT_x_y[row][col] = tokenId;
-
-	}
-*/
-
 	function ourMint(uint256 tokenId) public payable {
 		require(msg.value > 0, "The price is too low");
-		//require(NFT_x_y[row][col] == 0, "NFT already minted");
-		//uint256 tokenId = _tokenIdCounter.current();
-		//_tokenIdCounter.increment();
 
 		_safeMint(msg.sender, tokenId);
 		mintedNFTs.push(tokenId);
 
+		emit minted(msg.sender, tokenId);
+
 	}
 
-	// The following functions are overrides required by Solidity.
+	// Inibiamo la burn per scelta progettuale
 	function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
-		super._burn(tokenId);
+		//super._burn(tokenId);
+		require(false, "Burn is not allowed");
 	}
 
 	function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
 		return super.tokenURI(tokenId);
 	}
-
-	/*
-	TODO: 
-	function _burn(uint256 tokenId) internal virtual override {
-	}
-	*/
-
-
 
 	function getTokenURIsOfMintedNFTs() public view returns (string[] memory) {
 		string[] memory result;
@@ -133,58 +111,53 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 		return result;
 	}
 
-/*
-	function getAllMetadata(uint256 maxROW, uint256 maxCOL) public view returns (string memory) {
-		string memory result = "";
-
-		for (uint256 row = 0; row < maxROW; row++) {
-			for (uint256 col = 0; col < maxCOL; col++) {
-
-				uint256 tokenId = NFT_x_y[row][col];
-
-				if (tokenId != 0) {
-					result = string(abi.encodePacked(result, "row: ", row, ", col: ", col, ", tokenId: ", tokenId, ", tokenURI: ", tokenURI(tokenId), ", altText: ", _altTexts[tokenId], ", webURL: ", _webURLs[tokenId], ";"));
-				} else {
-					result = string(abi.encodePacked(result, "row: ", row, ", col: ", col, ", tokenId: ", tokenId, ", tokenURI: ", "", ", altText: ", "", ", webURL: ", "", ";"));
-				}
-
-			}
-		}
-
-		return result;
-
-	}
-
-	function getAllMetadata(uint8 maxROW, uint8 maxCOL) public view returns (string[][] memory) {
-		string[][] memory result = new string[][](maxROW);
-
-		for (uint8 row = 0; row < maxROW; row++) {
-			result[row] = new string[](maxCOL);
-			for (uint8 col = 0; col < maxCOL; col++) {
-
-				uint256 tokenId = NFT_x_y[row][col];
-
-				if (tokenId != 0) {
-					result[row][col] = string(abi.encodePacked("row: ", row, ", col: ", col, ", tokenId: ", tokenId, ", tokenURI: ", tokenURI(tokenId), ", altText: ", _altTexts[tokenId], ", webURL: ", _webURLs[tokenId], ";"));
-				} else {
-					result[row][col] = string(abi.encodePacked("row: ", row, ", col: ", col, ", tokenId: ", tokenId, ", tokenURI: ", "", ", altText: ", "", ", webURL: ", "", ";"));
-				}
-
-			}
-		}
-
-		return result;
-
-	}
-*/
-
-
 
 	function getAllMintedTokenURI() public view returns (string[] memory) {
 
 		string[] memory res = new string[](mintedNFTs.length);
 
 		for (uint i = 0; i < mintedNFTs.length; i++) {
+			res[i] = tokenURI(mintedNFTs[i]);
+		}
+
+		return res;
+	}
+
+	function getAllOwnerOfMintedNFTs() public view returns (address[] memory) {
+
+		address[] memory res = new address[](mintedNFTs.length);
+
+		for (uint i = 0; i < mintedNFTs.length; i++) {
+			res[i] = ownerOf(mintedNFTs[i]);
+		}
+
+		return res;
+	}
+
+	function getIntervalAllOwnerOfMintedNFTs(uint256 startIndex, uint256 endIndex) public view returns (address[] memory) {
+		
+		require(startIndex < endIndex, "startIndex >= endIndex");
+		require(endIndex <= mintedNFTs.length, "endIndex > mintedNFTs.length");
+		uint256 length = (endIndex - startIndex)+1;
+
+		address[] memory res = new address[](length);
+
+		for (uint i = startIndex; i < endIndex; i++) {
+			res[i] = ownerOf(mintedNFTs[i]);
+		}
+
+		return res;
+	}
+
+	function getIntervalMintedTokenURI(uint256 startIndex, uint256 endIndex) public view returns (string[] memory) {
+
+		require(startIndex < endIndex, "startIndex >= endIndex");
+		require(endIndex <= mintedNFTs.length, "endIndex > mintedNFTs.length");
+		uint256 length = (endIndex - startIndex)+1;
+
+		string[] memory res = new string[](length);
+
+		for (uint i = startIndex; i < endIndex; i++) {
 			res[i] = tokenURI(mintedNFTs[i]);
 		}
 
@@ -214,7 +187,6 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 
 		string[] memory data = new string[]((endTokenIds - startTokenIds)+1);
 
-
 		for(uint256 tokenId = startTokenIds; tokenId <= endTokenIds; tokenId++) {
 			if (_exists(tokenId))
 				data[tokenId] = tokenURI(tokenId);
@@ -227,20 +199,22 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 	}
 
 	function setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyNftOwner(tokenId) existsNFT(tokenId) returns (bool) {
+
 		_setTokenURI(tokenId, _tokenURI);
+
+		emit tokenURISetted(msg.sender, tokenId, _tokenURI);
 		return true;
 	}
 
 
-/*
 	function withdrawBalance() public onlyOwner returns (bool) {
-		uint256 balance = address(this).balance;
-		payable(msg.sender).transfer(balance);
-		return true;
-	}
-*/
 
-// TODO: Modificare i tokenId in uint16
+		uint256 balance = address(this).balance;
+		(bool sent, bytes memory data) = (msg.sender).call{value: balance}("");
+		require(sent, "Failed to send Ether");
+		return true;
+
+	}
 
 	// INTERNAL
 	function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual override {
