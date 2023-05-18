@@ -8,9 +8,10 @@ const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 export function Square(props: any) {
 
 	const imageSize = {
-		width: "100%",
+		width: "40%",
 		heigth: "100%",
 	};
+
 
 	const { address } = useAccount();
 
