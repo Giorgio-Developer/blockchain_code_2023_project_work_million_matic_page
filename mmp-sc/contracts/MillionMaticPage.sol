@@ -101,6 +101,7 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 		return super.tokenURI(tokenId);
 	}
 
+/*
 	function getTokenURIsOfMintedNFTs() public view returns (string[] memory) {
 		string[] memory result;
 
@@ -110,7 +111,12 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 
 		return result;
 	}
+*/
 
+
+	function getAllMintedNFTs() public view returns (uint256[] memory) {
+		return mintedNFTs;
+	}
 
 	function getAllMintedTokenURI() public view returns (string[] memory) {
 

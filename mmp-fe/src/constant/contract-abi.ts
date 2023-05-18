@@ -99,6 +99,50 @@ export const contractAbi = [
       "type": "event"
     },
     {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "minted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "_tokenURI",
+          "type": "string"
+        }
+      ],
+      "name": "tokenURISetted",
+      "type": "event"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -137,12 +181,38 @@ export const contractAbi = [
     },
     {
       "inputs": [],
+      "name": "getAllMintedNFTs",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "getAllMintedTokenURI",
       "outputs": [
         {
           "internalType": "string[]",
           "name": "",
           "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllOwnerOfMintedNFTs",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
         }
       ],
       "stateMutability": "view",
@@ -211,8 +281,43 @@ export const contractAbi = [
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "getTokenURIsOfMintedNFTs",
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "startIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "getIntervalAllOwnerOfMintedNFTs",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "startIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "getIntervalMintedTokenURI",
       "outputs": [
         {
           "internalType": "string[]",
@@ -508,6 +613,19 @@ export const contractAbi = [
       ],
       "name": "transferOwnership",
       "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdrawBalance",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     }
