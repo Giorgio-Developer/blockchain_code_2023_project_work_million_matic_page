@@ -52,6 +52,12 @@ export function HomeTable(props: TableProps) {
 	const [imgSrcData, setImgSrcData] = useState(initImgSrcData);
 	const [altTextData, setAltTextData] = useState(initAltTextData);
 	const [webUrlData, setWebUrlData] = useState(initWebUrlData);
+
+	// Dati per le modali
+	const [imgSrcInfo, setImgSrcInfo] = useState("");
+	const [altTextInfo, setAltTextInfo] = useState("");
+	const [webUrlInfo, setWebUrlInfo] = useState("");
+
 	const [CIDData, setCIDData] = useState(initCIDData);
 	const [show, setShow] = useState(false);
 	const [showInfoModal, setShowInfoModal] = useState(false);
@@ -158,11 +164,18 @@ export function HomeTable(props: TableProps) {
 							imgsrc={imgSrcData[currentTokenID]}
 							alttext={altTextData[currentTokenID]}
 							weburl={webUrlData[currentTokenID]}
+
+							// Funzioni per passare i dati alle modal
+							setImgSrcInfo={setImgSrcInfo}
+							setAltTextInfo={setAltTextInfo}
+							setWebUrlInfo={setWebUrlInfo}
+
 							showEditModalChanger={setShow}
 							tokenIdChanger={setTokenId}
 							isMinted={checkKeyExistence(currentTokenID)}
 							showInfoModalChanger={setShowInfoModal}
 							showMintModalChanger={setShowMintModal}
+							
 						/>
 					</td>
 				);
@@ -195,7 +208,7 @@ export function HomeTable(props: TableProps) {
     <div>
       {renderTable()}
       <EditModal tokenId={tokenId} show={show} clickCloseButton={clickCloseButton}/>
-      <InfoModal tokenId={tokenId} show={showInfoModal} clickCloseButton={clickCloseButton} />
+      <InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} />
       <MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} />
     </div>
   );

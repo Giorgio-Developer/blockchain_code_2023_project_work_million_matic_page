@@ -1,44 +1,53 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
+import MillionMaticPageSymbolSold from "../images/MillionMaticPageSymbolSold.png";
 
 export function InfoModal(props: any) {
 
-  const handleClose = () => {props.clickCloseButton()} ; 
+	const imageStyle = {
+		width: '100%',
+		padding: '20px',
+		margin: '0px',
+		border: '1px solid black',
+	};
+	
+	const descriptionStyle: CSSProperties = {
+		textAlign: 'right',
+		fontSize: '0.75em',
+	};
 
-  return (
-    <div>
-      <div
-        className="modal show"
-        style={{ display: "block", position: "initial" }}
-      >
-       <Modal show={props.show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Info Modal</Modal.Title>
-          </Modal.Header>
+	const handleClose = () => {props.clickCloseButton()};
 
-          <Modal.Body>
-            <Form>
-              <Form.Group className="mb-3" controlId="imageUrlForm">
-                <Form.Label>Image Url</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="image.png"
-                  name="imageUrlControl"
-                />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-          </Modal.Footer>
+	return (
+		<div>
+			<div
+				className="modal show"
+				style={{ display: "block", position: "initial" }}
+			>
+				<Modal show={props.show} onHide={handleClose}>
+					<Modal.Header closeButton>
+						<Modal.Title>NFT: #{props.tokenId}
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
 
-        </Modal>
-      </div>
-    </div>
-  );
+						<a href={props.weburl ? props.weburl : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">
+							<img src={props.imgsrc ? props.imgsrc : MillionMaticPageSymbolSold} alt={props.alttext} width="100%" style={imageStyle} />
+						</a>
+						<div style={descriptionStyle}>
+							{props.alttext}
+						</div>
+						<a href={props.weburl ? props.weburl : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">{props.weburl ? props.weburl : process.env.REACT_APP_MMP_BASE_URL}</a>
+
+					</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={handleClose}>Close</Button>
+					</Modal.Footer>
+				</Modal>
+			</div>
+		</div>
+	);
 }

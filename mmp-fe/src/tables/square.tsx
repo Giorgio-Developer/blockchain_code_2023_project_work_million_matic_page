@@ -40,6 +40,13 @@ export function Square(props: any) {
 		//console.log("L'address dell'owner è " + NFTOwnerAddress);
 
 		props.tokenIdChanger(props.tokenId);
+		props.setImgSrcInfo(props.imgsrc);
+		props.setAltTextInfo(props.alttext);
+		props.setWebUrlInfo(props.weburl);
+
+		//console.log("props.imgsrc: " + props.imgsrc);
+		//console.log("props.alttext: " + props.alttext);
+		//console.log("props.weburl: " + props.weburl);
 
 		if (!isMinted) {
 			console.log("Open mint modal");
@@ -71,6 +78,9 @@ export function Square(props: any) {
 				id={props.tokenId}
 				onClick={clickButton}
 				data-minted={props.isMinted}
+				data-imgsrc = {props.imgsrc}
+				data-alttext = {props.alttext}
+				data-weburl = {props.weburl}
 			>
 				<img
 					style={imageSize}
