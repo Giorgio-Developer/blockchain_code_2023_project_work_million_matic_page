@@ -5,6 +5,8 @@ import { Square } from "./square";
 import { EditModal } from "../modals/editModal";
 import { InfoModal } from "../modals/infoModal";
 import { MintModal } from "../modals/mintModal";
+import { Spinner } from "react-bootstrap";
+import { LoadingSpinner } from "./loading-spinner";
 
 interface TableProps {
 	rows: number;
@@ -64,12 +66,14 @@ export function HomeTable(props: TableProps) {
 	const [showMintModal, setShowMintModal] = useState(false);
 	const [tokenId, setTokenId] = useState(0);
 	const [tokenIdMintingStatus, setTokenIdMintingStatus] = useState({});
+	const [loadingSpinner, setLoadingSpinner] = useState(false);
 
 	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
 	const allMintedNFTs: any = (data !== undefined) ? data[1] : [];
 
-	console.log("getAllMintedTokenURI: " + allMintedTokenURI);
-	console.log("getAllMintedNFTs: " + allMintedNFTs);
+
+	//console.log("getAllMintedTokenURI: " + allMintedTokenURI);
+	//console.log("getAllMintedNFTs: " + allMintedNFTs);
 
 	// Funzione per aggiornare il valore di una chiave
 	const updateValue = (key: number, value: boolean) => {
@@ -195,21 +199,20 @@ export function HomeTable(props: TableProps) {
 		);
   };
 
-  const clickCloseButton = async () => {
-
-    console.log("Close");
-    setShow(false);
-	setShowInfoModal(false);
-	setShowMintModal(false);
-    
-  };
+	const clickCloseButton = async () => {
+		// console.log("Close");
+		setShow(false);
+		setShowInfoModal(false);
+		setShowMintModal(false);
+	};
 
 	return (
-    <div>
-      {renderTable()}
-      <EditModal tokenId={tokenId} show={show} clickCloseButton={clickCloseButton}/>
-      <InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} />
-      <MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} />
-    </div>
+	<div>
+		{renderTable()}
+		<EditModal tokenId={tokenId} show={show} clickCloseButton={clickCloseButton}/>
+		<InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} />
+		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner}/>
+		<LoadingSpinner show={loadingSpinner} />
+	</div>
   );
 }
