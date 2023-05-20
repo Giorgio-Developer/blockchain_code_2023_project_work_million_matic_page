@@ -25,9 +25,16 @@ export function Square(props: any) {
 	});
 
 	const clickButton = async () => {
+
 		const isMinted = props.isMinted;
 
-		if(isMinted){
+		if (!isMinted) {
+
+			console.log("The NFT is not minted: show mint modal");
+			props.showMintModalChanger(true);
+
+		} else {
+
 			let ownerOfRequest = await refetch();
 
 			if(ownerOfRequest){
@@ -39,25 +46,16 @@ export function Square(props: any) {
 				console.log("The user address on page is: " + props.userAddressOnPage);
 				console.log("The NFT owner address is: " + NFTOwnerAddress);
 
-
-
-				if (!isMinted) {
-					console.log("The NFT is not minted: show mint modal");
-					props.showMintModalChanger(true);
+				if (userAddressOnPage === NFTOwnerAddress) {
+					console.log("The address of the user on the page and the address of the owner of the selected NFT are the same: show edit modal");
+					props.showEditModalChanger(true);
 				} else {
-
-					if (userAddressOnPage === NFTOwnerAddress) {
-						console.log("The address of the user on the page and the address of the owner of the selected NFT are the same: show edit modal");
-						props.showEditModalChanger(true);
-					} else {
-						console.log("The address of the user on the page and the address of the owner of the selected NFT aren't the same Open info modal");
-						props.showInfoModalChanger(true);
-					}
-
+					console.log("The address of the user on the page and the address of the owner of the selected NFT aren't the same Open info modal");
+					props.showInfoModalChanger(true);
 				}
+
 			}
 		}
-
 
 		//console.log("props.imgsrc: " + props.imgsrc);
 		//console.log("props.alttext: " + props.alttext);
