@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
+let txAlreadySucceded = false;
 
 export function MintButton(props: any) {
 
@@ -45,7 +46,9 @@ export function MintButton(props: any) {
 	}, [handleTransactionStart, isLoading]);
 	
 	useEffect(() => {
-		if (isSuccess) {
+		if (isSuccess && data && !txAlreadySucceded) {
+			txAlreadySucceded = true;
+			//console.log("Transaction success", data);
 			handleTransactionSuccess();
 		}
 	}, [handleTransactionSuccess, isSuccess]);
@@ -59,6 +62,7 @@ export function MintButton(props: any) {
 	const handleMint = async () => {
 
 		if (loading) return; // Se la transazione è già in corso, non fare nulla
+		txAlreadySucceded = false;
 
 		try {
 			if (!write) return; 		// Se la funzione di scrittura non è stata inizializzata, non fare nulla
@@ -78,7 +82,7 @@ export function MintButton(props: any) {
 				Buy 
 			</Button>
 			{isLoading && <div>Loading...</div>}
-			{isSuccess && <div><br/>*** Excellent !!!  ***<br/><b>This NFT now it's Your</b><br/><a href={polygon_base_uri+JSON.stringify(data)}>See the transaction</a></div>}
+			{isSuccess && data && <div><br/>*** Excellent !!!  ***<br/><b>This NFT now it's Your</b><br/><a href={polygon_base_uri+data.hash} target="_blank" rel="noreferrer">See the transaction</a></div>}
 			{isError && <div><br/><b> Oh no !!!</b><br/>You refused to purchase the greatest NFT of all time !!!<br/><b>Everyone deserves a second chance to be rich, buy it now</b></div>}
 		</div>
 	);
