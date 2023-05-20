@@ -72,8 +72,7 @@ export function HomeTable(props: any) {
 
 	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
 	const allMintedNFTs: any = (data !== undefined) ? data[1] : [];
-
-
+	let buttonAlreadyInitiated = false;
 	//console.log("getAllMintedTokenURI: " + allMintedTokenURI);
 	//console.log("getAllMintedNFTs: " + allMintedNFTs);
 
@@ -96,7 +95,8 @@ export function HomeTable(props: any) {
 	}
 
 	useEffect(() => {
-		if (allMintedTokenURI) {
+		if (!buttonAlreadyInitiated && allMintedTokenURI) {
+			buttonAlreadyInitiated = true;
 			initButtons(allMintedTokenURI);
 		}
 		setMintedPropertyForTokenId();
@@ -104,6 +104,8 @@ export function HomeTable(props: any) {
 	}, [allMintedTokenURI]);
 
 	async function initButtons(allMintedTokenURI: any) {
+
+		console.log("initButtons");
 
 		let response: Response[] = [];
 
