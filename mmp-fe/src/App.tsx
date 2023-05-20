@@ -3,6 +3,7 @@ import './App.css';
 import {HomeTable} from "./tables/home-table";
 import MillionMaticPageTitle from "./images/MillionMaticPageTitle.png";
 import MillionMaticPageSymbol from "./images/MillionMaticPageSymbol.png";
+import { Button } from "react-bootstrap";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 const ROWS = (process.env.REACT_APP_ROWS != undefined) ? parseInt(process.env.REACT_APP_ROWS) : 4;
@@ -21,31 +22,21 @@ function App() {
 
 	return (
 		<div className="App">
-
-		<div className="image-title-container">
-			<img src={MillionMaticPageTitle} alt="Million Matic Page" className="image-title"/>
-		</div>
-		<div id="container-master">
-			<div id="table-container">
-				<HomeTable rows={ROWS} columns={COLUMNS} userAddressOnPage={userAddressOnPage}/>
+			<div className="image-title-container">
+				<img src={MillionMaticPageTitle} alt="Million Matic Page" className="image-title"/>
 			</div>
-		</div>
-		
-		{/* Metamask Button */}
-		{connectors.map((connector) => (
-			<button key={connector.id} onClick={() => connect({ connector })}>
-				{connector.name}
-			</button>
-			))}
-			
-		<div>
-			{address && <div>Address: {address}</div>}
-			{balance && <div>Balance: {balance.formatted}</div>}
-		</div>
-
-		<div>
-			Contract Address: {contractAddress}
-		</div>
+			<div id="container-master">
+				<div id="table-container">
+					<HomeTable rows={ROWS} columns={COLUMNS} userAddressOnPage={userAddressOnPage}/>
+				</div>
+			</div>
+			<br></br>
+			{/* Metamask Button */}
+			{connectors.map((connector) => (
+				<Button key={connector.id} onClick={() => connect({ connector })}>
+					{"Connect with " + connector.name}
+				</Button>
+				))}
 		</div>
 	);
 }

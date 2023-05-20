@@ -42,8 +42,8 @@ export function InfoModal(props: any) {
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
-					<a href={props.webUrlInfo ? props.webUrlInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer"><Button>Go to website</Button></a>
 						<Button variant="secondary" onClick={handleClose}>Close</Button>
+						<a href={props.webUrlInfo ? props.webUrlInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer"><Button>Go to website</Button></a>
 					</Modal.Footer>
 				</Modal>
 			</div>

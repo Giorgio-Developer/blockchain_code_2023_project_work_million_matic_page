@@ -23,6 +23,13 @@ export function EditModal(props: any) {
     tokenId: number;
   }
 
+  const imageStyle = {
+		width: '100%',
+		padding: '20px',
+		margin: '0px',
+		border: '1px solid black',
+	};
+
   const [imgURL, setImgURL] = useState('');
   const [altText, setAltText] = useState('');
   const [webURL, setWebURL] = useState('');
@@ -136,6 +143,7 @@ export function EditModal(props: any) {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="imageUrlForm">
+            <img alt={props.altTextInfo} width="100%" style={imageStyle} />
               <Form.Label>Image Url</Form.Label> 
               <Form.Control type="text" placeholder={props.imgSrcInfo ? "Old: " + props.imgSrcInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
             </Form.Group>
