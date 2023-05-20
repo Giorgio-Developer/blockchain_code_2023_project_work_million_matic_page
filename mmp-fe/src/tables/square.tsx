@@ -16,28 +16,23 @@ export function Square(props: any) {
 		//border: "solid 1px dimgrey",
 	};
 
-	const { address } = useAccount();
-/*
 	const { data, isError, isLoading } = useContractRead({
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "ownerOf",
 		args: [props.tokenId],
+		enabled:false
 	});
-*/
-	// useEffect(() => {
-	// 	console.log("useContractRead", data); // Aggiungi questa linea per visualizzare il valore di config nel log ogni volta che cambia
-	//   }, [data]);
 
 	const clickButton = async () => {
 
-		let userAddressInPage = address;
+		let userAddressOnPage = props.userAddressOnPage;
 
-		//let NFTOwnerAddress = data;
+		let NFTOwnerAddress = data;
 		const isMinted = props.isMinted;
 
-		console.log("L'address di chi è in pagina è" + userAddressInPage);
-		//console.log("L'address dell'owner è " + NFTOwnerAddress);
+		console.log("The user address on page is: " + props.userAddressOnPage);
+		console.log("The NFT owner address is: " + NFTOwnerAddress);
 
 		props.tokenIdChanger(props.tokenId);
 		props.setImgSrcInfo(props.imgsrc);
@@ -49,22 +44,17 @@ export function Square(props: any) {
 		//console.log("props.weburl: " + props.weburl);
 
 		if (!isMinted) {
-			console.log("Open mint modal");
+			console.log("The NFT is not minted: show mint modal");
 			props.showMintModalChanger(true);
 		} else {
 
-
-			props.showInfoModalChanger(true);
-/*
-			if (userAddressInPage === NFTOwnerAddress) {
-					console.log("Open edit modal");
-					props.showEditModalChanger(true);
+			if (userAddressOnPage === NFTOwnerAddress) {
+				console.log("The address of the user on the page and the address of the owner of the selected NFT are the same: show edit modal");
+				props.showEditModalChanger(true);
 			} else {
-					console.log("Open info modal");
-					props.showInfoModalChanger(true);
+				console.log("The address of the user on the page and the address of the owner of the selected NFT aren't the same Open info modal");
+				props.showInfoModalChanger(true);
 			}
-*/
-
 
 		}
 

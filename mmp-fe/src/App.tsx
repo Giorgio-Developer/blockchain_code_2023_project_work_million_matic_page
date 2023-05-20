@@ -14,7 +14,10 @@ function App() {
 
 	const { address } = useAccount();
 	const { data: balance } = useBalance({ address });
-	const { connect, connectors } = useConnect();  
+	const { connect, connectors } = useConnect();
+
+
+	const userAddressOnPage = address;
 
 	return (
 		<div className="App">
@@ -24,7 +27,7 @@ function App() {
 		</div>
 		<div id="container-master">
 			<div id="table-container">
-				<HomeTable rows={ROWS} columns={COLUMNS} />
+				<HomeTable rows={ROWS} columns={COLUMNS} userAddressOnPage={userAddressOnPage}/>
 			</div>
 		</div>
 		

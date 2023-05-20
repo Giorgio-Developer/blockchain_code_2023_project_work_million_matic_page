@@ -18,13 +18,15 @@ interface Point {
 	column: number;
 }
 
-export function HomeTable(props: TableProps) {
+export function HomeTable(props: any) {
 
 	const ROWS = (process.env.REACT_APP_MAX_ROWS !== undefined) ? parseInt(process.env.REACT_APP_MAX_ROWS) : 256;
 	const base_uri = process.env.REACT_APP_IPFS_BASE_URI;
 	const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
-	const { rows, columns } = props;
+	const rows = props.rows;
+	const columns = props.columns;
+	const userAddressOnPage = props.userAddressOnPage;
 	const imgsrc: string[] = [];
 	const alttext: string[] = [];
 	const weburl: string[] = [];
@@ -164,6 +166,7 @@ export function HomeTable(props: TableProps) {
 						<Square
 							row={i}
 							col={j}
+							userAddressOnPage={userAddressOnPage}
 							tokenId={currentTokenID}
 							imgsrc={imgSrcData[currentTokenID]}
 							alttext={altTextData[currentTokenID]}
