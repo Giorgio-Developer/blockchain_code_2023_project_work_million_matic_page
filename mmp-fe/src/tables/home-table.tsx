@@ -214,7 +214,7 @@ export function HomeTable(props: any) {
 	return (
 	<div>
 		{renderTable()}
-		<EditModal tokenId={tokenId} show={show} clickCloseButton={clickCloseButton}/>
+		<EditModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={show} clickCloseButton={clickCloseButton}/>
 		<InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} />
 		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner}/>
 		<LoadingSpinner show={loadingSpinner} />

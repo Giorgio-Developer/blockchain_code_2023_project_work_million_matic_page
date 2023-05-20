@@ -37,8 +37,8 @@ export function EditModal(props: any) {
     address: contractAddress,
     abi: abi,
     functionName: "setTokenURI",
-    args: [tokenId,contentIdentificator]
-   }); 
+    args: [tokenId, contentIdentificator]
+   });
   
   
   	useEffect(() => {
@@ -89,15 +89,14 @@ export function EditModal(props: any) {
       const res = await axios(configIPFS);
       console.log(res.data.IpfsHash); 
 
-      ipfsHash = res.data.IpfsHash;
-
-      setContentIdentificator(ipfsHash);    
+      return res.data.IpfsHash;
 
     };
 
     const writeToBlockchain = async () => {
 
-      console.log(contentIdentificator);
+      console.log('contentIdentificator: ', contentIdentificator);
+      console.log('ipfsHash: ', ipfsHash);
 
       if (!write) return;
       console.log(config)
@@ -138,15 +137,15 @@ export function EditModal(props: any) {
           <Form>
             <Form.Group className="mb-3" controlId="imageUrlForm">
               <Form.Label>Image Url</Form.Label> 
-              <Form.Control type="text" placeholder="Edit your NFT image url" name='imageUrlControl' onChange={handleChange} value={props.imgSrcInfo}/>
+              <Form.Control type="text" placeholder={props.imgSrcInfo ? "Old: " + props.imgSrcInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="altTextForm">
               <Form.Label>Alt Text</Form.Label>
-              <Form.Control type="text" placeholder="Edit your NFT alt text" name='altTextControl' onChange={handleChange} value={props.alttext}/>
+              <Form.Control type="text" placeholder={props.altTextInfo ? "Old: " + props.altTextInfo : "Insert your NFT alt text"} name='altTextControl' onChange={handleChange}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="webURLForm">
               <Form.Label>Web Url</Form.Label>
-              <Form.Control type="text" placeholder="Edit your NFT web url" name='webURLControl' onChange={handleChange} value={props.weburl}/>
+              <Form.Control type="text" placeholder={props.webUrlInfo ? "Old: " + props.webUrlInfo : "Insert your NFT web url"} name='webURLControl' onChange={handleChange}/>
             </Form.Group>
           </Form>
 
@@ -158,7 +157,8 @@ export function EditModal(props: any) {
           </Button>
           <Button variant="primary" onClick={async () => {
             console.log('Invio i dati a IPFS...'); 
-            await sendDataToIPFS(); 
+            setContentIdentificator(await sendDataToIPFS());
+            await console.log(contentIdentificator);
             console.log('Dati salvati correttamente!'); 
             console.log('Invio i dati alla blockchain...'); 
             await writeToBlockchain();
