@@ -129,25 +129,24 @@ export function EditModal(props: any) {
       style={{ display: 'block', position: 'initial' }}
     >
 
-
       <Modal show={props.show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Edit Modal</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="imageUrlForm">
               <Form.Label>Image Url</Form.Label> 
-              <Form.Control type="text" placeholder="image.png" name='imageUrlControl' onChange={handleChange}/>
+              <Form.Control type="text" placeholder="Edit your NFT image url" name='imageUrlControl' onChange={handleChange} value={props.imgSrcInfo}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="altTextForm">
               <Form.Label>Alt Text</Form.Label>
-              <Form.Control type="text" placeholder="....."  name='altTextControl' onChange={handleChange}/>
+              <Form.Control type="text" placeholder="Edit your NFT alt text" name='altTextControl' onChange={handleChange} value={props.alttext}/>
             </Form.Group>
             <Form.Group className="mb-3" controlId="webURLForm">
               <Form.Label>Web Url</Form.Label>
-              <Form.Control type="text" placeholder="www.google.com" name='webURLControl' onChange={handleChange}/>
+              <Form.Control type="text" placeholder="Edit your NFT web url" name='webURLControl' onChange={handleChange} value={props.weburl}/>
             </Form.Group>
           </Form>
 
@@ -157,11 +156,15 @@ export function EditModal(props: any) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={sendDataToIPFS}>
+          <Button variant="primary" onClick={async () => {
+            console.log('Invio i dati a IPFS...'); 
+            await sendDataToIPFS(); 
+            console.log('Dati salvati correttamente!'); 
+            console.log('Invio i dati alla blockchain...'); 
+            await writeToBlockchain();
+            console.log('Dati salvati correttamente!'); 
+          }}>
             Save Changes
-          </Button>
-          <Button variant="primary" onClick={writeToBlockchain}>
-            Send to Blockchain
           </Button>
         </Modal.Footer>
       </Modal>
