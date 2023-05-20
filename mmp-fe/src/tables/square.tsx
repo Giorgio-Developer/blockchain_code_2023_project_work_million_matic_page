@@ -16,7 +16,7 @@ export function Square(props: any) {
 		//border: "solid 1px dimgrey",
 	};
 
-	const { data, isError, isLoading } = useContractRead({
+	const {  data: ownerOfRequest , isError, refetch, isSuccess }  = useContractRead({
 		address: contractAddress,
 		abi: contractAbi,
 		functionName: "ownerOf",
@@ -26,36 +26,41 @@ export function Square(props: any) {
 
 	const clickButton = async () => {
 
-		let userAddressOnPage = props.userAddressOnPage;
+		let ownerOfRequest = await refetch();
 
-		let NFTOwnerAddress = data;
-		const isMinted = props.isMinted;
+		if(ownerOfRequest){
 
-		console.log("The user address on page is: " + props.userAddressOnPage);
-		console.log("The NFT owner address is: " + NFTOwnerAddress);
+			let userAddressOnPage = props.userAddressOnPage;
 
-		props.tokenIdChanger(props.tokenId);
-		props.setImgSrcInfo(props.imgsrc);
-		props.setAltTextInfo(props.alttext);
-		props.setWebUrlInfo(props.weburl);
+			let NFTOwnerAddress = ownerOfRequest.data;
+			const isMinted = props.isMinted;
 
-		//console.log("props.imgsrc: " + props.imgsrc);
-		//console.log("props.alttext: " + props.alttext);
-		//console.log("props.weburl: " + props.weburl);
+			console.log("The user address on page is: " + props.userAddressOnPage);
+			console.log("The NFT owner address is: " + NFTOwnerAddress);
 
-		if (!isMinted) {
-			console.log("The NFT is not minted: show mint modal");
-			props.showMintModalChanger(true);
-		} else {
+			props.tokenIdChanger(props.tokenId);
+			props.setImgSrcInfo(props.imgsrc);
+			props.setAltTextInfo(props.alttext);
+			props.setWebUrlInfo(props.weburl);
 
-			if (userAddressOnPage === NFTOwnerAddress) {
-				console.log("The address of the user on the page and the address of the owner of the selected NFT are the same: show edit modal");
-				props.showEditModalChanger(true);
+			//console.log("props.imgsrc: " + props.imgsrc);
+			//console.log("props.alttext: " + props.alttext);
+			//console.log("props.weburl: " + props.weburl);
+
+			if (!isMinted) {
+				console.log("The NFT is not minted: show mint modal");
+				props.showMintModalChanger(true);
 			} else {
-				console.log("The address of the user on the page and the address of the owner of the selected NFT aren't the same Open info modal");
-				props.showInfoModalChanger(true);
-			}
 
+				if (userAddressOnPage === NFTOwnerAddress) {
+					console.log("The address of the user on the page and the address of the owner of the selected NFT are the same: show edit modal");
+					props.showEditModalChanger(true);
+				} else {
+					console.log("The address of the user on the page and the address of the owner of the selected NFT aren't the same Open info modal");
+					props.showInfoModalChanger(true);
+				}
+
+			}
 		}
 
 	};
