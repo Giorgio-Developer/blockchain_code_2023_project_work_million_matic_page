@@ -34,16 +34,15 @@ export function InfoModal(props: any) {
 					</Modal.Header>
 					<Modal.Body>
 
-						<a href={props.weburl ? props.weburl : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">
-							<img src={props.imgsrc ? props.imgsrc : MillionMaticPageSymbolSold} alt={props.alttext} width="100%" style={imageStyle} />
+						<a href={props.webUrlInfo ? props.webUrlInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">
+							<img src={props.imgSrcInfo ? props.imgSrcInfo : MillionMaticPageSymbolSold} alt={props.altTextInfo} width="100%" style={imageStyle} />
 						</a>
 						<div style={descriptionStyle}>
-							{props.alttext}
+							{props.altTextInfo}
 						</div>
-						<a href={props.weburl ? props.weburl : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">{props.weburl ? props.weburl : process.env.REACT_APP_MMP_BASE_URL}</a>
-
 					</Modal.Body>
 					<Modal.Footer>
+					<a href={props.webUrlInfo ? props.webUrlInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer"><Button>Go to website</Button></a>
 						<Button variant="secondary" onClick={handleClose}>Close</Button>
 					</Modal.Footer>
 				</Modal>

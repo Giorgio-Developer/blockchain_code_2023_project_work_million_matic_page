@@ -38,9 +38,10 @@ return (
 				<div style={descriptionStyle}>
 					available for 1 MATIC
 				</div>
-				{ (address !== undefined) ? <MintButton tokenId={props.tokenId} handleClose={handleClose} setLoadingSpinner={props.setLoadingSpinner} /> : <ConnectWallet /> }
+				
             </Modal.Body>
             <Modal.Footer>
+            { (address !== undefined) ? <MintButton tokenId={props.tokenId} handleClose={handleClose} setLoadingSpinner={props.setLoadingSpinner} /> : <ConnectWallet /> }
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
