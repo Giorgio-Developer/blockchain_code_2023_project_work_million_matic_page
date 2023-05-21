@@ -253,7 +253,7 @@ export function HomeTable(props: any) {
 	return (
 	<div>
 		{renderTable()}
-		<EditModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={show} clickCloseButton={clickCloseButton}/>
+		<EditModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
 		<InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
 		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner}/>
 		<LoadingSpinner show={loadingSpinner} />

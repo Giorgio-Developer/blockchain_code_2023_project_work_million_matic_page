@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useEffect, useState } from 'react';
+import { CSSProperties, useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { contractAbi } from "../constant/contract-abi";
@@ -31,6 +31,12 @@ export function EditModal(props: any) {
     border: '1px solid black',
   };
 
+  const ownerAddressStyle: CSSProperties = {
+		textAlign: 'left',
+		fontSize: '1.05em',
+		marginLeft: '3%',
+	};
+
   const [imgURL, setImgURL] = useState('');
   const [altText, setAltText] = useState('');
   const [webURL, setWebURL] = useState('');
@@ -56,7 +62,7 @@ export function EditModal(props: any) {
     }
   }, [props.show]);
 
-  const { data, write } = useContractWrite(config);
+  const { data, isLoading, isSuccess, isError,  write } = useContractWrite(config);
 
   const sendDataToIPFS = async () => {
 
@@ -129,6 +135,42 @@ export function EditModal(props: any) {
 
   }
 
+  const [loading, setLoading] = useState(false);
+  
+  const polygon_base_uri = "https://mumbai.polygonscan.com/tx/";
+
+  const handleTransactionStart = () => {
+      setLoading(true); 							// Imposta lo stato di loading a true per mostrare il loader
+      props.setLoadingSpinner(true);				// Mostro lo Spinner
+  }
+  const handleTransactionSuccess = () => {
+      setLoading(false);							// Imposta lo stato di loading a false una volta completata o fallita la transazione
+      props.setLoadingSpinner(false);
+      handleClose();
+  }
+  const handleTransactionError = () => {
+      setLoading(false); 			// Imposta lo stato di loading a false una volta completata o fallita la transazione
+      props.setLoadingSpinner(false);
+  }
+
+  useEffect(() => {
+		if (isLoading) {
+			handleTransactionStart();
+		}
+	}, [handleTransactionStart, isLoading]);
+
+  useEffect(() => {
+		if (isSuccess && data ) {
+			handleTransactionSuccess();
+		}
+	}, [handleTransactionSuccess, isSuccess]);
+
+	useEffect(() => {
+		if (isError) {
+			handleTransactionError();
+		}
+	}, [handleTransactionError, isError]);
+
   return (
     <div
       className="modal show"
@@ -137,8 +179,11 @@ export function EditModal(props: any) {
 
       <Modal show={props.show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Modal</Modal.Title>
+          <Modal.Title>Edit Modal - NFT: #{props.tokenId}</Modal.Title>
         </Modal.Header>
+
+        <h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? "Owner are you! Your Address : " : ""}</h2>
+				<h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? props.nftOwnerAddress : ""}</h2>
 
         <Modal.Body>
           <Form>
@@ -163,7 +208,7 @@ export function EditModal(props: any) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={async () => {
+          <Button variant="primary" disabled={isLoading} onClick={async () => {
             console.log('Invio i dati a IPFS...'); 
             setContentIdentificator(await sendDataToIPFS());
             console.log('Dati salvati correttamente!'); 
@@ -173,6 +218,8 @@ export function EditModal(props: any) {
           }}>
             Save Changes
           </Button>
+          {isLoading && <div>Loading...</div>}
+  			  {isError && <div><br/><b> Oh no !!!</b><br/>Messaggio di ko !!!<br/></div>}
         </Modal.Footer>
       </Modal>
     </div>
