@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { contractAbi } from "../constant/contract-abi";
+import MillionMaticPageSymbolSold from "../images/MillionMaticPageSymbolSold.png";
 
 var axios = require('axios');
 
@@ -24,11 +25,11 @@ export function EditModal(props: any) {
   }
 
   const imageStyle = {
-		width: '100%',
-		padding: '20px',
-		margin: '0px',
-		border: '1px solid black',
-	};
+    width: '100%',
+    padding: '20px',
+    margin: '0px',
+    border: '1px solid black',
+  };
 
   const [imgURL, setImgURL] = useState('');
   const [altText, setAltText] = useState('');
@@ -40,80 +41,80 @@ export function EditModal(props: any) {
 
   const handleClose = () => {props.clickCloseButton()} ; // () => setShow(false);
 
-   const { config } = usePrepareContractWrite({
+  const { config } = usePrepareContractWrite({
     address: contractAddress,
     abi: abi,
     functionName: "setTokenURI",
     args: [tokenId, contentIdentificator]
-   });
-  
-  
-  	useEffect(() => {
-      if (props.show === true) {
-        setTokenId(props.tokenId);
-        console.log(props.tokenId);
-      }
-    }, [props.show]);
-  
+  });
+
+
+  useEffect(() => {
+    if (props.show === true) {
+      setTokenId(props.tokenId);
+      console.log(props.tokenId);
+    }
+  }, [props.show]);
+
   const { data, write } = useContractWrite(config);
-  
-    const sendDataToIPFS = async () => {
 
-      const dataToSend:TypeDataToSend = {
-        imgURL: imgURL,
-        altText: altText,
-        webURL: webURL,
-        tokenId: props.tokenId,
-      }
+  const sendDataToIPFS = async () => {
 
-      console.log("I dati inviati ad IPFS sono " + JSON.stringify({dataToSend}));
+    const dataToSend:TypeDataToSend = {
+      imgURL: imgURL,
+      altText: altText,
+      webURL: webURL,
+      tokenId: props.tokenId,
+    }
 
-      var dataIPFS = JSON.stringify({
-        pinataOptions: {
-          cidVersion: 1,
+    console.log("I dati inviati ad IPFS sono " + JSON.stringify({dataToSend}));
+
+    var dataIPFS = JSON.stringify({
+      pinataOptions: {
+        cidVersion: 1,
+      },
+      pinataMetadata: {
+        name: "NFTData",
+        keyvalues: {
+          customKey: "customValue",
+          customKey2: "customValue2",
         },
-        pinataMetadata: {
-          name: "NFTData",
-          keyvalues: {
-            customKey: "customValue",
-            customKey2: "customValue2",
-          },
-        },
-        pinataContent: dataToSend,
-      });
+      },
+      pinataContent: dataToSend,
+    });
 
-      var configIPFS = {
-        method: "post",
-        url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-        headers: {
-          pinata_api_key: PINATA_APIKEY,
-          pinata_secret_api_key: PINATA_SECRET,
-          "Content-Type": "application/json",
-        },
-        data: dataIPFS,
-      };
-
-      const res = await axios(configIPFS);
-      console.log(res.data.IpfsHash); 
-
-      return res.data.IpfsHash;
-
+    var configIPFS = {
+      method: "post",
+      url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+      headers: {
+        pinata_api_key: PINATA_APIKEY,
+        pinata_secret_api_key: PINATA_SECRET,
+        "Content-Type": "application/json",
+      },
+      data: dataIPFS,
     };
 
-    const writeToBlockchain = async () => {
+    const res = await axios(configIPFS);
+    console.log(res.data.IpfsHash); 
 
-      console.log('contentIdentificator: ', contentIdentificator);
-      console.log('ipfsHash: ', ipfsHash);
+    return res.data.IpfsHash;
 
-      if (!write) return;
-      console.log(config)
-      write(); 
+  };
 
-    };
+  const writeToBlockchain = async () => {
+
+    console.log('contentIdentificator: ', contentIdentificator);
+    console.log('ipfsHash: ', ipfsHash);
+
+    if (!write) return;
+    console.log(config)
+    write(); 
+
+  };
 
   function handleChange(event:any) {
     let targetId = event.currentTarget.id;
-    
+
     switch(targetId) {
       case 'imageUrlForm':
         setImgURL(event.target.value);
@@ -128,9 +129,8 @@ export function EditModal(props: any) {
 
   }
 
-    return (
-      
-      <div
+  return (
+    <div
       className="modal show"
       style={{ display: 'block', position: 'initial' }}
     >
@@ -143,7 +143,7 @@ export function EditModal(props: any) {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3" controlId="imageUrlForm">
-            <img alt={props.altTextInfo} width="100%" style={imageStyle} />
+              <img src={props.imgSrcInfo ? props.imgSrcInfo : MillionMaticPageSymbolSold} alt={props.altTextInfo} width="100%" style={imageStyle} />
               <Form.Label>Image Url</Form.Label> 
               <Form.Control type="text" placeholder={props.imgSrcInfo ? "Old: " + props.imgSrcInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
             </Form.Group>
@@ -166,7 +166,6 @@ export function EditModal(props: any) {
           <Button variant="primary" onClick={async () => {
             console.log('Invio i dati a IPFS...'); 
             setContentIdentificator(await sendDataToIPFS());
-            await console.log(contentIdentificator);
             console.log('Dati salvati correttamente!'); 
             console.log('Invio i dati alla blockchain...'); 
             await writeToBlockchain();
@@ -177,5 +176,5 @@ export function EditModal(props: any) {
         </Modal.Footer>
       </Modal>
     </div>
-    );
-  }
+  );
+}
