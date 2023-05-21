@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const PRIVATE_KEY = "3de513387cbaddff039b1dea01ec284b12f1f57c3535682d175e7897b3ec8dcf";
+const PRIVATE_KEY = "adcd9f8e8c64b41a75f7248ceca3cfd0aceee8fb46afba2ab1fb3fae68400220";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.18",

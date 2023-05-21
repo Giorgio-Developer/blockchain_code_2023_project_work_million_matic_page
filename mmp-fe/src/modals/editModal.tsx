@@ -18,9 +18,10 @@ const abi = contractAbi;
 export function EditModal(props: any) {
 
 interface TypeDataToSend {
-	imgURL: string;
-	altText: string;
-	webURL: string;
+	name:string;
+	image: string;
+	description: string;
+	external_url: string;
 	tokenId: number;
 }
 
@@ -31,9 +32,10 @@ const imageStyle = {
 	border: '1px solid black',
 };
 
-const [imgURL, setImgURL] = useState('');
-const [altText, setAltText] = useState('');
-const [webURL, setWebURL] = useState('');
+const [name, setName] = useState('');
+const [nftImage, setNftImage] = useState('');
+const [description, setDescription] = useState('');
+const [externalURL, setExternalURL] = useState('');
 const [tokenId, setTokenId] = useState("");
 const [contentIdentificator, setContentIdentificator] = useState('');
 const handleClose = () => {props.clickCloseButton()} ; // () => setShow(false);
@@ -95,10 +97,11 @@ const handleTransactionStart = () => {
 	const sendDataToIPFS = async () => {
 
 		const dataToSend:TypeDataToSend = {
-		imgURL: imgURL,
-		altText: altText,
-		webURL: webURL,
-		tokenId: props.tokenId,
+			name: name,
+			image: nftImage,
+			description: description,
+			external_url: externalURL,
+			tokenId: props.tokenId,
 		}
 
 		var dataIPFS = JSON.stringify({
@@ -143,17 +146,20 @@ const handleTransactionStart = () => {
   function handleChange(event:any) {
 	let targetId = event.currentTarget.id;
 
-	switch(targetId) {
-		case 'imageUrlForm':
-			setImgURL(event.target.value);
-		break;
-		case 'altTextForm':
-			setAltText(event.target.value);
-		break;
-		case 'webURLForm':
-			setWebURL(event.target.value);
-		break;
-		}
+	  switch(targetId) {
+		  case 'nameForm':
+			  setName(event.target.value);
+			  break;
+		  case 'nftImageForm':
+			  setNftImage(event.target.value);
+			  break;
+		  case 'descriptionForm':
+			  setDescription(event.target.value);
+			  break;
+		  case 'externalURLForm':
+			  setExternalURL(event.target.value);
+			  break;
+	  }
 
   }
 
@@ -170,18 +176,22 @@ const handleTransactionStart = () => {
 
 			<Modal.Body>
 			<Form>
-				<Form.Group className="mb-3" controlId="imageUrlForm">
-				<img src={props.imgSrcInfo ? props.imgSrcInfo : MillionMaticPageSymbolSold} alt={props.altTextInfo} width="100%" style={imageStyle} />
-				<Form.Label>Image Url</Form.Label> 
-				<Form.Control type="text" placeholder={props.imgSrcInfo ? "Old: " + props.imgSrcInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
+				<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />
+				<Form.Group className="mb-3" controlId="nameForm">
+					<Form.Label>Name</Form.Label>
+					<Form.Control type="text" placeholder={props.nameInfo ? "Old: " + props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange}/>
 				</Form.Group>
-				<Form.Group className="mb-3" controlId="altTextForm">
-				<Form.Label>Alt Text</Form.Label>
-				<Form.Control type="text" placeholder={props.altTextInfo ? "Old: " + props.altTextInfo : "Insert your NFT alt text"} name='altTextControl' onChange={handleChange}/>
+				<Form.Group className="mb-3" controlId="nftImageForm">
+					<Form.Label>Image Url</Form.Label>
+					<Form.Control type="text" placeholder={props.nftImageInfo ? "Old: " + props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
 				</Form.Group>
-				<Form.Group className="mb-3" controlId="webURLForm">
-				<Form.Label>Web Url</Form.Label>
-				<Form.Control type="text" placeholder={props.webUrlInfo ? "Old: " + props.webUrlInfo : "Insert your NFT web url"} name='webURLControl' onChange={handleChange}/>
+				<Form.Group className="mb-3" controlId="descriptionForm">
+					<Form.Label>Description</Form.Label>
+					<Form.Control type="text" placeholder={props.descriptionInfo ? "Old: " + props.descriptionInfo : "Insert your NFT description"} name='descriptionControl' onChange={handleChange}/>
+				</Form.Group>
+				<Form.Group className="mb-3" controlId="externalURLForm">
+					<Form.Label>Web Url</Form.Label>
+					<Form.Control type="text" placeholder={props.externalURLInfo ? "Old: " + props.externalURLInfo : "Insert your NFT web url"} name='externalURLControl' onChange={handleChange}/>
 				</Form.Group>
 			</Form>
 
