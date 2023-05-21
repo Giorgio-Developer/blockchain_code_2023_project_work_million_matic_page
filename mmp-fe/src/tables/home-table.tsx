@@ -1,11 +1,10 @@
-import { useContractRead, useContractReads } from "wagmi";
+import { useContractReads } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 import { useEffect, useState } from "react";
 import { Square } from "./square";
 import { EditModal } from "../modals/editModal";
 import { InfoModal } from "../modals/infoModal";
 import { MintModal } from "../modals/mintModal";
-import { Spinner } from "react-bootstrap";
 import { LoadingSpinner } from "./loading-spinner";
 import axios from 'axios';
 
@@ -29,9 +28,10 @@ export function HomeTable(props: any) {
 	const rows = props.rows;
 	const columns = props.columns;
 	const userAddressOnPage = props.userAddressOnPage;
-	const imgsrc: string[] = [];
-	const alttext: string[] = [];
-	const weburl: string[] = [];
+	const name: string[] = [];
+	const nftImage: string[] = [];
+	const description: string[] = [];
+	const externalURL: string[] = [];
 	const cid: string[] = [];
 
 	const { data, isError, isLoading } = useContractReads({
@@ -51,18 +51,21 @@ export function HomeTable(props: any) {
 		],
 	});
 
-	const initImgSrcData: string[] = [];
-	const initAltTextData: string[] = [];
-	const initWebUrlData: string[] = [];
+	const initNameData: string[] = [];
+	const initNftImageData: string[] = [];
+	const initDescriptionData: string[] = [];
+	const initExternalURLData: string[] = [];
 	const initCIDData: string[] = [];
-	const [imgSrcData, setImgSrcData] = useState(initImgSrcData);
-	const [altTextData, setAltTextData] = useState(initAltTextData);
-	const [webUrlData, setWebUrlData] = useState(initWebUrlData);
+	const [nameData, setNameData] = useState(initNameData);
+	const [nftImageData, setNftImageData] = useState(initNftImageData);
+	const [descriptionData, setDescriptionData] = useState(initDescriptionData);
+	const [externalURLData, setExternalURLData] = useState(initExternalURLData);
 
 	// Dati per le modali
-	const [imgSrcInfo, setImgSrcInfo] = useState("");
-	const [altTextInfo, setAltTextInfo] = useState("");
-	const [webUrlInfo, setWebUrlInfo] = useState("");
+	const [nameInfo, setNameInfo] = useState("");
+	const [nftImageInfo, setNftImageInfo] = useState("");
+	const [descriptionInfo, setDescriptionInfo] = useState("");
+	const [externalURLInfo, setExternalURLInfo] = useState("");
 
 	const [CIDData, setCIDData] = useState(initCIDData);
 	const [show, setShow] = useState(false);
@@ -112,7 +115,7 @@ export function HomeTable(props: any) {
 	async function getIPFSData(tokenUri: string) {
 
 		let jsonData: any;
-		const ipfs_url = base_uri + tokenUri;
+		const ipfs_url = tokenUri;
 		//console.log("ipfs_url: " + ipfs_url);
 	  
 		const config = {
@@ -144,14 +147,17 @@ export function HomeTable(props: any) {
 		const id = jsonData.tokenId;
 		//console.log("jsonData.tokenId: " + jsonData.tokenId);
 
-		imgsrc[id] = jsonData.imgURL;
-		setImgSrcData([...imgsrc]);
+		name[id] = jsonData.name;
+		setNameData([...name]);
 
-		alttext[id] = jsonData.altText;
-		setAltTextData([...alttext]);
+		nftImage[id] = jsonData.image;
+		setNftImageData([...nftImage]);
 
-		weburl[id] = jsonData.webURL;
-		setWebUrlData([...weburl]);
+		description[id] = jsonData.description;
+		setDescriptionData([...description]);
+
+		externalURL[id] = jsonData.external_url;
+		setExternalURLData([...externalURL]);
 
 		cid[id] = tokenUri;
 		setCIDData([...cid]);
@@ -166,9 +172,19 @@ export function HomeTable(props: any) {
 		let requests: any[] = [];
 
 		for (let i = 0; i < allMintedTokenURI.length; i++) {
-			if (allMintedTokenURI[i] != null && allMintedTokenURI[i] !== "") {
-				//console.log(i+". "+base_uri + allMintedTokenURI[i]);
-				requests.push(getIPFSData(allMintedTokenURI[i]));
+
+			const nftTokenURI =allMintedTokenURI[i];
+
+			if (nftTokenURI != null && nftTokenURI !== "" ) {
+
+				/*TODO migliorare il controllo
+				  AL momento verifico che il cast del token URI sia o no un numero
+				  Se lo è andrà in not a number e non fara la richiesta ad ipfs
+				  */
+				if(nftTokenURI.length == 112){
+					//console.log(i+". "+base_uri + allMintedTokenURI[i]);
+					requests.push(getIPFSData(nftTokenURI));
+				}
 			}
 		}
 
@@ -207,14 +223,16 @@ export function HomeTable(props: any) {
 							col={j}
 							userAddressOnPage={userAddressOnPage}
 							tokenId={currentTokenID}
-							imgsrc={imgSrcData[currentTokenID]}
-							alttext={altTextData[currentTokenID]}
-							weburl={webUrlData[currentTokenID]}
+							name={nameData[currentTokenID]}
+							nftImage={nftImageData[currentTokenID]}
+							description={descriptionData[currentTokenID]}
+							externalURL={externalURLData[currentTokenID]}
 
 							// Funzioni per passare i dati alle modal
-							setImgSrcInfo={setImgSrcInfo}
-							setAltTextInfo={setAltTextInfo}
-							setWebUrlInfo={setWebUrlInfo}
+							setNameInfo={setNameInfo}
+							setNftImageInfo={setNftImageInfo}
+							setDescriptionInfo={setDescriptionInfo}
+							setExternalURLInfo={setExternalURLInfo}
 
 							tokenIdChanger={setTokenId}
 							isMinted={checkKeyExistence(currentTokenID)}
@@ -223,7 +241,6 @@ export function HomeTable(props: any) {
 							showMintModalChanger={setShowMintModal}
 							showEditModalChanger={setShow}
 
-							
 						/>
 					</td>
 				);
@@ -253,8 +270,7 @@ export function HomeTable(props: any) {
 	return (
 	<div>
 		{renderTable()}
-		<EditModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
-		<InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
+		<InfoModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
 		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner}/>
 		<LoadingSpinner show={loadingSpinner} />
 	</div>
