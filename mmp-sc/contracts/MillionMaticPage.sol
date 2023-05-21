@@ -1,45 +1,11 @@
 // SPDX-License-Identifier: GPL 3
 /**
 * @title MillionMaticPage
-* @author Giorgio Sanfilippo, Riccardo , Davide Mele, Maurizio Custodi
+* @author Giorgio Sanfilippo, Riccardo Molinari , Davide Mele, Maurizio Custodi
 * @notice 
 * @dev ContractDescription
 * @custom:dev-run-script file_path
 */
-
-/** TODO LIST
- * VARs & CONSTANTs
- * - const price = 1 * decimals(18)										// 1 MATIC - Per debug lasciara a 1 wei
- * - 
- * FUNCTIONS
- * - withdrawBalance() onlyOwner -> bool								// Preleviamo i fondi dal contratto
- * - getNFTByRowCol(row, col) -> tokenId
- * - getNFTByOwner(owner) -> array of tokenId
- * - checkOwnerOfNFT(tokenId) -> bool 									// Verifica che il msg.sender sia il proprietario del NFT (utile per il modal)
- * BULK getters
- * - getMintedNFTs() -> array of tokenId
- * - getTokenURIsOfMintedNFTs() -> array of tokenURI 					// "www.aaa.com;www.bb.com;"
- * - getAltTextsOfMintedNFTs() -> string						// "AltText1;AltText2;;"
- * - getWebURLssOfMintedNFTs() -> array of WebURLs
- * 
- * - getAllMetadata(maxROW, maxCol)	-> string							// O così: getTokenURIsOfMintedNFTs() + getAltTextsOfMintedNFTs() + getWebURLssOfMintedNFTs()
- * 																		// "row: 0, col: 0, tokenId: 1, tokenURI: www.aaa.com, altText: AltText1, webURL: www.aaa.com;
- * 																		//  row: 0, col: 1, tokenId: 2, tokenURI: www.bb.com, altText: AltText2, webURL: www.bb.com;
- * 																		// ...abi
- * 																		// row: 1, col: 0, tokenId: 99, tokenURI: www.bb.com, altText: AltText2, webURL: www.bb.com;
- * - getNFTMetadata(tokenId) -> string									
- * BULK setter
- * - setNFTMetadata(tokenId, tokenURI, altText, webURL) -> bool
- * 
- * VALUTARE SE POSSONO ESSERE UTILI
- * - getMintedNFTsByOwner(owner) -> array of tokenId 					// Per ora non serve
- * - getLocationByTokenId(tokenId) -> row, col
- * - getOwnerByTokenId(tokenId) -> owner
- * - getOwnerByRowCol(row, col) -> owner
- * 
- * TESTs
- * - Verificare cosa accade con le varie transfer (safeTransferFrom, transferFrom, etc)
- */
 
 pragma solidity ^0.8.9;
 
@@ -48,8 +14,9 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 
-contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
+contract MillionMaticPage is ERC721, ERC721URIStorage, IERC2981, Ownable {
 
 	// STATE VARs
 
@@ -57,6 +24,12 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 	uint256 constant price = 1;
 
 	uint256[] public mintedNFTs;
+
+	address public royaltyCollector;
+
+	constructor() ERC721("MillionMaticPage", "MMP") {
+		royaltyCollector = msg.sender;
+	}
 
 	// EVENTS
 	event minted(address indexed _from, uint256 indexed _tokenId);
@@ -71,10 +44,6 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 	modifier existsNFT(uint256 tokenId) {
 		require(_exists(tokenId), "ERC721URIStorage: URI set of nonexistent token");
 		_;
-	}
-
-	constructor() ERC721("MillionMaticPage", "MMP") {
-
 	}
 
 	function _baseURI() internal pure override returns (string memory) {
@@ -225,6 +194,10 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, Ownable {
 	// INTERNAL
 	function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual override {
 		super._setTokenURI(tokenId, _tokenURI);
+	}
+
+	function royaltyInfo(uint256, uint256 salePrice) public view returns(address, uint256) {
+		return (royaltyCollector,salePrice*5/100);
 	}
 
 }
