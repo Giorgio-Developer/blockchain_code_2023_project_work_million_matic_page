@@ -7,6 +7,8 @@ import { InfoModal } from "../modals/infoModal";
 import { MintModal } from "../modals/mintModal";
 import { Spinner } from "react-bootstrap";
 import { LoadingSpinner } from "./loading-spinner";
+import axios from 'axios';
+
 
 interface TableProps {
 	rows: number;
@@ -76,6 +78,8 @@ export function HomeTable(props: any) {
 	//console.log("getAllMintedTokenURI: " + allMintedTokenURI);
 	//console.log("getAllMintedNFTs: " + allMintedNFTs);
 
+	const ipfsJsonData: string[] = [];
+
 	// Funzione per aggiornare il valore di una chiave
 	const updateValue = (key: number, value: boolean) => {
 		setTokenIdMintingStatus(prevData => ({
@@ -103,41 +107,73 @@ export function HomeTable(props: any) {
 
 	}, [allMintedTokenURI]);
 
+
+	async function getIPFSData(tokenUri: string) {
+
+		let jsonData: any;
+		const ipfs_url = base_uri + tokenUri;
+		//console.log("ipfs_url: " + ipfs_url);
+	  
+		const config = {
+		  headers: {
+			'Content-Type': 'application/json',
+		  },
+		};
+	  
+		try {
+			const response = await axios.get(ipfs_url, config);
+			//console.log(response.data);
+
+			const serializedData = response.data["/"];
+
+			if (serializedData && serializedData.bytes) {
+				const decodedBytes = atob(serializedData.bytes);
+				jsonData = JSON.parse(decodedBytes);
+				//console.log(jsonData);
+				// Puoi utilizzare jsonData come oggetto JSON deserializzato
+			} else {
+				//console.log(response.data);
+				jsonData = response.data;
+			}
+		} catch (error) {
+			console.error(error);
+		}
+
+		//console.log(jsonData);
+		const id = jsonData.tokenId;
+		//console.log("jsonData.tokenId: " + jsonData.tokenId);
+
+		imgsrc[id] = jsonData.imgURL;
+		setImgSrcData([...imgsrc]);
+
+		alttext[id] = jsonData.altText;
+		setAltTextData([...alttext]);
+
+		weburl[id] = jsonData.webURL;
+		setWebUrlData([...weburl]);
+
+		cid[id] = tokenUri;
+		setCIDData([...cid]);
+
+	}
+
+
 	async function initButtons(allMintedTokenURI: any) {
 
-		console.log("initButtons");
+		//console.log("initButtons");
 
-		let response: Response[] = [];
+		let requests: any[] = [];
 
 		for (let i = 0; i < allMintedTokenURI.length; i++) {
 			if (allMintedTokenURI[i] != null && allMintedTokenURI[i] !== "") {
-				//console.log(base_uri + allMintedTokenURI[i]);
-				response[i] = await fetch(base_uri + allMintedTokenURI[i], {
-					method: "GET",
-					headers: {
-						Accept: "application/json",
-					},
-				});
-
-				response[i].json().then((new_data) => {
-
-					const dataFromIPFS = new_data;
-					const id = dataFromIPFS.tokenId;
-
-					imgsrc[id] = dataFromIPFS.imgURL;
-					setImgSrcData([...imgsrc]);
-
-					alttext[id] = dataFromIPFS.altText;
-					setAltTextData([...alttext]);
-
-					weburl[id] = dataFromIPFS.webURL;
-					setWebUrlData([...weburl]);
-
-					cid[id] = allMintedTokenURI[i];
-					setCIDData([...cid]);
-				});
+				//console.log(i+". "+base_uri + allMintedTokenURI[i]);
+				requests.push(getIPFSData(allMintedTokenURI[i]));
 			}
 		}
+
+		// Gestione delle richieste in parallelo
+		Promise.all(requests).then(function (results) {});
+
 	}
 
 	function calculateTokenId(rows: number, columns: number) {
