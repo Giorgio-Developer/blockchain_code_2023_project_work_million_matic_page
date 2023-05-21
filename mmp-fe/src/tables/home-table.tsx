@@ -71,6 +71,7 @@ export function HomeTable(props: any) {
 	const [tokenId, setTokenId] = useState(0);
 	const [tokenIdMintingStatus, setTokenIdMintingStatus] = useState({});
 	const [loadingSpinner, setLoadingSpinner] = useState(false);
+	const [nftOwnerAddress, setNftOwnerAddress] = useState('');
 
 	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
 	const allMintedNFTs: any = (data !== undefined) ? data[1] : [];
@@ -215,11 +216,13 @@ export function HomeTable(props: any) {
 							setAltTextInfo={setAltTextInfo}
 							setWebUrlInfo={setWebUrlInfo}
 
-							showEditModalChanger={setShow}
 							tokenIdChanger={setTokenId}
 							isMinted={checkKeyExistence(currentTokenID)}
+							nftOwnerAddressChanger={setNftOwnerAddress}
 							showInfoModalChanger={setShowInfoModal}
 							showMintModalChanger={setShowMintModal}
+							showEditModalChanger={setShow}
+
 							
 						/>
 					</td>
@@ -251,7 +254,7 @@ export function HomeTable(props: any) {
 	<div>
 		{renderTable()}
 		<EditModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={show} clickCloseButton={clickCloseButton}/>
-		<InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} />
+		<InfoModal tokenId={tokenId} imgSrcInfo={imgSrcInfo} altTextInfo={altTextInfo} webUrlInfo={webUrlInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
 		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner}/>
 		<LoadingSpinner show={loadingSpinner} />
 	</div>

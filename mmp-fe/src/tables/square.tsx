@@ -52,6 +52,7 @@ export function Square(props: any) {
 				} else {
 					console.log("The address of the user on the page and the address of the owner of the selected NFT aren't the same Open info modal");
 					props.showInfoModalChanger(true);
+					props.nftOwnerAddressChanger(NFTOwnerAddress);
 				}
 
 			}

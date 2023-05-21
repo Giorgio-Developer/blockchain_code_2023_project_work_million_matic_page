@@ -19,6 +19,12 @@ export function InfoModal(props: any) {
 		fontSize: '0.75em',
 	};
 
+	const ownerAddressStyle: CSSProperties = {
+		textAlign: 'left',
+		fontSize: '1.05em',
+		marginLeft: '3%',
+	};
+
 	const handleClose = () => {props.clickCloseButton()};
 
 	return (
@@ -32,6 +38,10 @@ export function InfoModal(props: any) {
 						<Modal.Title>NFT: #{props.tokenId}
 						</Modal.Title>
 					</Modal.Header>
+			{/*		<label style={ownerAddressStyle}>{props.nftOwnerAddress ? "Owner Address: " : ""}</label>
+					<label style={ownerAddressStyle}>{props.nftOwnerAddress ? props.nftOwnerAddress : ""}</label>*/}
+					<h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? "Owner Address: " : ""}</h2>
+					<h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? props.nftOwnerAddress : ""}</h2>
 					<Modal.Body>
 
 						<a href={props.webUrlInfo ? props.webUrlInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">
