@@ -1,4 +1,4 @@
-import { usePrepareContractWrite, useContractWrite } from "wagmi";
+import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
@@ -23,13 +23,21 @@ export function MintButton(props: any) {
 		},
 	});
 
-	const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
+	const contractWrite = useContractWrite(config);
+
+	const {data, isError, isLoading, isSuccess } = useWaitForTransaction({
+		hash: contractWrite.data?.hash,
+	})
 
 	const handleTransactionStart = () => {
 			setLoading(true); 							// Imposta lo stato di loading a true per mostrare il loader
 			props.setLoadingSpinner(true);				// Mostro lo Spinner
 	}
 	const handleTransactionSuccess = () => {
+
+
+
+
 			setBuyButtonStyle({ display: 'none' });
 			setLoading(false);							// Imposta lo stato di loading a false una volta completata o fallita la transazione
 			props.setLoadingSpinner(false);
@@ -46,7 +54,7 @@ export function MintButton(props: any) {
 	}, [handleTransactionStart, isLoading]);
 	
 	useEffect(() => {
-		if (isSuccess && data && !txAlreadySucceded) {
+		if (isSuccess && contractWrite.data && !txAlreadySucceded) {
 			txAlreadySucceded = true;
 			//console.log("Transaction success", data);
 			handleTransactionSuccess();
@@ -65,8 +73,8 @@ export function MintButton(props: any) {
 		txAlreadySucceded = false;
 
 		try {
-			if (!write) return; 		// Se la funzione di scrittura non è stata inizializzata, non fare nulla
-			await write(); 				// Esegui la transazione
+			if (!contractWrite.write) return; 		// Se la funzione di scrittura non è stata inizializzata, non fare nulla
+			await contractWrite.write(); 				// Esegui la transazione
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -82,7 +90,7 @@ export function MintButton(props: any) {
 				Buy 
 			</Button>
 			{isLoading && <div>Loading...</div>}
-			{isSuccess && data && <div><br/>*** Excellent !!!  ***<br/><b>This NFT now it's Your</b><br/><a href={polygon_base_uri+data.hash} target="_blank" rel="noreferrer">See the transaction</a></div>}
+			{isSuccess && data && <div><br/>*** Excellent !!!  ***<br/><b>This NFT now it's Your</b><br/><a href={polygon_base_uri+contractWrite.data?.hash} target="_blank" rel="noreferrer">See the transaction</a></div>}
 			{isError && <div><br/><b> Oh no !!!</b><br/>You refused to purchase the greatest NFT of all time !!!<br/><b>Everyone deserves a second chance to be rich, buy it now</b></div>}
 		</div>
 	);
