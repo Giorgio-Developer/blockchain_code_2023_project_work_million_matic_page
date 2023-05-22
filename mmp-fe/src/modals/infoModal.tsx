@@ -26,6 +26,9 @@ export function InfoModal(props: any) {
 
 	const handleClose = () => {props.clickCloseButton()};
 
+	const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
+	let nftOpenSeaLink = process.env.REACT_APP_OPENSEA_BASE_URL + contractAddress + "/" + props.tokenId;
+
 	return (
 		<div>
 			<div
@@ -50,6 +53,7 @@ export function InfoModal(props: any) {
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={handleClose}>Close</Button>
+						<a href={nftOpenSeaLink} target="_blank" rel="noreferrer"><Button>Look on OpenSea</Button></a>
 						<a href={props.externalURLInfo ? props.externalURLInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer"><Button>Go to website</Button></a>
 					</Modal.Footer>
 				</Modal>

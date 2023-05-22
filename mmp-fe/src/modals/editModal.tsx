@@ -46,6 +46,9 @@ const [tokenId, setTokenId] = useState("");
 const [contentIdentificator, setContentIdentificator] = useState('');
 const handleClose = () => {props.clickCloseButton()} ; // () => setShow(false);
 
+const nftOpenSeaLink = process.env.REACT_APP_OPENSEA_BASE_URL + contractAddress + "/" + props.tokenId;
+
+
 
 let txExecuting = false;
 
@@ -234,8 +237,9 @@ const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 			}}>
 				Save Changes
 			</Button>
-      {isLoading && <div>Loading...</div>}
-  		{isError && <div><br/><b> Oh no !!!</b><br/>Messaggio di ko !!!<br/></div>}
+				{isLoading && <div>Loading...</div>}
+				{isError && <div><br/><b> Oh no !!!</b><br/>Messaggio di ko !!!<br/></div>}
+				<a href={nftOpenSeaLink} target="_blank" rel="noreferrer"><Button>Look on OpenSea</Button></a>
 			</Modal.Footer>
 		</Modal>
 		</div>
