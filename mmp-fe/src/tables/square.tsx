@@ -58,14 +58,15 @@ export function Square(props: any) {
 			}
 		}
 
-		//console.log("props.imgsrc: " + props.imgsrc);
-		//console.log("props.alttext: " + props.alttext);
-		//console.log("props.weburl: " + props.weburl);
+		//console.log("props.image: " + props.image);
+		//console.log("props.description: " + props.description);
+		//console.log("props.externalURL: " + props.externalURL);
 		
 		props.tokenIdChanger(props.tokenId);
-		props.setImgSrcInfo(props.imgsrc);
-		props.setAltTextInfo(props.alttext);
-		props.setWebUrlInfo(props.weburl);
+		props.setNameInfo(props.name);
+		props.setNftImageInfo(props.nftImage);
+		props.setDescriptionInfo(props.description);
+		props.setExternalURLInfo(props.externalURL);
 
 	};
 
@@ -77,14 +78,14 @@ export function Square(props: any) {
 				id={props.tokenId}
 				onClick={clickButton}
 				data-minted={props.isMinted}
-				data-imgsrc = {props.imgsrc}
-				data-alttext = {props.alttext}
-				data-weburl = {props.weburl}
+				data-nftimage = {props.nftImage}
+				data-description = {props.description}
+				data-externalurl = {props.externalURL}
 			>
 				<img
 					style={imageSize}
-					src={props.imgsrc ? props.imgsrc : (props.isMinted ? MillionMaticPageSymbolSold : MillionMaticPageSymbol)}
-					alt={props.alttext ? props.alttext : "Million Matic Page"}
+					src={props.nftImage ? props.nftImage : (props.isMinted ? MillionMaticPageSymbolSold : MillionMaticPageSymbol)}
+					alt={props.description ? props.description : "Million Matic Page"}
 				/>
 			</button>
 		</div>
