@@ -1,8 +1,7 @@
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
 import MillionMaticPageSymbolSold from "../images/MillionMaticPageSymbolSold.png";
 
 export function InfoModal(props: any) {
@@ -38,22 +37,20 @@ export function InfoModal(props: any) {
 						<Modal.Title>NFT: #{props.tokenId}
 						</Modal.Title>
 					</Modal.Header>
-			{/*		<label style={ownerAddressStyle}>{props.nftOwnerAddress ? "Owner Address: " : ""}</label>
-					<label style={ownerAddressStyle}>{props.nftOwnerAddress ? props.nftOwnerAddress : ""}</label>*/}
 					<h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? "Owner Address: " : ""}</h2>
 					<h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? props.nftOwnerAddress : ""}</h2>
 					<Modal.Body>
 
-						<a href={props.webUrlInfo ? props.webUrlInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">
-							<img src={props.imgSrcInfo ? props.imgSrcInfo : MillionMaticPageSymbolSold} alt={props.altTextInfo} width="100%" style={imageStyle} />
+						<a href={props.externalURLInfo ? props.externalURLInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer">
+							<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />
 						</a>
 						<div style={descriptionStyle}>
-							{props.altTextInfo}
+							{props.descriptionInfo}
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={handleClose}>Close</Button>
-						<a href={props.webUrlInfo ? props.webUrlInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer"><Button>Go to website</Button></a>
+						<a href={props.externalURLInfo ? props.externalURLInfo : process.env.REACT_APP_MMP_BASE_URL} target="_blank" rel="noreferrer"><Button>Go to website</Button></a>
 					</Modal.Footer>
 				</Modal>
 			</div>
