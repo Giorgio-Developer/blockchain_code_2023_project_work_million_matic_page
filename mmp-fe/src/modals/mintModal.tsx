@@ -3,51 +3,48 @@ import { ConnectWallet } from "../button/connect-wallet-button";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { CSSProperties } from 'react';
+import { CSSProperties, useState } from 'react';
 import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
 import { useAccount, useConnect } from "wagmi";
 
 
 export function MintModal(props: any) {
 
-const { address } = useAccount();
+	const [mintModalImage, setMintModalImage] = useState(MillionMaticPageSymbol);
 
-const handleClose = () => {props.clickCloseButton()} ; 
+	const { address } = useAccount();
 
-const imageStyle = {
-    width: '100%',
-    padding: '20px',
-    margin: '0px',
-    border: '1px solid black',
-  };
+	const handleClose = () => {props.clickCloseButton()} ; 
 
-  const descriptionStyle: CSSProperties = {
-	textAlign: 'right',
-	fontSize: '0.75em',
-  };
+	const imageStyle = {
+		width: '100%',
+		padding: '20px',
+		margin: '0px',
+		border: '1px solid black',
+	};
 
-return (
-      
-    <div>
-       <Modal show={props.show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>NFT: #{props.tokenId}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-				<img src={MillionMaticPageSymbol} alt="NFT #{props.tokenId}" width="100%" style={imageStyle} />
-				<div style={descriptionStyle}>
-					available for 1 MATIC
-				</div>
-				
-            </Modal.Body>
-            <Modal.Footer>
-            { (address !== undefined) ? <MintButton tokenId={props.tokenId} handleClose={handleClose} setLoadingSpinner={props.setLoadingSpinner} /> : <ConnectWallet /> }
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    </div>
-)
+	const descriptionStyle: CSSProperties = {
+		textAlign: 'right',
+		fontSize: '0.75em',
+	};
 
+	return (
+		<div>
+			<Modal show={props.show} onHide={handleClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>NFT: #{props.tokenId}</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<img src={mintModalImage} alt="NFT #{props.tokenId}" width="100%" style={imageStyle} />
+					<div style={descriptionStyle}> available for 1 MATIC </div>
+					{ (address !== undefined) ? <MintButton tokenId={props.tokenId} handleClose={handleClose} setLoadingSpinner={props.setLoadingSpinner} setMintModalImage={setMintModalImage}/> : <ConnectWallet /> }
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleClose}>
+						Close
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		</div>
+	)
 }

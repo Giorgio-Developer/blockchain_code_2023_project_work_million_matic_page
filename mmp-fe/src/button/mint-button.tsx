@@ -2,6 +2,7 @@ import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from
 import { contractAbi } from "../constant/contract-abi";
 import { Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import MillionMaticPageSymbolSold from "../images/MillionMaticPageSymbolSold.png";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 let txAlreadySucceded = false;
@@ -25,7 +26,7 @@ export function MintButton(props: any) {
 
 	const contractWrite = useContractWrite(config);
 
-	const {data, isError, isLoading, isSuccess } = useWaitForTransaction({
+	const {data, isSuccess } = useWaitForTransaction({
 		hash: contractWrite.data?.hash,
 	})
 
@@ -35,9 +36,7 @@ export function MintButton(props: any) {
 	}
 	const handleTransactionSuccess = () => {
 
-
-
-
+			props.setMintModalImage(MillionMaticPageSymbolSold); // Imposta l'immagine di venduto
 			setBuyButtonStyle({ display: 'none' });
 			setLoading(false);							// Imposta lo stato di loading a false una volta completata o fallita la transazione
 			props.setLoadingSpinner(false);
@@ -48,10 +47,10 @@ export function MintButton(props: any) {
 	}
 
 	useEffect(() => {
-		if (isLoading) {
+		if (contractWrite.isLoading) {
 			handleTransactionStart();
 		}
-	}, [handleTransactionStart, isLoading]);
+	}, [handleTransactionStart, contractWrite.isLoading]);
 	
 	useEffect(() => {
 		if (isSuccess && contractWrite.data && !txAlreadySucceded) {
@@ -62,10 +61,10 @@ export function MintButton(props: any) {
 	}, [handleTransactionSuccess, isSuccess]);
 
 	useEffect(() => {
-		if (isError) {
+		if (contractWrite.isError) {
 			handleTransactionError();
 		}
-	}, [handleTransactionError, isError]);
+	}, [handleTransactionError, contractWrite.isError]);
 
 	const handleMint = async () => {
 
@@ -89,9 +88,9 @@ export function MintButton(props: any) {
 			 <Button variant="primary" onClick={handleMint} disabled={loading} style={buyButtonStyle}>
 				Buy 
 			</Button>
-			{isLoading && <div>Loading...</div>}
+			{contractWrite.isLoading && <div>Loading...</div>}
 			{isSuccess && data && <div><br/>*** Excellent !!!  ***<br/><b>This NFT now it's Your</b><br/><a href={polygon_base_uri+contractWrite.data?.hash} target="_blank" rel="noreferrer">See the transaction</a></div>}
-			{isError && <div><br/><b> Oh no !!!</b><br/>You refused to purchase the greatest NFT of all time !!!<br/><b>Everyone deserves a second chance to be rich, buy it now</b></div>}
+			{contractWrite.isError && <div><br/><b> Oh no !!!</b><br/>You refused to purchase the greatest NFT of all time !!!<br/><b>Everyone deserves a second chance to be rich, buy it now</b></div>}
 		</div>
 	);
 }
