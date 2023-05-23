@@ -49,66 +49,40 @@ L'utente arriva sul sito:
 ==>> CODICE PER GENERAZIONE FLOW-CHART su https://app.code2flow.com/
 
 
-1: ** Welcome to Million Dollar HOMEPAGE **;
 
-switch(PRESS on NFT) {
-  case IMG not Sold:
-2:  Open Mint Modal;
-    switch(Press Button){
-      case Close:
-        goto 1;
-        break;
-      case Buy:
-        Open METAMASK;
-        if(Confirm Transaction){
-          mint/Buy NFT transaction Start;
-          switch(TX Respone){
-            case Ok!:
-              NFT Sell/Minted;
-              goto 1;
-              break;
-            case Ko!:
-              NFT not Minted;
-              goto 1;
-              break;
-          }
-        } else {
-          Annulla transaction;
-          goto 2;
+START;
+Welcome to 
+    ** Million Matic Page **;
+
+L'utente clicca su un quadrato;
+switch(L'NFT è Mintato ?) {
+  case NO:
+    Si apre modale acquisto;
+    L'utente acquista l'NFT;
+    break;
+  case SI:{
+    switch(L'utente è il proprietario dell'NFT ?){
+      case SI:
+        Si apre modale di modifica;
+        L'utente inserisce i dati da modificare;
+        switch(L'utentre sceglie l'azione da effettuare){
+          case Salva modifiche:
+            I dati forniti vengono salvati;
+            break;
+          case Apertura OpenSea:
+            L'utente naviga su OpenSea;
+            break;
         }
         break;
-    }
-    break;
-  case IMG Sold:{
-    if(Address === Address Owner){
-      edit Modale;
-      switch(Press Button){
-        case Close:
-          goto 1;
-        case Save Changes:
-          Save the data insert in the text box;
-          goto 1;
-          break;
-        case Open on OpenSea:
-          Open NFT on Opensea site;
-          break;
-      }
-    } else {
-      info Modale;
-      switch(Press Button){
-        case Close:
-          goto 1;
-        case Go to website:
-          Open page of the owber site;
-          break;
-        case Open on OpenSea:
-          Open the NFT on Opensea site;
-          break;
-      }
+      case NO: 
+        Si apre la modale di info;
+        L'utente legge le infornazioni;
+        break;
     }
   }
-    break;
 }
+
+
 
 
 
