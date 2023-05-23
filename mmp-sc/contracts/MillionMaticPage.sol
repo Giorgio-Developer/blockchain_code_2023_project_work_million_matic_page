@@ -9,19 +9,14 @@
 
 pragma solidity ^0.8.9;
 
-import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 
-contract MillionMaticPage is ERC721, ERC721URIStorage, IERC2981, Ownable {
+contract MillionMaticPage is ERC721URIStorage, IERC2981, Ownable {
 
 	// STATE VARs
-
-	// 1 * decimals()
-	uint256 constant price = 1;
+	uint256 constant price = 1; // 1 * decimals() // Attualmente tenuto a 1 per i test e la demo
 
 	uint256[] public mintedNFTs;
 
@@ -63,27 +58,14 @@ contract MillionMaticPage is ERC721, ERC721URIStorage, IERC2981, Ownable {
 	}
 
 	// Inibiamo la burn per scelta progettuale
-	function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+	function _burn(uint256 tokenId) internal override(ERC721URIStorage) {
 		//super._burn(tokenId);
 		require(false, "Burn is not allowed");
 	}
 
-	function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+	function tokenURI(uint256 tokenId) public view override(ERC721URIStorage) returns (string memory) {
 		return super.tokenURI(tokenId);
 	}
-
-/*
-	function getTokenURIsOfMintedNFTs() public view returns (string[] memory) {
-		string[] memory result;
-
-		for (uint i = 0; i < mintedNFTs.length; i++) {
-				result[i] = tokenURI(mintedNFTs[i]);
-		}
-
-		return result;
-	}
-*/
-
 
 	function getAllMintedNFTs() public view returns (uint256[] memory) {
 		return mintedNFTs;
