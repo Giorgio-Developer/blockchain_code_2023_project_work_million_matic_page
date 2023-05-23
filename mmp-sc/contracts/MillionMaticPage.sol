@@ -20,7 +20,7 @@ contract MillionMaticPage is ERC721URIStorage, IERC2981, Ownable {
 
 	uint256[] public mintedNFTs;
 
-	string private baseURI;
+	string private baseURI = "https://coffee-blushing-vole-954.mypinata.cloud/ipfs/";
 
 	address public royaltyCollector;
 
