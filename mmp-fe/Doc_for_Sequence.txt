@@ -1,0 +1,117 @@
+
+
+L'utente arriva sul sito:
+- Ho METAMASK installato
+- Non sono connesso a Poligon (Poligon è la chain dove è deployato MMP)
+
+* La pagina è composta da una griglia di NFT alcuni con immagini MMP, altri MMP-Sold oppure IMG-Del proprietario
+* In basso a sinistra trovo pulsante per connetter il wallet a METAMASK
+
+* Clicco sul pulsante METAMASK
+
+* Clicco su IMG MMP (NFT da acquistare)
+    - Si apre una finestra modale con in alto a sx token-id dell'nft da acquistare
+    - In questa finestra posso:
+        - Cliccare sul tasto CLOSE e la finestra si chiude
+        - Cliccare su tasto BUY ( in grigetto se non sono connesso a METAMASK; altrimenti in blue)
+            - mi chiede di coneettermi a METAMAK, faccio la connessione e il tasto BUY diventa blue
+            - Ripeto il clic sul tasto BUY 
+                - se non sono connesso a Polygon non succede nulla
+                - se sono connesso a Polygon, parte la transazione e METAMASK mi chiede conferma
+                    - confermo e parte il processo di acquisto con chiamata al contratto a transazione finita 
+                        l'immagine della modale cambia in MMP-Sold
+                        
+
+* Clicco su IMG MMP-sold oppure IMG-proprietario
+    - Sono il proprietario dell'NFT
+        - si apre una modale con il token-id in alto a sx
+        - Ci sono una serie di campi con i quali è possibile inserire 
+            - Nome
+            - url dell'img da visualizzare
+            - descrizione
+            - Web URL da inserire come link 
+        - Ci sono 3 tasti con i quali effettuare altrettante azioni
+            - Chiudere la modale
+            - Salvare le informazioni inserite
+            - Aprire la pagina OpenSea dell' NFT
+
+    - Non sono il proprietario dell'NFT
+        - si apre una modale con il token-id in alto a sx e l'address del proprietario dell'NFT
+        - - Ci sono 3 tasti con i quali effettuare altrettante azioni
+            - Chiudere la modale
+            - Aprire la pagina OpenSea dell' NFT
+            - Pulsante per andare al sito 
+
+* Clicco su IMG già venduta ma con IMG scelta dal proprietario
+
+
+
+==>> CODICE PER GENERAZIONE FLOW-CHART su https://app.code2flow.com/
+
+
+1: ** Welcome to Million Dollar HOMEPAGE **;
+
+switch(PRESS on NFT) {
+  case IMG not Sold:
+2:  Open Mint Modal;
+    switch(Press Button){
+      case Close:
+        goto 1;
+        break;
+      case Buy:
+        Open METAMASK;
+        if(Confirm Transaction){
+          mint/Buy NFT transaction Start;
+          switch(TX Respone){
+            case Ok!:
+              NFT Sell/Minted;
+              goto 1;
+              break;
+            case Ko!:
+              NFT not Minted;
+              goto 1;
+              break;
+          }
+        } else {
+          Annulla transaction;
+          goto 2;
+        }
+        break;
+    }
+    break;
+  case IMG Sold:{
+    if(Address === Address Owner){
+      edit Modale;
+      switch(Press Button){
+        case Close:
+          goto 1;
+        case Save Changes:
+          Save the data insert in the text box;
+          goto 1;
+          break;
+        case Open on OpenSea:
+          Open NFT on Opensea site;
+          break;
+      }
+    } else {
+      info Modale;
+      switch(Press Button){
+        case Close:
+          goto 1;
+        case Go to website:
+          Open page of the owber site;
+          break;
+        case Open on OpenSea:
+          Open the NFT on Opensea site;
+          break;
+      }
+    }
+  }
+    break;
+}
+
+
+
+#### ########## ###### ############# ####### #################### #################### #################### ###################
+######### #################### #################### #################### #################### #################### #########
+#### ########## ###### ############# ####### #################### #################### #################### ###################
