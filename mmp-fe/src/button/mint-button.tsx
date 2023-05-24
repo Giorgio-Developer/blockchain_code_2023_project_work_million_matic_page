@@ -80,7 +80,6 @@ export function MintButton(props: any) {
 		}
 	};
 
-
 	const polygon_base_uri = "https://mumbai.polygonscan.com/tx/";
 
 	return (

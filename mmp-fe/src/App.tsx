@@ -1,8 +1,7 @@
-import { useAccount, useConnect, useBalance } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import './App.css';
 import {HomeTable} from "./tables/home-table";
 import MillionMaticPageTitle from "./images/MillionMaticPageTitle.png";
-import MillionMaticPageSymbol from "./images/MillionMaticPageSymbol.png";
 import { Button } from "react-bootstrap";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
@@ -14,7 +13,6 @@ function App() {
 	document.body.style.backgroundColor = "#202020";
 
 	const { address } = useAccount();
-	const { data: balance } = useBalance({ address });
 	const { connect, connectors } = useConnect();
 
 
