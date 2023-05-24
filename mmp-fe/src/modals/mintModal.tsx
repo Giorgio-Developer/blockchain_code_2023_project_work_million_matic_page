@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { CSSProperties, useState } from 'react';
 import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
-import { useAccount, useConnect } from "wagmi";
+import { useAccount } from "wagmi";
 
 
 export function MintModal(props: any) {

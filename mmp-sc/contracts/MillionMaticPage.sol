@@ -20,7 +20,7 @@ contract MillionMaticPage is ERC721URIStorage, IERC2981, Ownable {
 
 	uint256[] public mintedNFTs;
 
-	string private baseURI;
+	string private baseURI = "https://coffee-blushing-vole-954.mypinata.cloud/ipfs/";
 
 	address public royaltyCollector;
 
@@ -40,7 +40,7 @@ contract MillionMaticPage is ERC721URIStorage, IERC2981, Ownable {
 	}
 
 	constructor() ERC721("MillionMaticPage", "MMP") {
-		royaltyCollector = msg.sender;
+		royaltyCollector = address(this);
 	}
 
 	function _baseURI() internal view override returns (string memory) {
@@ -123,6 +123,7 @@ contract MillionMaticPage is ERC721URIStorage, IERC2981, Ownable {
 		return res;
 	}
 
+/*
 	function getGroupMetadata(uint256[] calldata tokenIds) public view returns (string[] memory) {
 
 		string[] memory data = new string[](tokenIds.length);
@@ -156,14 +157,8 @@ contract MillionMaticPage is ERC721URIStorage, IERC2981, Ownable {
 		return data;
 
 	}
+*/
 
-	function setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyNftOwner(tokenId) existsNFT(tokenId) returns (bool) {
-
-		_setTokenURI(tokenId, _tokenURI);
-
-		emit tokenURISetted(msg.sender, tokenId, _tokenURI);
-		return true;
-	}
 
 	function withdrawBalance() public onlyOwner returns (bool) {
 
@@ -175,6 +170,14 @@ contract MillionMaticPage is ERC721URIStorage, IERC2981, Ownable {
 	}
 
 	// INTERNAL
+	function setTokenURI(uint256 tokenId, string memory _tokenURI) public onlyNftOwner(tokenId) existsNFT(tokenId) returns (bool) {
+
+		_setTokenURI(tokenId, _tokenURI);
+
+		emit tokenURISetted(msg.sender, tokenId, _tokenURI);
+		return true;
+	}
+
 	function _setTokenURI(uint256 tokenId, string memory _tokenURI) internal virtual override {
 		super._setTokenURI(tokenId, _tokenURI);
 	}

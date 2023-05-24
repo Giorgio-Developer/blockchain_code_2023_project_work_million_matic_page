@@ -8,7 +8,7 @@ import { MintModal } from "../modals/mintModal";
 import { LoadingSpinner } from "./loading-spinner";
 import axios from 'axios';
 
-
+/*
 interface TableProps {
 	rows: number;
 	columns: number;
@@ -18,6 +18,7 @@ interface Point {
 	row: number;
 	column: number;
 }
+*/
 
 export function HomeTable(props: any) {
 
@@ -66,12 +67,12 @@ export function HomeTable(props: any) {
 	const [nftImageInfo, setNftImageInfo] = useState("");
 	const [descriptionInfo, setDescriptionInfo] = useState("");
 	const [externalURLInfo, setExternalURLInfo] = useState("");
-
 	const [CIDData, setCIDData] = useState(initCIDData);
+	const [tokenId, setTokenId] = useState(0);
+
 	const [show, setShow] = useState(false);
 	const [showInfoModal, setShowInfoModal] = useState(false);
 	const [showMintModal, setShowMintModal] = useState(false);
-	const [tokenId, setTokenId] = useState(0);
 	const [tokenIdMintingStatus, setTokenIdMintingStatus] = useState({});
 	const [loadingSpinner, setLoadingSpinner] = useState(false);
 	const [nftOwnerAddress, setNftOwnerAddress] = useState('');
@@ -197,6 +198,8 @@ export function HomeTable(props: any) {
 		return rows * ROWS + columns;
 	}
 
+
+/*
 	function calculateRowCol(tokenId: number) {
 		let rows = Math.floor(tokenId / ROWS);
 		let cols = tokenId % ROWS;
@@ -208,7 +211,7 @@ export function HomeTable(props: any) {
 
 		return point;
 	}
-
+*/
 	const renderTable = () => {
 		const tableRows = [];
 
