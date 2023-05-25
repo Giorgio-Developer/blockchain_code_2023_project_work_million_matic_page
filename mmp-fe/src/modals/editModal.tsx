@@ -200,10 +200,6 @@ const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 			<Modal.Header closeButton>
 			<Modal.Title>Edit Modal - NFT: #{props.tokenId}</Modal.Title>
 			</Modal.Header>
-
-      <h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? "Owner are you! Your Address : " : ""}</h2>
-			<h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? props.nftOwnerAddress : ""}</h2>
-
 			<Modal.Body>
 			<Form>
 				<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />

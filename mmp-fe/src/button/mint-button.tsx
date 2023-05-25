@@ -10,6 +10,7 @@ let txAlreadySucceded = false;
 export function MintButton(props: any) {
 
 	const [loading, setLoading] = useState(false);
+	const[mintTxFinished,setMintTxFinished] = useState(false);
 	const [buyButtonStyle, setBuyButtonStyle] = useState({ display: 'inline' });
 
 	const abi = contractAbi;
@@ -55,6 +56,7 @@ export function MintButton(props: any) {
 	useEffect(() => {
 		if (isSuccess && contractWrite.data && !txAlreadySucceded) {
 			txAlreadySucceded = true;
+			props.mintTxStatusChanger(true)
 			//console.log("Transaction success", data);
 			handleTransactionSuccess();
 		}
