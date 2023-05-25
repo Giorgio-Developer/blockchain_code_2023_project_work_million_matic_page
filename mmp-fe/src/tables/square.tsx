@@ -9,9 +9,7 @@ const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
 export function Square(props: any) {
 
-	//const width = window. process.env.REACT_APP_COLS 
-
-	const safeCols = process.env.REACT_APP_COLS ? process.env.REACT_APP_COLS : "8";
+	const safeCols = process.env.REACT_APP_COLUMNS ? process.env.REACT_APP_COLUMNS : "8";
 
 	const imageWidth = window.innerWidth / (2 * parseInt(safeCols));
 	const imageSize = {
