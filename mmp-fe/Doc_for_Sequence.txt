@@ -63,21 +63,36 @@ switch(L'NFT è Mintato ?) {
   case SI:{
     switch(L'utente è il proprietario dell'NFT ?){
       case SI:
-        Si apre modale di modifica;
-        L'utente inserisce i dati da modificare;
-        switch(L'utentre sceglie l'azione da effettuare){
-          case Salva modifiche:
-            I dati forniti vengono salvati;
+        Si apre la modale di modifica;
+        
+        
+        # L'utente inserisce i dati da modificare;
+        
+        switch(L'utente sceglie l'azione da effettuare){
+          case L'utente vuole 
+              aggiornare i dati:
+            L'utente inserisce i dati e salva le modifiche;
+            I dati dell'NFT vengono aggiornati;
             break;
-          case Apertura OpenSea:
-            L'utente naviga su OpenSea;
+          case L'utente clicca per 
+                aprire OpenSea:
+            L'utente naviga su OpenSea .;
             break;
         }
         break;
       case NO: 
         Si apre la modale di info;
-        L'utente legge le infornazioni;
+        switch(L'utente sceglie l'azione da effettuare){
+          case L'utente clicca per 
+                aprire OpenSea:
+            L'utente naviga su OpenSea;
+            break;
+          case ...:
+            L'utente legge le infornazioni;
+            break;
+        }
         break;
+        
     }
   }
 }
