@@ -76,6 +76,8 @@ export function HomeTable(props: any) {
 	const [tokenIdMintingStatus, setTokenIdMintingStatus] = useState({});
 	const [loadingSpinner, setLoadingSpinner] = useState(false);
 	const [nftOwnerAddress, setNftOwnerAddress] = useState('');
+	const [mintTxStatusChanger, setMintTxStatusChanger] = useState(false);
+
 
 	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
 	const allMintedNFTs: any = (data !== undefined) ? data[1] : [];
@@ -111,6 +113,13 @@ export function HomeTable(props: any) {
 		setMintedPropertyForTokenId();
 
 	}, [allMintedTokenURI]);
+
+	//Manage the minting status when the mint transaction is finished
+	useEffect(() => {
+		if (mintTxStatusChanger) {
+			updateValue(tokenId, true);
+		}
+	}, [mintTxStatusChanger]);
 
 
 	async function getIPFSData(tokenUri: string) {
@@ -275,7 +284,7 @@ export function HomeTable(props: any) {
 		{renderTable()}
 		<EditModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
 		<InfoModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
-		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner}/>
+		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner} mintTxStatusChanger={setMintTxStatusChanger}/>
 		<LoadingSpinner show={loadingSpinner} />
 	</div>
   );

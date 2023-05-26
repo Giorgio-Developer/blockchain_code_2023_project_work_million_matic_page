@@ -37,7 +37,11 @@ export function MintModal(props: any) {
 				<Modal.Body>
 					<img src={mintModalImage} alt="NFT #{props.tokenId}" width="100%" style={imageStyle} />
 					<div style={descriptionStyle}> available for 1 MATIC </div>
-					{ (address !== undefined) ? <MintButton tokenId={props.tokenId} handleClose={handleClose} setLoadingSpinner={props.setLoadingSpinner} setMintModalImage={setMintModalImage}/> : <ConnectWallet /> }
+					{ (address !== undefined) ?
+						<MintButton tokenId={props.tokenId} handleClose={handleClose}
+									setLoadingSpinner={props.setLoadingSpinner} setMintModalImage={setMintModalImage} mintTxStatusChanger={props.mintTxStatusChanger}/>
+						: <ConnectWallet />
+					}
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleClose}>

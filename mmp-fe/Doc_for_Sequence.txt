@@ -68,27 +68,26 @@ switch(L'NFT è Mintato ?) {
         
         # L'utente inserisce i dati da modificare;
         
-        switch(L'utente sceglie l'azione da effettuare){
-          case L'utente vuole 
-              aggiornare i dati:
+        switch(Cosa fa l'utente ?){
+          case Aggiorna i dati:
             L'utente inserisce i dati e salva le modifiche;
-            I dati dell'NFT vengono aggiornati;
+            I dati dell'NFT vengono aggiornati 
+            in IPFS e blockchain;
             break;
-          case L'utente clicca per 
-                aprire OpenSea:
-            L'utente naviga su OpenSea .;
+          case Clicca su OpenSea:
+            L'utente naviga su OpenSea;
             break;
         }
         break;
       case NO: 
         Si apre la modale di info;
-        switch(L'utente sceglie l'azione da effettuare){
-          case L'utente clicca per 
-                aprire OpenSea:
+        switch(Cosa fa l'utente ? ){
+          case Clicca su OpenSea:
             L'utente naviga su OpenSea;
             break;
           case ...:
             L'utente legge le infornazioni;
+            L'utente visita il sito;
             break;
         }
         break;
@@ -96,7 +95,6 @@ switch(L'NFT è Mintato ?) {
     }
   }
 }
-
 
 
 
