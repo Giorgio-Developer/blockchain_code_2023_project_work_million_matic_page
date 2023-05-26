@@ -72,6 +72,18 @@ button {
   text-align: center;
 }
 
+/* edit-modal.tsx */
+#btnsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+#messageContainer {
+  text-align: center;
+}
+
 /* loading-spinner.tsx */
 .loading-spinner-overlay {
 	position: fixed;

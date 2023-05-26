@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -81,6 +82,11 @@ const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 
 	const sendDataToIPFS = () => {
 
+		console.log('sendDataToIPFS Started...');
+		//setLoading(true);
+		props.setLoadingSpinner(true);
+
+
   //const { data, isLoading, isSuccess, isError,  write } = useContractWrite(config);
 
 		const dataToSend:TypeDataToSend = {
@@ -126,6 +132,8 @@ const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 				// handle error
 				console.log(error);
 			});
+
+			
 	};
 
 
@@ -150,25 +158,26 @@ const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 
   }
 
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   
   const polygon_base_uri = "https://mumbai.polygonscan.com/tx/";
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleTransactionStart = () => {
     txExecuting = true;
 		console.log('Salvataggio dati su Blockchain in corso...');
-    setLoading(true);
+    //setLoading(true);
     props.setLoadingSpinner(true);
   }
   const handleTransactionSuccess = () => {
       txExecuting = false;
       console.log('Dati salvati correttamente su Blockchain');  
-      setLoading(false);
+      //setLoading(false);
       props.setLoadingSpinner(false);
       handleClose();
   }
   const handleTransactionError = () => {
-      setLoading(false); 			// Imposta lo stato di loading a false una volta completata o fallita la transazione
+      //setLoading(false); 			// Imposta lo stato di loading a false una volta completata o fallita la transazione
       props.setLoadingSpinner(false);
   }
 
@@ -205,25 +214,40 @@ const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 			<h2 style={ownerAddressStyle}>{props.nftOwnerAddress ? props.nftOwnerAddress : ""}</h2>
 
 			<Modal.Body>
-			<Form>
-				<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />
-				<Form.Group className="mb-3" controlId="nameForm">
-					<Form.Label>Name</Form.Label>
-					<Form.Control type="text" placeholder={props.nameInfo ? "Old: " + props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange}/>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="nftImageForm">
-					<Form.Label>Image Url</Form.Label>
-					<Form.Control type="text" placeholder={props.nftImageInfo ? "Old: " + props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="descriptionForm">
-					<Form.Label>Description</Form.Label>
-					<Form.Control type="text" placeholder={props.descriptionInfo ? "Old: " + props.descriptionInfo : "Insert your NFT description"} name='descriptionControl' onChange={handleChange}/>
-				</Form.Group>
-				<Form.Group className="mb-3" controlId="externalURLForm">
-					<Form.Label>Web Url</Form.Label>
-					<Form.Control type="text" placeholder={props.externalURLInfo ? "Old: " + props.externalURLInfo : "Insert your NFT web url"} name='externalURLControl' onChange={handleChange}/>
-				</Form.Group>
-			</Form>
+				<Form>
+					<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />
+					<Form.Group className="mb-3" controlId="nameForm">
+						<Form.Label>Name</Form.Label>
+						<Form.Control type="text" placeholder={props.nameInfo ? "Old: " + props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange}/>
+					</Form.Group>
+					<Form.Group className="mb-3" controlId="nftImageForm">
+						<Form.Label>Image Url</Form.Label>
+						<Form.Control type="text" placeholder={props.nftImageInfo ? "Old: " + props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
+					</Form.Group>
+					<Form.Group className="mb-3" controlId="descriptionForm">
+						<Form.Label>Description</Form.Label>
+						<Form.Control type="text" placeholder={props.descriptionInfo ? "Old: " + props.descriptionInfo : "Insert your NFT description"} name='descriptionControl' onChange={handleChange}/>
+					</Form.Group>
+					<Form.Group className="mb-3" controlId="externalURLForm">
+						<Form.Label>Web Url</Form.Label>
+						<Form.Control type="text" placeholder={props.externalURLInfo ? "Old: " + props.externalURLInfo : "Insert your NFT web url"} name='externalURLControl' onChange={handleChange}/>
+					</Form.Group>
+				</Form>
+
+
+				<div>
+					{isLoading && <div>Loading...</div>}
+					{isError && <div id="messageContainer"><br/>Per aggiornare i dati è necessario confermare la transazione tramite il proprio wallet<br/><br/></div>}
+				</div>
+				<div id="btnsContainer">
+					<Button variant="primary" onClick={sendDataToIPFS}>
+						Save Changes
+					</Button>
+					&nbsp;
+					<a href={nftOpenSeaLink} target="_blank" rel="noreferrer">
+						<Button>Look on OpenSea</Button>
+					</a>
+				</div>
 
 			</Modal.Body>
 
@@ -231,15 +255,8 @@ const { data, isLoading, isSuccess, isError, write } = useContractWrite(config);
 			<Button variant="secondary" onClick={handleClose}>
 				Close
 			</Button>
-			<Button variant="primary" onClick={async () => {
-				//console.log('Invio i dati a IPFS...'); 
-				sendDataToIPFS();
-			}}>
-				Save Changes
-			</Button>
-				{isLoading && <div>Loading...</div>}
-				{isError && <div><br/><b> Oh no !!!</b><br/>Messaggio di ko !!!<br/></div>}
-				<a href={nftOpenSeaLink} target="_blank" rel="noreferrer"><Button>Look on OpenSea</Button></a>
+
+
 			</Modal.Footer>
 		</Modal>
 		</div>
