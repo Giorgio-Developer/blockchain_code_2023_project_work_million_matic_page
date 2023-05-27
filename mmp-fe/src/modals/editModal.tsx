@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { CSSProperties, useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useContract, useSigner } from 'wagmi';
+import { useContract, useSigner, useWaitForTransaction } from 'wagmi';
 import { contractAbi } from "../constant/contract-abi";
 import MillionMaticPageSymbolSold from "../images/MillionMaticPageSymbolSold.png";
 
@@ -44,21 +44,22 @@ export function EditModal(props: any) {
 	const [description, setDescription] = useState('');
 	const [externalURL, setExternalURL] = useState('');
 	const [tokenId, setTokenId] = useState(0);
+	const [txHash, setTxHash] = useState('');
+	const [successMessage, setSuccessMessage] = useState(false);
 	const handleClose = () => {props.clickCloseButton()} ; // () => setShow(false);
 
 	const nftOpenSeaLink = process.env.REACT_APP_OPENSEA_BASE_URL + contractAddress + "/" + props.tokenId;
-
-
-
-	let txExecuting = false;
 
 	const contract = useContract({
 		abi: abi,
 		address: contractAddress
 	})
 
-
 	const { data:signer } = useSigner();
+
+	const {data, isError, isLoading, isSuccess } = useWaitForTransaction({
+		hash: txHash as `0x${string}`,
+	})
 
 	useEffect(() => {
 		if (props.show === true) {
@@ -71,8 +72,6 @@ export function EditModal(props: any) {
 	const sendDataToIPFS = async () => {
 
 		console.log('sendDataToIPFS Started...');
-		//setLoading(true);
-		//props.setLoadingSpinner(true);
 
 		const dataToSend: TypeDataToSend = {
 			name: name,
@@ -107,16 +106,25 @@ export function EditModal(props: any) {
 			data: dataIPFS,
 		};
 
+		// Attivo il loading spinner
+		handleTransactionStart();
+
 		const res = await axios(configIPFS);
 		let cid = res.data.IpfsHash;
 		console.log(cid);
 
 		if(res && signer){
-			contract?.connect(signer).setTokenURI(tokenId,cid)
+			try {
+				const tx = await contract?.connect(signer).setTokenURI(tokenId,cid);
+				console.log("tx: ", tx.hash);
+				setTxHash(tx.hash);
+			} catch (error) {
+				handleTransactionError();
+			}
+
 		}
 
 	};
-
 
 
 	function handleChange(event:any) {
@@ -139,47 +147,39 @@ export function EditModal(props: any) {
 
 	}
 
-	//const [loading, setLoading] = useState(false);
-
-	const polygon_base_uri = "https://mumbai.polygonscan.com/tx/";
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	/*  const handleTransactionStart = () => {
-        txExecuting = true;
-            console.log('Salvataggio dati su Blockchain in corso...');
-        //setLoading(true);
-        props.setLoadingSpinner(true);
-      }
-      const handleTransactionSuccess = () => {
-          txExecuting = false;
-          console.log('Dati salvati correttamente su Blockchain');
-          //setLoading(false);
-          props.setLoadingSpinner(false);
-          handleClose();
-      }
-      const handleTransactionError = () => {
-          //setLoading(false); 			// Imposta lo stato di loading a false una volta completata o fallita la transazione
-          props.setLoadingSpinner(false);
-      }
+	const handleTransactionStart = () => {
+			console.log('Salvataggio dati su IPFS e poi su Blockchain...');
+			props.setLoadingSpinner(true);
+			setSuccessMessage(false);
 
-      useEffect(() => {
-            if (isLoading) {
-                handleTransactionStart();
-            }
-        }, [handleTransactionStart, isLoading]);
+	}
 
-      useEffect(() => {
-            if (isSuccess && data ) {
-                handleTransactionSuccess();
-            }
-        }, [handleTransactionSuccess, isSuccess]);
+	const handleTransactionSuccess = () => 
+	{
+		console.log('handleTransactionSuccess');
+		props.setLoadingSpinner(false);
+		setTxHash("");
+		//handleClose();
 
-        useEffect(() => {
-            if (isError) {
-                handleTransactionError();
-            }
-        }, [handleTransactionError, isError]);*/
+		setSuccessMessage(true);
 
+	}
+
+	const handleTransactionError = () => {
+		console.log('handleTransactionError');
+		props.setLoadingSpinner(false);
+	}
+
+	useEffect(() => {
+		if (isSuccess && data && txHash !== '' ) {
+
+			handleTransactionSuccess();
+		}
+	}, [handleTransactionSuccess, isSuccess]);
+
+	
 	return (
 		<div
 			className="modal show"
@@ -212,10 +212,12 @@ export function EditModal(props: any) {
 					</Form>
 
 
-					{/*				<div>
-					{isLoading && <div>Loading...</div>}
-					{isError && <div id="messageContainer"><br/>Per aggiornare i dati è necessario confermare la transazione tramite il proprio wallet<br/><br/></div>}*/}
-					{/*			</div>*/}
+					<div className="messageContainer">
+						{isLoading && <div>Loading...</div> }
+						{/* isError && <div className="messageContainer"><br/>Per aggiornare i dati è necessario confermare la transazione tramite il proprio wallet<br/><br/></div> */}
+						{successMessage && <div>Complimenti salvataggio avvenuto correttamente !!!</div> }
+
+					</div>
 					<div id="btnsContainer">
 						<Button variant="primary" onClick={sendDataToIPFS}>
 							Save Changes
