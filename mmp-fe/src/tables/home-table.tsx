@@ -129,13 +129,13 @@ export function HomeTable(props: any) {
 		let jsonData: any;
 		const ipfs_url = tokenUri;
 		//console.log("ipfs_url: " + ipfs_url);
-	  
+
 		const config = {
-		  headers: {
-			'Content-Type': 'application/json',
-		  },
+			headers: {
+				'Content-Type': 'application/json',
+			},
 		};
-	  
+
 		try {
 			const response = await axios.get(ipfs_url, config);
 			//console.log(response.data);
@@ -210,19 +210,19 @@ export function HomeTable(props: any) {
 	}
 
 
-/*
-	function calculateRowCol(tokenId: number) {
-		let rows = Math.floor(tokenId / ROWS);
-		let cols = tokenId % ROWS;
+	/*
+        function calculateRowCol(tokenId: number) {
+            let rows = Math.floor(tokenId / ROWS);
+            let cols = tokenId % ROWS;
 
-		let point: Point = {
-			row: rows,
-			column: cols,
-		};
+            let point: Point = {
+                row: rows,
+                column: cols,
+            };
 
-		return point;
-	}
-*/
+            return point;
+        }
+    */
 	const renderTable = () => {
 		const tableRows = [];
 
@@ -267,12 +267,12 @@ export function HomeTable(props: any) {
 			<div id="home-table-container">
 				<table id="home-table">
 					<tbody>
-						{tableRows}
+					{tableRows}
 					</tbody>
 				</table>
 			</div>
 		);
-  };
+	};
 
 	const clickCloseButton = async () => {
 		// console.log("Close");
@@ -287,12 +287,21 @@ export function HomeTable(props: any) {
 	}
 
 	return (
-	<div>
-		{renderTable()}
-		<EditModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo}  imgUpdatedChanger={imgUpdatedChanger} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
-		<InfoModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
-		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner} mintTxStatusChanger={setMintTxStatusChanger}/>
-		<LoadingSpinner show={loadingSpinner} />
-	</div>
-  );
+		<div>
+			{renderTable()}
+			<EditModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo}
+					   imgUpdatedChanger={imgUpdatedChanger} descriptionInfo={descriptionInfo}
+					   externalURLInfo={externalURLInfo} show={show} clickCloseButton={clickCloseButton}
+					   nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner}
+			/>
+			<InfoModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo}
+					   descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo}
+					   show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}
+			/>
+			<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton}
+					   setLoadingSpinner={setLoadingSpinner} mintTxStatusChanger={setMintTxStatusChanger}
+			/>
+			<LoadingSpinner show={loadingSpinner} />
+		</div>
+	);
 }

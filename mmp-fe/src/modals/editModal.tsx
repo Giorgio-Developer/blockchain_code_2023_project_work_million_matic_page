@@ -46,7 +46,7 @@ export function EditModal(props: any) {
 	const [tokenId, setTokenId] = useState(0);
 	const [txHash, setTxHash] = useState('');
 	const [successMessage, setSuccessMessage] = useState(false);
-	const [actualImage, setActualImage] = useState(props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold);
+	const [actualImage, setActualImage] = useState('');
 
 	const handleClose = () => {
 		props.clickCloseButton();
@@ -70,6 +70,10 @@ export function EditModal(props: any) {
 		if (props.show === true) {
 			setTokenId(props.tokenId);
 			console.log(props.tokenId);
+			setActualImage(props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold);
+			//TODO VERIFICARE
+			//setDescription(props.description);
+			//setName(props.name);
 		}
 	}, [props.show]);
 
@@ -156,7 +160,6 @@ export function EditModal(props: any) {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const handleTransactionStart = () => {
 			console.log('Salvataggio dati su IPFS e poi su Blockchain...');
-			setActualImage(nftImage);
 			props.setLoadingSpinner(true);
 			setSuccessMessage(false);
 	}
@@ -170,6 +173,7 @@ export function EditModal(props: any) {
 
 		setSuccessMessage(true);
 		updateShowedImage();
+		setActualImage(nftImage);
 		props.imgUpdatedChanger(tokenId, nftImage);
 
 	}
@@ -213,7 +217,7 @@ export function EditModal(props: any) {
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="nftImageForm">
 							<Form.Label>Image Url</Form.Label>
-							<Form.Control type="text" placeholder={props.nftImageInfo ? props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange} value={nftImage} disabled={successMessage}/>
+							<Form.Control type="text" placeholder={actualImage ? actualImage : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange} value={nftImage} disabled={successMessage}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="descriptionForm">
 							<Form.Label>Description</Form.Label>
