@@ -39,14 +39,17 @@ export function EditModal(props: any) {
 		marginLeft: '3%',
 	};
 
-	const [name, setName] = useState('');
-	const [nftImage, setNftImage] = useState('');
-	const [description, setDescription] = useState('');
-	const [externalURL, setExternalURL] = useState('');
+	const [name, setName] = useState(props.nameInfo);
+	const [nftImage, setNftImage] = useState(props.nftImageInfo);
+	const [description, setDescription] = useState(props.descriptionInfo);
+	const [externalURL, setExternalURL] = useState(props.externalURLInfo);
 	const [tokenId, setTokenId] = useState(0);
 	const [txHash, setTxHash] = useState('');
 	const [successMessage, setSuccessMessage] = useState(false);
-	const handleClose = () => {props.clickCloseButton()} ; // () => setShow(false);
+	const handleClose = () => {
+		props.clickCloseButton();
+		setSuccessMessage(false);
+	} ; // () => setShow(false);
 
 	const nftOpenSeaLink = process.env.REACT_APP_OPENSEA_BASE_URL + contractAddress + "/" + props.tokenId;
 
@@ -128,6 +131,10 @@ export function EditModal(props: any) {
 
 
 	function handleChange(event:any) {
+
+		console.log(event.target.value);
+
+		
 		let targetId = event.currentTarget.id;
 
 		switch(targetId) {
@@ -144,6 +151,7 @@ export function EditModal(props: any) {
 				setExternalURL(event.target.value);
 				break;
 		}
+	/*	*/
 
 	}
 
@@ -183,6 +191,8 @@ export function EditModal(props: any) {
 	const updateShowedImage = () => {
 		console.log('updateShowedImage');
 
+
+
 	}
 	
 	return (
@@ -200,19 +210,19 @@ export function EditModal(props: any) {
 						<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />
 						<Form.Group className="mb-3" controlId="nameForm">
 							<Form.Label>Name</Form.Label>
-							<Form.Control type="text" placeholder={props.nameInfo ?  props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange} value={props.nameInfo}/>
+							<Form.Control type="text" placeholder={props.nameInfo ?  props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange} value={name} disabled={successMessage}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="nftImageForm">
 							<Form.Label>Image Url</Form.Label>
-							<Form.Control type="text" placeholder={props.nftImageInfo ? props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange} value={props.nftImageInfo}/>
+							<Form.Control type="text" placeholder={props.nftImageInfo ? props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange} value={nftImage} disabled={successMessage}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="descriptionForm">
 							<Form.Label>Description</Form.Label>
-							<Form.Control type="text" placeholder={props.descriptionInfo ? props.descriptionInfo : "Insert your NFT description"} name='descriptionControl' onChange={handleChange} value={props.descriptionInfo}/>
+							<Form.Control type="text" placeholder={props.descriptionInfo ? props.descriptionInfo : "Insert your NFT description"} name='descriptionControl' onChange={handleChange} value={description}  disabled={successMessage}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="externalURLForm">
 							<Form.Label>Web Url</Form.Label>
-							<Form.Control type="text" placeholder={props.externalURLInfo ? props.externalURLInfo : "Insert your NFT web url"} name='externalURLControl' onChange={handleChange} value={props.externalURLInfo}/>
+							<Form.Control type="text" placeholder={props.externalURLInfo ? props.externalURLInfo : "Insert your NFT web url"} name='externalURLControl' onChange={handleChange} value={externalURL} disabled={successMessage}/>
 						</Form.Group>
 					</Form>
 
