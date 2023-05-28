@@ -77,6 +77,7 @@ export function HomeTable(props: any) {
 	const [loadingSpinner, setLoadingSpinner] = useState(false);
 	const [nftOwnerAddress, setNftOwnerAddress] = useState('');
 	const [mintTxStatusChanger, setMintTxStatusChanger] = useState(false);
+	const [imgUpdated, setImgUpdated] = useState('');
 
 
 	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
@@ -236,7 +237,7 @@ export function HomeTable(props: any) {
 							userAddressOnPage={userAddressOnPage}
 							tokenId={currentTokenID}
 							name={nameData[currentTokenID]}
-							nftImage={nftImageData[currentTokenID]}
+							nftImage={imgUpdated !== '' ? imgUpdated : nftImageData[currentTokenID]}
 							description={descriptionData[currentTokenID]}
 							externalURL={externalURLData[currentTokenID]}
 
@@ -282,7 +283,7 @@ export function HomeTable(props: any) {
 	return (
 	<div>
 		{renderTable()}
-		<EditModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
+		<EditModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo}  imgUpdatedChanger={setImgUpdated} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
 		<InfoModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
 		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner} mintTxStatusChanger={setMintTxStatusChanger}/>
 		<LoadingSpinner show={loadingSpinner} />

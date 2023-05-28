@@ -172,6 +172,7 @@ export function EditModal(props: any) {
 
 		setSuccessMessage(true);
 		updateShowedImage();
+		props.imgUpdatedChanger(nftImage);
 
 	}
 
