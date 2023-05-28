@@ -78,6 +78,7 @@ export function HomeTable(props: any) {
 	const [nftOwnerAddress, setNftOwnerAddress] = useState('');
 	const [mintTxStatusChanger, setMintTxStatusChanger] = useState(false);
 	const [imgUpdated, setImgUpdated] = useState('');
+	const [updatingTokenId, setUpdatingTokenId] = useState('');
 
 
 	const allMintedTokenURI = (data !== undefined) ? data[0] : [];
@@ -237,7 +238,7 @@ export function HomeTable(props: any) {
 							userAddressOnPage={userAddressOnPage}
 							tokenId={currentTokenID}
 							name={nameData[currentTokenID]}
-							nftImage={imgUpdated !== '' ? imgUpdated : nftImageData[currentTokenID]}
+							nftImage={(imgUpdated !== '' && (currentTokenID === parseInt(updatingTokenId)) ) ? imgUpdated : nftImageData[currentTokenID]}
 							description={descriptionData[currentTokenID]}
 							externalURL={externalURLData[currentTokenID]}
 
@@ -280,10 +281,15 @@ export function HomeTable(props: any) {
 		setShowMintModal(false);
 	};
 
+	const imgUpdatedChanger = (tokenId: string, newImg: string) => {
+		setImgUpdated(newImg);
+		setUpdatingTokenId(tokenId);
+	}
+
 	return (
 	<div>
 		{renderTable()}
-		<EditModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo}  imgUpdatedChanger={setImgUpdated} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
+		<EditModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo}  imgUpdatedChanger={imgUpdatedChanger} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={show} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress} setLoadingSpinner={setLoadingSpinner} />
 		<InfoModal tokenId={tokenId} nameInfo={nameInfo} nftImageInfo={nftImageInfo} descriptionInfo={descriptionInfo} externalURLInfo={externalURLInfo} show={showInfoModal} clickCloseButton={clickCloseButton} nftOwnerAddress={nftOwnerAddress}/>
 		<MintModal tokenId={tokenId} show={showMintModal} clickCloseButton={clickCloseButton} setLoadingSpinner={setLoadingSpinner} mintTxStatusChanger={setMintTxStatusChanger}/>
 		<LoadingSpinner show={loadingSpinner} />

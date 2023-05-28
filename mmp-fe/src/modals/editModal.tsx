@@ -46,10 +46,12 @@ export function EditModal(props: any) {
 	const [tokenId, setTokenId] = useState(0);
 	const [txHash, setTxHash] = useState('');
 	const [successMessage, setSuccessMessage] = useState(false);
+	const [actualImage, setActualImage] = useState(props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold);
+
 	const handleClose = () => {
 		props.clickCloseButton();
 		setSuccessMessage(false);
-	} ; // () => setShow(false);
+	};
 
 	const nftOpenSeaLink = process.env.REACT_APP_OPENSEA_BASE_URL + contractAddress + "/" + props.tokenId;
 
@@ -132,11 +134,7 @@ export function EditModal(props: any) {
 
 	function handleChange(event:any) {
 
-		console.log(event.target.value);
-
-		
 		let targetId = event.currentTarget.id;
-
 		switch(targetId) {
 			case 'nameForm':
 				setName(event.target.value);
@@ -151,7 +149,6 @@ export function EditModal(props: any) {
 				setExternalURL(event.target.value);
 				break;
 		}
-	/*	*/
 
 	}
 
@@ -159,6 +156,7 @@ export function EditModal(props: any) {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const handleTransactionStart = () => {
 			console.log('Salvataggio dati su IPFS e poi su Blockchain...');
+			setActualImage(nftImage);
 			props.setLoadingSpinner(true);
 			setSuccessMessage(false);
 	}
@@ -172,7 +170,7 @@ export function EditModal(props: any) {
 
 		setSuccessMessage(true);
 		updateShowedImage();
-		props.imgUpdatedChanger(nftImage);
+		props.imgUpdatedChanger(tokenId, nftImage);
 
 	}
 
@@ -208,7 +206,7 @@ export function EditModal(props: any) {
 				</Modal.Header>
 				<Modal.Body>
 					<Form>
-						<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />
+						<img src={actualImage} alt={props.descriptionInfo} width="100%" style={imageStyle} />
 						<Form.Group className="mb-3" controlId="nameForm">
 							<Form.Label>Name</Form.Label>
 							<Form.Control type="text" placeholder={props.nameInfo ?  props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange} value={name} disabled={successMessage}/>
@@ -231,7 +229,7 @@ export function EditModal(props: any) {
 					<div className="messageContainer">
 						{isLoading && <div>Loading...</div> }
 						{/* isError && <div className="messageContainer"><br/>Per aggiornare i dati è necessario confermare la transazione tramite il proprio wallet<br/><br/></div> */}
-						{successMessage && <div>Complimenti salvataggio avvenuto correttamente !!!</div> }
+						{successMessage && <div>Excellent, your NFT data has been successfully updated</div> }
 
 					</div>
 					<div id="btnsContainer">

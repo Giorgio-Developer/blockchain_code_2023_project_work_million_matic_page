@@ -1,9 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useAccount, useContractRead } from "wagmi";
+import { useContractRead } from "wagmi";
 import { contractAbi } from "../constant/contract-abi";
 import MillionMaticPageSymbol from "../images/MillionMaticPageSymbol.png";
 import MillionMaticPageSymbolSold from "../images/MillionMaticPageSymbolSold.png";
-import { useEffect } from "react";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS as `0x${string}`;
 
@@ -14,9 +13,6 @@ export function Square(props: any) {
 	const imageWidth = window.innerWidth / (2 * parseInt(safeCols));
 	const imageSize = {
 		width: imageWidth+"px",
-		//heigth: "100%",
-		//padding: "5px",
-		//border: "solid 1px dimgrey",
 	};
 
 	const {  data: ownerOfRequest , isError, refetch, isSuccess }  = useContractRead({
