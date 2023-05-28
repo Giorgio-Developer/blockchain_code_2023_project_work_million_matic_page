@@ -153,7 +153,6 @@ export function EditModal(props: any) {
 			console.log('Salvataggio dati su IPFS e poi su Blockchain...');
 			props.setLoadingSpinner(true);
 			setSuccessMessage(false);
-
 	}
 
 	const handleTransactionSuccess = () => 
@@ -164,6 +163,7 @@ export function EditModal(props: any) {
 		//handleClose();
 
 		setSuccessMessage(true);
+		updateShowedImage();
 
 	}
 
@@ -179,6 +179,11 @@ export function EditModal(props: any) {
 		}
 	}, [handleTransactionSuccess, isSuccess]);
 
+
+	const updateShowedImage = () => {
+		console.log('updateShowedImage');
+
+	}
 	
 	return (
 		<div
@@ -195,19 +200,19 @@ export function EditModal(props: any) {
 						<img src={props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold} alt={props.descriptionInfo} width="100%" style={imageStyle} />
 						<Form.Group className="mb-3" controlId="nameForm">
 							<Form.Label>Name</Form.Label>
-							<Form.Control type="text" placeholder={props.nameInfo ? "Old: " + props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange}/>
+							<Form.Control type="text" placeholder={props.nameInfo ?  props.nameInfo : "Insert your NFT name"} name='nameControl' onChange={handleChange} value={props.nameInfo}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="nftImageForm">
 							<Form.Label>Image Url</Form.Label>
-							<Form.Control type="text" placeholder={props.nftImageInfo ? "Old: " + props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange}/>
+							<Form.Control type="text" placeholder={props.nftImageInfo ? props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange} value={props.nftImageInfo}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="descriptionForm">
 							<Form.Label>Description</Form.Label>
-							<Form.Control type="text" placeholder={props.descriptionInfo ? "Old: " + props.descriptionInfo : "Insert your NFT description"} name='descriptionControl' onChange={handleChange}/>
+							<Form.Control type="text" placeholder={props.descriptionInfo ? props.descriptionInfo : "Insert your NFT description"} name='descriptionControl' onChange={handleChange} value={props.descriptionInfo}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="externalURLForm">
 							<Form.Label>Web Url</Form.Label>
-							<Form.Control type="text" placeholder={props.externalURLInfo ? "Old: " + props.externalURLInfo : "Insert your NFT web url"} name='externalURLControl' onChange={handleChange}/>
+							<Form.Control type="text" placeholder={props.externalURLInfo ? props.externalURLInfo : "Insert your NFT web url"} name='externalURLControl' onChange={handleChange} value={props.externalURLInfo}/>
 						</Form.Group>
 					</Form>
 
