@@ -43,12 +43,19 @@ export function EditModal(props: any) {
 	const [nftImage, setNftImage] = useState(props.nftImageInfo);
 	const [description, setDescription] = useState(props.descriptionInfo);
 	const [externalURL, setExternalURL] = useState(props.externalURLInfo);
+
 	const [tokenId, setTokenId] = useState(0);
 	const [txHash, setTxHash] = useState('');
 	const [successMessage, setSuccessMessage] = useState(false);
-	const [actualImage, setActualImage] = useState('');
+	const [actualImage, setActualImage] = useState(props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold);
 
 	const handleClose = () => {
+		
+		setName("");
+		setNftImage("");
+		setDescription("");
+		setExternalURL("");
+		setActualImage(MillionMaticPageSymbolSold);
 		props.clickCloseButton();
 		setSuccessMessage(false);
 	};
@@ -69,14 +76,17 @@ export function EditModal(props: any) {
 	useEffect(() => {
 		if (props.show === true) {
 			setTokenId(props.tokenId);
-			console.log(props.tokenId);
+			console.log("useEffect props.show");
+			console.log("props.tokenId", props.tokenId);
+
+			setName(props.nameInfo);
+			setNftImage(props.nftImageInfo);
+			setDescription(props.descriptionInfo);
+			setExternalURL(props.externalURLInfo);
 			setActualImage(props.nftImageInfo ? props.nftImageInfo : MillionMaticPageSymbolSold);
-			//TODO VERIFICARE
-			//setDescription(props.description);
-			//setName(props.name);
+
 		}
 	}, [props.show]);
-
 
 	const sendDataToIPFS = async () => {
 
@@ -160,6 +170,7 @@ export function EditModal(props: any) {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const handleTransactionStart = () => {
 			console.log('Salvataggio dati su IPFS e poi su Blockchain...');
+			setActualImage(nftImage);
 			props.setLoadingSpinner(true);
 			setSuccessMessage(false);
 	}
@@ -169,11 +180,7 @@ export function EditModal(props: any) {
 		console.log('handleTransactionSuccess');
 		props.setLoadingSpinner(false);
 		setTxHash("");
-		//handleClose();
-
 		setSuccessMessage(true);
-		updateShowedImage();
-		setActualImage(nftImage);
 		props.imgUpdatedChanger(tokenId, nftImage);
 
 	}
@@ -190,20 +197,11 @@ export function EditModal(props: any) {
 		}
 	}, [handleTransactionSuccess, isSuccess]);
 
-
-	const updateShowedImage = () => {
-		console.log('updateShowedImage');
-
-
-
-	}
-	
 	return (
 		<div
 			className="modal show"
 			style={{ display: 'block', position: 'initial' }}
 		>
-
 			<Modal show={props.show} onHide={handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Edit Modal - NFT: #{props.tokenId}</Modal.Title>
@@ -217,7 +215,7 @@ export function EditModal(props: any) {
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="nftImageForm">
 							<Form.Label>Image Url</Form.Label>
-							<Form.Control type="text" placeholder={actualImage ? actualImage : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange} value={nftImage} disabled={successMessage}/>
+							<Form.Control type="text" placeholder={props.nftImageInfo ? props.nftImageInfo : "Insert your NFT image url"} name='imageUrlControl' onChange={handleChange} value={nftImage} disabled={successMessage}/>
 						</Form.Group>
 						<Form.Group className="mb-3" controlId="descriptionForm">
 							<Form.Label>Description</Form.Label>
@@ -252,8 +250,6 @@ export function EditModal(props: any) {
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
-
-
 				</Modal.Footer>
 			</Modal>
 		</div>
